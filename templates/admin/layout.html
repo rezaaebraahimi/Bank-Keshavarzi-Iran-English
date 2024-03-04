@@ -25,6 +25,8 @@
             </h3>
         </div>
         <div class="my-2 text-center">
+            {% if session.admin_id %}
+            {% endif %}
             {% if session.admin_name %}
             <button class="btn btn-success">{{session.admin_name}}</button>
             {% endif %}
