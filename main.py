@@ -93,7 +93,8 @@ def adminDashboard():
     totalUser=User.query.count()
     totalApprove=User.query.filter_by(status=1).count()
     NotTotalApprove=User.query.filter_by(status=0).count()
-    AllCards = Card.numberOfCards
+    TotalCard = Card.numberOfCards
+    AllCards = Card.query.value(TotalCard)
     
     return render_template('admin/dashboard.html',title="میزکار مدیریت",
                            totalUser=totalUser,totalApprove=totalApprove,

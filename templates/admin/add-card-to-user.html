@@ -18,7 +18,16 @@
                     <form action="" method="POST">
                         <div class="my-2">
                             <label for=""><b>تخصیص کارت به شعبه </b></label>
-                            <input type="text" placeholder="کد شعبه" name="CenterCode" id="CenterCode" class="form-control my-1">
+                            <fieldset>
+                                <select name="CenterCode" id="CenterCode">
+                                    <option value="" disabled selected>یک گزینه را انتخاب کنید</option>
+                                    {% for user in users %}
+                                    <option value="{{user.CenterCode}}" >
+                                        {{user.CenterCode}}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </fieldset>
                             <input type="text" placeholder="تعداد کارت " name="sendToUser" id="sendToUser" class="form-control my-1">
                         </div>
                         <button class="btn btn-success"> تخصیص</button>
