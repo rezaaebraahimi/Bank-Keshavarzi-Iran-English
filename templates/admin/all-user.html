@@ -21,6 +21,7 @@
                         <th>شماره شعبه</th>
                         <th>نام کاربری</th>
                         <th>وضعیت دسترسی </th>
+                        <th>تغییر وضعیت</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,10 +35,20 @@
                             {% if user.status == 1 %}
                             تایید شده
                             {% else %}
-                            <a href="/admin/approve-user/{{user.id}}">
-                                <button class="btn btn-warning">در انتظار تایید</button>
-                            </a>
+                            در انتظار تایید
                             {% endif %}
+                        </td>
+                        <td>
+                            {% if user.status == 1 %}
+                                <a href="/admin/disapprove-user/{{user.id}}">
+                                    <button class="btn btn-warning">تعلیق کاربر </button>
+                                </a>
+                      
+                            {% else %}
+                                <a href="/admin/approve-user/{{user.id}}">
+                                    <button class="btn btn-warning"> تایید</button>
+                                </a>
+                            {% endif %}      
                         </td>
                     </tr>
                     {% endfor %}

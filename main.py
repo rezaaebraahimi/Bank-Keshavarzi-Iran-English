@@ -29,6 +29,7 @@ class User(db.Model):
     password=db.Column(db.String(45), nullable=False)
     # date_added = db.Column(db.Datetime, default=datetime.utcnow)
     status=db.Column(db.Integer,default=0, nullable=False)
+    
 
     def __repr__(self):
         return f'User("{self.id}","{self.CenterName}","{self.CenterCode}","{self.username}","{self.status}")'
@@ -96,11 +97,15 @@ def adminIndex():
 def adminDashboard():
     if not session.get('admin_id'):
         return redirect('/admin/')
+    
     totalUser=User.query.count()
     totalApprove=User.query.filter_by(status=1).count()
     NotTotalApprove=User.query.filter_by(status=0).count()
     AllCards = Card.query.filter_by(id=0)
-    return render_template('admin/dashboard.html',title="میزکار مدیریت",totalUser=totalUser,totalApprove=totalApprove,NotTotalApprove=NotTotalApprove,AllCards=AllCards)
+    
+    return render_template('admin/dashboard.html',title="میزکار مدیریت",
+                           totalUser=totalUser,totalApprove=totalApprove,
+                           NotTotalApprove=NotTotalApprove,AllCards=AllCards)
 
 
 # admin card managment
@@ -135,6 +140,7 @@ def adminGetAllUser():
         return render_template('admin/all-user.html',title=' تایید کابران',users=users)
 
 
+# admin user approving
 @app.route('/admin/approve-user/<int:id>')
 def adminApprove(id):
     if not session.get('admin_id'):
@@ -142,6 +148,17 @@ def adminApprove(id):
     User().query.filter_by(id=id).update(dict(status=1))
     db.session.commit()
     flash('تایید موفقیت آمیز بود','درود')
+    return redirect('/admin/get-all-user')
+
+
+# admin user Disapproving
+@app.route('/admin/disapprove-user/<int:id>')
+def adminDisApprove(id):
+    if not session.get('admin_id'):
+        return redirect('/admin/')
+    User().query.filter_by(id=id).update(dict(status=0))
+    db.session.commit()
+    flash('کاربر مورد نظر تعلیق شد','درود')
     return redirect('/admin/get-all-user')
 
 # change admin password
@@ -171,6 +188,8 @@ def adminLogout():
         session['admin_id']=None
         session['admin_name']=None
         return redirect('/')
+
+
 # -------------------------user area----------------------------
 
 
