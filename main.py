@@ -20,7 +20,6 @@ app.app_context().push()
 Session(app) 
 
 
-# User Class
 class User(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     CenterName=db.Column(db.String(100), nullable=False)
@@ -28,7 +27,7 @@ class User(db.Model):
     username=db.Column(db.String(45), nullable=False)
     password=db.Column(db.String(45), nullable=False)
     usersCard=db.Column(db.Integer,default=0, nullable=False)
-    # date_added = db.Column(db.Datetime, default=datetime.utcnow)
+    #date_added = db.Column(db.Datetime, default=datetime.utcnow)
     status=db.Column(db.Integer,default=0, nullable=False)
     
 
@@ -36,7 +35,6 @@ class User(db.Model):
         return f'User("{self.id}","{self.CenterName}","{self.CenterCode}","{self.username}","{self.status}","{self.usersCard}")'
 
 
-# create admin Class
 class Admin(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     admin_user=db.Column(db.String(45), nullable=False)
@@ -46,41 +44,32 @@ class Admin(db.Model):
         return f'Admin("{self.admin_user}","{self.id}")'
 
 
-# create card class
 class Card(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     numberOfCards=db.Column(db.Integer, nullable=False)
-
-
 
     def __repr__(self):
         return f'Admin("{self.numberOfCards}","{self.id}")'
     
     
-# create table
 db.create_all()
 
 
-# main index 
 @app.route('/')
 def index():
     return render_template('index.html',title="")
 
 
-# admin loign
+
 @app.route('/admin/',methods=["POST","GET"])
 def adminIndex():
-    # chect the request is post or not
     if request.method == 'POST':
-        # get the value of field
         admin_user = request.form.get('admin_user')
         admin_pass = request.form.get('admin_pass')
-        # check the value is not empty
         if admin_user=="" and admin_pass=="":
             flash('لطفا تمامی موارد را کامل کنید','error')
             return redirect('/admin/')
         else:
-            # login admin by admin_user 
             admins=Admin().query.filter_by(admin_user=admin_user).first()
             admins_p=Admin().query.filter_by(admin_pass=admin_pass).first()
             if admins and admins_p:
@@ -95,7 +84,7 @@ def adminIndex():
         return render_template('admin/index.html',title="ورود مدیریت")
 
 
-# admin Dashboard
+
 @app.route('/admin/dashboard')
 def adminDashboard():
     if not session.get('admin_id'):
@@ -104,14 +93,14 @@ def adminDashboard():
     totalUser=User.query.count()
     totalApprove=User.query.filter_by(status=1).count()
     NotTotalApprove=User.query.filter_by(status=0).count()
-    AllCards = Card.query.get({"id":0})
+    AllCards = Card.numberOfCards
     
     return render_template('admin/dashboard.html',title="میزکار مدیریت",
                            totalUser=totalUser,totalApprove=totalApprove,
                            NotTotalApprove=NotTotalApprove,AllCards=AllCards)
 
 
-# admin card managment
+
 @app.route('/admin/card-manage', methods=["POST","GET"])
 def cardManage():
     if request.method == 'POST':
@@ -137,20 +126,20 @@ def addCardToUser():
         sendToUser = request.form.get('sendToUser')
         newSupply = Card.numberOfCards - sendToUser
         if sendToUser == '':
-            flash('please do correct','error')
+            flash('لطفا با دقت کامل کنید','error')
             return redirect('/admin/addCardToUser')
         else:
             Card.query.update(dict(numberOfCards=newSupply))
             sum = User.usersCard + sendToUser
             User.query.filter_by(CenterCode=CenterCode).update(dict(usersCard=sum))
             db.session.commit()
-            flash('okeye','message')
+            flash('تخصیص داده شد','message')
             return redirect('/admin/addCardToUser')
     else:
         return render_template('admin/add-card-to-user.html', title='tozi kart',users=users)
 
 
-# admin get all user 
+
 @app.route('/admin/get-all-user', methods=["POST","GET"])
 def adminGetAllUser():
     if not session.get('admin_id'):
@@ -164,7 +153,7 @@ def adminGetAllUser():
         return render_template('admin/all-user.html',title=' تایید کابران',users=users)
 
 
-# admin user approving
+
 @app.route('/admin/approve-user/<int:id>')
 def adminApprove(id):
     if not session.get('admin_id'):
@@ -175,7 +164,6 @@ def adminApprove(id):
     return redirect('/admin/get-all-user')
 
 
-# admin user Disapproving
 @app.route('/admin/disapprove-user/<int:id>')
 def adminDisApprove(id):
     if not session.get('admin_id'):
@@ -185,7 +173,7 @@ def adminDisApprove(id):
     flash('کاربر مورد نظر تعلیق شد','message')
     return redirect('/admin/get-all-user')
 
-# change admin password
+
 @app.route('/admin/change-admin-password',methods=["POST","GET"])
 def adminChangePassword():
     admin=Admin.query.get(1)
@@ -204,7 +192,7 @@ def adminChangePassword():
         return render_template('admin/admin-change-password.html',
                                title='تغییر رمز عبور مدیریت',admin=admin)
 
-# admin logout
+
 @app.route('/admin/logout')
 def adminLogout():
     if not session.get('admin_id'):
@@ -215,25 +203,18 @@ def adminLogout():
         return redirect('/')
 
 
-# -------------------------user area----------------------------
 
-
-# User login
 @app.route('/user/',methods=["POST","GET"])
 def userIndex():
     if  session.get('user_id'):
         return redirect('/user/dashboard')
     if request.method=="POST":
-        # get the name of the field
         username=request.form.get('username')
         password=request.form.get('password')
-        # check user exist in this username or not
         users=User().query.filter_by(username=username).first()
         users_p=User().query.filter_by(password=password).first()
         if users and users_p:
-            # check the admin approve your account are not
             is_approve=User.query.filter_by(id=users.id).first()
-            # first return the is_approve:
             if is_approve.status == 0:
                 flash('شما توسط مدیریت تایید نشده اید','error')
                 return redirect('/user/')
@@ -250,18 +231,16 @@ def userIndex():
 
 
 
-# User Register
 @app.route('/user/signup',methods=['POST','GET'])
 def userSignup():
     if  session.get('user_id'):
         return redirect('/user/dashboard')
     if request.method=='POST':
-        # get all input field name
         CenterName=request.form.get('CenterName')
         CenterCode=request.form.get('CenterCode')
         username=request.form.get('username')
         password=request.form.get('password')
-        # check all the field is filled are not
+
         if CenterName =="" or CenterCode=="" or password=="" or username=="":
             flash('لطفا تمامی موارد را تکمیل کنید','error')
             return redirect('/user/signup')
@@ -280,7 +259,7 @@ def userSignup():
         return render_template('user/signup.html',title="ثبتنام اعضا")
 
 
-# user dashboard
+
 @app.route('/user/dashboard')
 def userDashboard():
     if not session.get('user_id'):
@@ -290,7 +269,7 @@ def userDashboard():
     users=User().query.filter_by(id=id).first()
     return render_template('user/dashboard.html',title="میزکار کاربر ",users=users)
 
-# user logout
+
 @app.route('/user/logout')
 def userLogout():
     if not session.get('user_id'):
@@ -326,7 +305,7 @@ def userChangePassword():
     else:
         return render_template('user/change-password.html',title="تغییر رمز عبور")
 
-# user update profile
+
 @app.route('/user/update-profile', methods=["POST","GET"])
 def userUpdateProfile():
     if not session.get('user_id'):
@@ -335,7 +314,7 @@ def userUpdateProfile():
         id=session.get('user_id')
     users=User.query.get(id)
     if request.method == 'POST':
-        # get all input field name
+
         CenterName=request.form.get('CenterName')
         CenterCode=request.form.get('CenterCode')
         username=request.form.get('username')
