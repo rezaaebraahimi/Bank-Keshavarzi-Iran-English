@@ -33,6 +33,7 @@ class User(db.Model):
     def __repr__(self):
         return f'User("{self.id}","{self.CenterName}","{self.CenterCode}","{self.username}","{self.status}")'
 
+
 # create admin Class
 class Admin(db.Model):
     id=db.Column(db.Integer, primary_key=True)
@@ -42,6 +43,16 @@ class Admin(db.Model):
     def __repr__(self):
         return f'Admin("{self.admin_user}","{self.id}")'
 
+
+# create card class
+class Card(db.Model):
+    id=db.Column(db.Integer, primary_key=True)
+    NumberOfCards=db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return f'Admin("{self.NumberOfCards}","{self.id}")'
+    
+    
 # create table
 db.create_all()
 
@@ -88,7 +99,26 @@ def adminDashboard():
     totalUser=User.query.count()
     totalApprove=User.query.filter_by(status=1).count()
     NotTotalApprove=User.query.filter_by(status=0).count()
-    return render_template('admin/dashboard.html',title="میزکار مدیریت",totalUser=totalUser,totalApprove=totalApprove,NotTotalApprove=NotTotalApprove)
+    AllCards = Card.query.filter_by(id=0)
+    return render_template('admin/dashboard.html',title="میزکار مدیریت",totalUser=totalUser,totalApprove=totalApprove,NotTotalApprove=NotTotalApprove,AllCards=AllCards)
+
+
+# admin card managment
+@app.route('/admin/card-manage', methods=["POST","GET"])
+def cardManage():
+    if request.method == 'POST':
+        NumberOfCards= request.form.get('NumberOfCards')
+        sum = Card.NumberOfCards + NumberOfCards
+        if NumberOfCards == "":
+            flash('لطفا جای خالی را کامل کنید','خطا')
+            return redirect('/admin/card-manage')
+        else:
+            Card.query.update(dict(NumberOfCards=sum))
+            db.session.commit()
+            flash('به کارت ها اضافه شد','درود')
+            return redirect('/admin/dashboard')
+    else:
+        return render_template('admin/card-manage.html',title='مدیریت کارت ها')
 
 
 # admin get all user 
@@ -98,11 +128,12 @@ def adminGetAllUser():
         return redirect('/admin/')
     if request.method== "POST":
         search=request.form.get('search')
-        users=User.query.filter(User.username.like('%'+search+'%')).all()
+        users=User.query.filter(User.CenterCode.like('%'+search+'%')).all()
         return render_template('admin/all-user.html',title='تایید کاربران',users=users)
     else:
         users=User.query.all()
         return render_template('admin/all-user.html',title=' تایید کابران',users=users)
+
 
 @app.route('/admin/approve-user/<int:id>')
 def adminApprove(id):
