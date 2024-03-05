@@ -27,12 +27,13 @@ class User(db.Model):
     CenterCode=db.Column(db.String(45), nullable=False)
     username=db.Column(db.String(45), nullable=False)
     password=db.Column(db.String(45), nullable=False)
+    usersCard=db.Column(db.Integer,default=0, nullable=False)
     # date_added = db.Column(db.Datetime, default=datetime.utcnow)
     status=db.Column(db.Integer,default=0, nullable=False)
     
 
     def __repr__(self):
-        return f'User("{self.id}","{self.CenterName}","{self.CenterCode}","{self.username}","{self.status}")'
+        return f'User("{self.id}","{self.CenterName}","{self.CenterCode}","{self.username}","{self.status}","{self.usersCard}")'
 
 
 # create admin Class
@@ -48,10 +49,12 @@ class Admin(db.Model):
 # create card class
 class Card(db.Model):
     id=db.Column(db.Integer, primary_key=True)
-    NumberOfCards=db.Column(db.Integer, nullable=False)
+    numberOfCards=db.Column(db.Integer, nullable=False)
+
+
 
     def __repr__(self):
-        return f'Admin("{self.NumberOfCards}","{self.id}")'
+        return f'Admin("{self.numberOfCards}","{self.id}")'
     
     
 # create table
@@ -74,7 +77,7 @@ def adminIndex():
         admin_pass = request.form.get('admin_pass')
         # check the value is not empty
         if admin_user=="" and admin_pass=="":
-            flash('لطفا تمامی موارد را کامل کنید','خطا')
+            flash('لطفا تمامی موارد را کامل کنید','error')
             return redirect('/admin/')
         else:
             # login admin by admin_user 
@@ -83,10 +86,10 @@ def adminIndex():
             if admins and admins_p:
                 session['admin_id']=admins.id
                 session['admin_name']=admins.admin_user
-                flash('ورود موفقیت آمیز بود','درود')
+                flash('ورود موفقیت آمیز بود','message')
                 return redirect('/admin/dashboard')
             else:
-                flash('نام کاربری یا رمز عبور اشتباه است','خطا')
+                flash('نام کاربری یا رمز عبور اشتباه است','error')
                 return redirect('/admin/')
     else:
         return render_template('admin/index.html',title="ورود مدیریت")
@@ -101,7 +104,7 @@ def adminDashboard():
     totalUser=User.query.count()
     totalApprove=User.query.filter_by(status=1).count()
     NotTotalApprove=User.query.filter_by(status=0).count()
-    AllCards = Card.query.filter_by(id=0)
+    AllCards = Card.query.get({"id":0})
     
     return render_template('admin/dashboard.html',title="میزکار مدیریت",
                            totalUser=totalUser,totalApprove=totalApprove,
@@ -112,18 +115,39 @@ def adminDashboard():
 @app.route('/admin/card-manage', methods=["POST","GET"])
 def cardManage():
     if request.method == 'POST':
-        NumberOfCards= request.form.get('NumberOfCards')
-        sum = Card.NumberOfCards + NumberOfCards
-        if NumberOfCards == "":
-            flash('لطفا جای خالی را کامل کنید','خطا')
+        numberOfCards= request.form.get('numberOfCards')
+        sum = Card.numberOfCards + numberOfCards
+        if numberOfCards == "":
+            flash('لطفا جای خالی را کامل کنید','error')
             return redirect('/admin/card-manage')
         else:
-            Card.query.update(dict(NumberOfCards=sum))
+            Card.query.update(dict(numberOfCards=sum))
             db.session.commit()
-            flash('به کارت ها اضافه شد','درود')
-            return redirect('/admin/dashboard')
+            flash('به کارت ها اضافه شد','message')
+            return redirect('/admin/card-manage')
     else:
-        return render_template('admin/card-manage.html',title='مدیریت کارت ها')
+        return render_template('admin/card-manage.html',title='افزودن کارت')
+    
+    
+@app.route('/admin/addCardToUser', methods=["POST","GET"])
+def addCardToUser():
+    users = User.query.all()
+    if request.method == 'POST':
+        CenterCode = request.form.get('CenterCode')
+        sendToUser = request.form.get('sendToUser')
+        newSupply = Card.numberOfCards - sendToUser
+        if sendToUser == '':
+            flash('please do correct','error')
+            return redirect('/admin/addCardToUser')
+        else:
+            Card.query.update(dict(numberOfCards=newSupply))
+            sum = User.usersCard + sendToUser
+            User.query.filter_by(CenterCode=CenterCode).update(dict(usersCard=sum))
+            db.session.commit()
+            flash('okeye','message')
+            return redirect('/admin/addCardToUser')
+    else:
+        return render_template('admin/add-card-to-user.html', title='tozi kart',users=users)
 
 
 # admin get all user 
@@ -147,7 +171,7 @@ def adminApprove(id):
         return redirect('/admin/')
     User().query.filter_by(id=id).update(dict(status=1))
     db.session.commit()
-    flash('تایید موفقیت آمیز بود','درود')
+    flash('تایید موفقیت آمیز بود','message')
     return redirect('/admin/get-all-user')
 
 
@@ -158,7 +182,7 @@ def adminDisApprove(id):
         return redirect('/admin/')
     User().query.filter_by(id=id).update(dict(status=0))
     db.session.commit()
-    flash('کاربر مورد نظر تعلیق شد','درود')
+    flash('کاربر مورد نظر تعلیق شد','message')
     return redirect('/admin/get-all-user')
 
 # change admin password
@@ -169,15 +193,16 @@ def adminChangePassword():
         admin_user=request.form.get('admin_user')
         admin_pass=request.form.get('admin_pass')
         if admin_user == "" or admin_pass=="":
-            flash('لطفا جای خالی را کامل کنید','خطا')
+            flash('لطفا جای خالی را کامل کنید','error')
             return redirect('/admin/change-admin-password')
         else:
             Admin().query.filter_by(admin_user=admin_user).update(dict(admin_pass=admin_pass))
             db.session.commit()
-            flash('تغییر رمز عبور مدیریت موفقیت آمیز بود','درود')
+            flash('تغییر رمز عبور مدیریت موفقیت آمیز بود','message')
             return redirect('/admin/change-admin-password')
     else:
-        return render_template('admin/admin-change-password.html',title='تغییر رمز عبور مدیریت',admin=admin)
+        return render_template('admin/admin-change-password.html',
+                               title='تغییر رمز عبور مدیریت',admin=admin)
 
 # admin logout
 @app.route('/admin/logout')
@@ -210,15 +235,15 @@ def userIndex():
             is_approve=User.query.filter_by(id=users.id).first()
             # first return the is_approve:
             if is_approve.status == 0:
-                flash('شما توسط مدیریت تایید نشده اید','خطا')
+                flash('شما توسط مدیریت تایید نشده اید','error')
                 return redirect('/user/')
             else:
                 session['user_id']=users.id
                 session['username']=users.username
-                flash('ورود موفقیت آمیز بود ','درود')
+                flash('ورود موفقیت آمیز بود ','message')
                 return redirect('/user/dashboard')
         else:
-            flash('نام کاربری یا رمز عبور نادرست است ','خطا')
+            flash('نام کاربری یا رمز عبور نادرست است ','error')
             return redirect('/user/')
     else:
         return render_template('user/index.html',title="ورود اعضا")
@@ -238,18 +263,18 @@ def userSignup():
         password=request.form.get('password')
         # check all the field is filled are not
         if CenterName =="" or CenterCode=="" or password=="" or username=="":
-            flash('لطفا تمامی موارد را تکمیل کنید','خطا')
+            flash('لطفا تمامی موارد را تکمیل کنید','error')
             return redirect('/user/signup')
         else:
             is_username=User().query.filter_by(username=username).first()
             if is_username:
-                flash('نام کاربری قبلا ثبت شده','خطا')
+                flash('نام کاربری قبلا ثبت شده','error')
                 return redirect('/user/signup')
             else:
                 user=User(CenterName=CenterName,CenterCode=CenterCode,password=password,username=username)
                 db.session.add(user)
                 db.session.commit()
-                flash('بعد از تایید توسط مدیریت میتوانید دسترسی به سامانه برای شما آزاد میشود','منتظر بمانید')
+                flash('بعد از تایید توسط مدیریت میتوانید دسترسی به سامانه برای شما آزاد میشود','message')
                 return redirect('/user/')
     else:
         return render_template('user/signup.html',title="ثبتنام اعضا")
@@ -284,7 +309,7 @@ def userChangePassword():
         username=request.form.get('username')
         password=request.form.get('password')
         if username == "" or password == "":
-            flash('لطفا تمام موارد را کامل کنید','خطا')
+            flash('لطفا تمام موارد را کامل کنید','error')
             return redirect('/user/change-password')
         else:
             users=User.query.filter_by(username=username).first()
@@ -292,10 +317,10 @@ def userChangePassword():
 
                User.query.filter_by(username=username).update(dict(password=password))
                db.session.commit()
-               flash('رمز عبور تغییر کرد','درود')
+               flash('رمز عبور تغییر کرد','message')
                return redirect('/user/change-password')
             else:
-                flash('نام کاربری نادرست است','خطا')
+                flash('نام کاربری نادرست است','error')
                 return redirect('/user/change-password')
 
     else:
@@ -315,17 +340,18 @@ def userUpdateProfile():
         CenterCode=request.form.get('CenterCode')
         username=request.form.get('username')
         if CenterName =="" or CenterCode=="" or username=="":
-            flash('لطفا تمام موارد را تکمیل کنید','خطا')
+            flash('لطفا تمام موارد را تکمیل کنید','error')
             return redirect('/user/update-profile')
         else:
             session['username']=None
             User.query.filter_by(id=id).update(dict(CenterName=CenterName,CenterCode=CenterCode,username=username))
             db.session.commit()
             session['username']=username
-            flash('پروفایل بروزرسانی شد','درود')
+            flash('پروفایل بروزرسانی شد','message')
             return redirect('/user/dashboard')
     else:
-        return render_template('user/update-profile.html',title="بروز رسانی پروفایل",users=users)
+        return render_template('user/update-profile.html',
+                               title="بروز رسانی پروفایل",users=users)
 
 if __name__=="__main__":
     app.run(debug=True)
