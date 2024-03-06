@@ -37,8 +37,8 @@ class User(db.Model):
 
 class Admin(db.Model):
     id=db.Column(db.Integer, primary_key=True)
-    admin_user=db.Column(db.String(45), nullable=False)
-    admin_pass=db.Column(db.String(45), nullable=False)
+    admin_user="Reza_admin"
+    admin_pass="Gorgan_0173"
 
     def __repr__(self):
         return f'Admin("{self.admin_user}","{self.id}")'
