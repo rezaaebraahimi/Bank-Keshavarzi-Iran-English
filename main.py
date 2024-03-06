@@ -51,8 +51,6 @@ class Card(db.Model):
     def __repr__(self):
         return f'Admin("{self.numberOfCards}","{self.id}")'
     
-    
-db.create_all()
 
 
 @app.route('/')
@@ -334,4 +332,4 @@ def userUpdateProfile():
                                title="بروز رسانی پروفایل",users=users)
 
 if __name__=="__main__":
-    app.run(host:="services.irn5.chabokan.net", port:=int(os.environ.get('PORT', 5000)), debug=True)
+    app.run(debug=True)
