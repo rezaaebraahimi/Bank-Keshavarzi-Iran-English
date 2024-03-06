@@ -46,11 +46,13 @@ class Admin(db.Model):
 
 class Card(db.Model):
     id=db.Column(db.Integer, primary_key=True)
-    numberOfCards=db.Column(db.Integer, nullable=False)
+    typeOfCards=db.Column(db.String(45), nullable=False)
 
     def __repr__(self):
-        return f'Admin("{self.numberOfCards}","{self.id}")'
+        return f'Admin("{self.typeOfCards}","{self.id}")'
     
+
+db.create_all()
 
 
 @app.route('/')
@@ -91,7 +93,7 @@ def adminDashboard():
     totalUser=User.query.count()
     totalApprove=User.query.filter_by(status=1).count()
     NotTotalApprove=User.query.filter_by(status=0).count()
-    TotalCard = Card.numberOfCards
+    TotalCard = Card.typeOfCards
     AllCards = Card.query.value(TotalCard)
     
     return render_template('admin/dashboard.html',title="میزکار مدیریت",
