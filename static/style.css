@@ -1,0 +1,107 @@
+@font-face {
+    font-family: samim;
+    src: url(/static/font/Samim-FD.woff2) format(woff2);
+}
+*{
+    font-family: samim;
+    margin: 0 auto;
+}
+body{
+    background: linear-gradient(358.85deg, #628d40 0.98%, #337e3f 99.02%);
+    height: 100%;
+    background-attachment: fixed;
+}
+.container {
+    align-items: center;
+    text-align: center;
+}
+.logo{
+    margin-top: 20px;
+}
+.card{
+    align-items: center;
+    display: flex;
+    
+}
+.card-box{
+    background: linear-gradient(180deg, #35ac21 -0%, #15460d 71%);
+    border-radius: 3.6rem;
+    box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
+    height: 22rem;
+    width: 22rem;
+}
+.card-en{
+    cursor: pointer;
+}
+.icon {
+    height: 250px;
+    width: 250px;
+    margin-top: 20px;
+    object-fit: contain;
+}
+a:hover .icon{
+    height: 180px;
+    width: 180px;
+    transition: 0.2s;
+}
+a:hover .title{
+    opacity: 100;
+    transition: 0.2s;
+}
+
+.title{
+    margin-top: 30px;
+    opacity: 0;
+}
+a {
+    text-decoration: none;
+    color: white;
+}
+.card{
+    margin-top: 40px;
+}
+footer{
+    position: fixed;
+    bottom: 0px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.footer{
+    background: linear-gradient(146.73deg, #35ac21 19.37%, #15460d 80.63%);
+    height: 80px;
+    width: 391px;
+    border-radius: 15px 15px 0px 0px;
+}
+h2{
+    color: white;
+    text-align: center;
+    padding-top: 20px;
+}
+@media only screen and (max-width: 600px){
+    .card{
+        display: block;
+    }
+    .card-box{
+        height: 10rem;
+        width: 10rem;
+        margin-top: 10px;
+    }
+    .icon {
+        height: 70px;
+        width: 70px;
+    }
+    .title{
+        opacity: 100;
+        font-size: 10px;
+        margin-top: 5px;
+    }
+    a:hover .icon{
+        height: 60px;
+        width: 60px;
+        transition: 0.2s;
+    }
+    a:hover .title{
+        opacity: 100;
+        transition: 0.2s;
+    }
+}
