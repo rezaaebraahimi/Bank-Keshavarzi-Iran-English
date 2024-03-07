@@ -82,6 +82,10 @@ a:hover .title{
     border: none;
     font-size: large;
 }
+.btn-success:hover{
+    background-color: #15460d;
+    color: white;
+}
 label{
     color: white;
     width: 300px;
@@ -114,6 +118,23 @@ h1{
     margin-top: 30px;
     height: 111px;
     width: 111px;
+}
+.alert{
+    top: 80px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute;
+    width: 260px;
+    background-color: #ff8787;
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+    border:solid 2px red;
+    padding: 20px;
+}
+strong{
+    margin-top: 20px;
 }
 footer{
     position: fixed;
