@@ -7,7 +7,7 @@
     margin: 0 auto;
 }
 body{
-    background: linear-gradient(358.85deg, #628d40 0.98%, #337e3f 99.02%);
+    background: radial-gradient(50% 50% at 50% 50%, #ffffff 55.5%, #ccffd4 100%);
     height: 100%;
     background-attachment: fixed;
 }
@@ -34,24 +34,23 @@ body{
     cursor: pointer;
 }
 .icon {
-    height: 250px;
-    width: 250px;
+    height: 180px;
+    width: 180px;
     margin-top: 20px;
     object-fit: contain;
 }
 a:hover .icon{
-    height: 180px;
-    width: 180px;
+    height: 200px;
+    width: 200px;
     transition: 0.2s;
 }
 a:hover .title{
-    opacity: 100;
+    font-size: larger;
     transition: 0.2s;
 }
 
 .title{
     margin-top: 30px;
-    opacity: 0;
 }
 a {
     text-decoration: none;
