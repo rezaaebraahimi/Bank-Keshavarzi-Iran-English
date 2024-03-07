@@ -110,12 +110,14 @@ def adminDashboard():
             all_pro = Property.query.all()
             for pro in all_pro:
                 if pro.user_code == c_user:
-                    infos = Property.query.filter_by(user_code=c_user)       
-        return render_template('admin/dashboard.html',title="میزکار مدیریت",users=users,infos=infos)
+                    infos = Property.query.filter_by(user_code=c_user)
+                    
+                    return render_template('admin/dashboard.html',title="میزکار مدیریت",users=users,infos=infos)
+        
 
 
 
-@app.route('/admin/get-all-details', methods=["POST","GET"])
+@app.route('/admin/get-all-details/', methods=["POST","GET"])
 def adminGetDetails():
     if not session.get('admin_id'):
         return redirect('/admin/')
@@ -128,7 +130,6 @@ def adminGetDetails():
             for pro in all_pro:
                 if pro.user_code == c_user:
                     infos = Property.query.filter_by(user_code=c_user)
-    
         return render_template('admin/admin-get-details.html',title=" جزئیات موجودی",users=users,infos=infos)
     
 
