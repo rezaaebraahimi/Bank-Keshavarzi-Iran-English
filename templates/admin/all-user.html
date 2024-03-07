@@ -16,11 +16,9 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>ردیف</th>
                         <th>نام شعبه</th>
                         <th>شماره شعبه</th>
                         <th>نام کاربری</th>
-                        <th>موجودی کارت ها</th>
                         <th>وضعیت دسترسی </th>
                         <th>تغییر وضعیت</th>
                     </tr>
@@ -28,11 +26,9 @@
                 <tbody>
                     {% for user in users %}
                     <tr>
-                        <td>{{user.id}}</td>
                         <td>{{user.CenterName}}</td>
                         <td>{{user.CenterCode}}</td>
                         <td>{{user.username}}</td>
-                        <td>{{user.usersCard}}</td>
                         <td>
                             {% if user.status == 1 %}
                             تایید شده
