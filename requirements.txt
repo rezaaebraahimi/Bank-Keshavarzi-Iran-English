@@ -25,11 +25,13 @@ mysql-connector-python==8.3.0
 mysql-connector-python-rf==2.2.2
 mysqlclient==2.2.4
 packaging==23.2
+persiantools==3.0.1
 pycparser==2.21
 pymongo==4.6.2
 PyMySQL==1.1.0
 python-dotenv==1.0.1
 PythonDNS==0.1
+pytz==2024.1
 SQLAlchemy==2.0.27
 sqlalchemy-orm==1.2.10
 typing-inspect==0.9.0

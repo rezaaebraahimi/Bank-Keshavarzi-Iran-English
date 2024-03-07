@@ -10,9 +10,9 @@
                     <tr>
                         <th>نام شعبه</th>
                         <th>شماره شعبه</th>
+                        <th>نام کاربری</th>
                         <th>موجودی کارت ها</th>
-                        <th>تعداد کل </th>
-                        <th>آخرین تحویل</th>
+                        <th>اخرین اهدا</th>
                     </tr>
                 </thead>
                 {% for user in users %}
@@ -22,7 +22,7 @@
                         <td>{{user.CenterName}}</td>
                         <td>{{info.user_code}}</td>
                         <td>{{info.cardType}}</td>
-                        <td>{{user.sum_supply}}</td>
+                        <td>{{info.supply}}</td>
                         <td>{{info.date_add}}</td>
                     </tr>
                     {% endfor %}

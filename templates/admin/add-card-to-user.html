@@ -20,10 +20,18 @@
                             <label for=""><b>تخصیص کارت به شعبه </b></label>
                             <fieldset>
                                 <select name="CenterCode" id="CenterCode">
-                                    <option value="" disabled selected>یک گزینه را انتخاب کنید</option>
+                                    <option value="" disabled selected>شعبه را انتخاب کنید</option>
                                     {% for user in users %}
                                     <option value="{{user.CenterCode}}" >
-                                        {{user.CenterCode}}
+                                        {{user.CenterCode}} - {{user.CenterName}}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <select name="typeOfCards" id="typeOfCards">
+                                    <option value="" disabled selected>نوع کارت را انتخاب کنید</option>
+                                    {% for type in types %}
+                                    <option value="{{type.typeOfCards}}">
+                                        {{type.typeOfCards}}
                                     </option>
                                     {% endfor %}
                                 </select>
