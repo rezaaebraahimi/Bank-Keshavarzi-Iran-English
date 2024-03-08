@@ -29,7 +29,7 @@ class Property(db.Model):
     supply = db.Column(db.Integer,default=0, nullable=False)   
     
     def __repr__(self):
-        return f'Property("{self.user_code}","{self.cardType}","{self.supply}")' 
+        return f'Property("{self.user_code}","{self.cardType}","{self.supply}","{self.date_add}")' 
 
 
 class User(db.Model):
@@ -45,7 +45,7 @@ class User(db.Model):
     owner = db.relationship('Card', secondary='property')
 
     def __repr__(self):
-        return f'User("{self.id}","{self.CenterName}","{self.CenterCode}","{self.username}","{self.status}","{self.owner}")'
+        return f'User("{self.id}","{self.CenterName}","{self.CenterCode}","{self.username}","{self.status}","{self.owner}","{self.date_added}","{self.sum_supply}")'
 
 
 class Admin(db.Model):
@@ -166,7 +166,6 @@ def addCardToUser():
             db.session.commit()
             flash('تخصیص داده شد','message')
             return redirect('/admin/addCardToUser')          
-
         else:
             sum_3 = User.sum_supply + sendToUser
             _sup = User(sum_supply=sum_3)
@@ -201,7 +200,7 @@ def recieve():
             Recieve.query.filter_by(_type=typeOfCards).update(dict(recieve_date=JalaliDate.today()))
             db.session.commit()
             flash('توسط خزانه دریافت شد','message')
-            return redirect('/admin/addCardToUser')  
+            return redirect('/admin/recieve')  
         else :
             new_recieve = Recieve(admin_supply = adminRecieve, recieve_date = JalaliDate.today(), _type = typeOfCards)
             db.session.add(new_recieve)
@@ -210,7 +209,7 @@ def recieve():
             return redirect('/admin/recieve')          
 
     else:
-        return render_template('admin/recieve.html', title='توزیع کارت',_recieve=_recieve,types=types)
+        return render_template('admin/recieve.html', title=' خزانه',_recieve=_recieve,types=types)
     
     
 
@@ -353,6 +352,32 @@ def userDashboard():
                 return render_template('user/dashboard.html',title="میزکار کاربر ",users=users,infos=infos)
 
 
+@app.route('/user/decrease', methods=["POST","GET"])
+def decrease():
+    if not session.get('user_id'):
+        return redirect('/user/')
+    types = Card.query.all()
+    users = User.query.all()
+    if request.method == 'POST':
+        id=session.get('user_id')
+        thisUser = User().query.filter_by(id=id).first()
+        userDecrease = int(request.form.get('userDecrease'))
+        typeOfCards = request.form.get('typeOfCards')
+        checker = Property.query.filter_by(user_code=thisUser.CenterCode,cardType=typeOfCards ).first()
+        if userDecrease == '':
+            flash('لطفا با دقت کامل کنید','error')
+            return redirect('/user/decrease')
+        elif checker:
+            checker.supply = checker.supply - userDecrease
+
+            Property.query.filter_by(cardType=typeOfCards).update(dict(supply=checker.supply))
+            db.session.commit()
+            flash('گزارش با موفقیت ثبت شد','message')
+            return redirect('/user/decrease')          
+
+    else:
+        return render_template('user/decrease.html', title=' اعلام کسری',users=users,types=types)
+
 
 @app.route('/user/logout')
 def userLogout():
@@ -365,58 +390,33 @@ def userLogout():
         return redirect('/user/')
 
 
-@app.route('/user/change-password',methods=["POST","GET"])
-def userChangePassword():
-    if not session.get('user_id'):
-        return redirect('/user/')
-    if request.method == 'POST':
-        username=request.form.get('username')
-        password=request.form.get('password')
-        if username == "" or password == "":
-            flash('لطفا تمام موارد را کامل کنید','error')
-            return redirect('/user/change-password')
-        else:
-            users=User.query.filter_by(username=username).first()
-            if users:
-
-               User.query.filter_by(username=username).update(dict(password=password))
-               db.session.commit()
-               flash('رمز عبور تغییر کرد','message')
-               return redirect('/user/change-password')
-            else:
-                flash('نام کاربری نادرست است','error')
-                return redirect('/user/change-password')
-
-    else:
-        return render_template('user/change-password.html',title="تغییر رمز عبور")
-
-
-
 @app.route('/user/update-profile', methods=["POST","GET"])
 def userUpdateProfile():
     if not session.get('user_id'):
         return redirect('/user/')
-    if session.get('user_id'):
+    
+    elif session.get('user_id'):
         id=session.get('user_id')
-    users=User.query.get(id)
-    if request.method == 'POST':
-
-        CenterName=request.form.get('CenterName')
-        CenterCode=request.form.get('CenterCode')
-        username=request.form.get('username')
-        if CenterName =="" or CenterCode=="" or username=="":
-            flash('لطفا تمام موارد را کامل کنید','error')
-            return redirect('/user/update-profile')
+        
+        users=User.query.get(id)
+        if request.method == 'POST':
+            CenterName=request.form.get('CenterName')
+            CenterCode=request.form.get('CenterCode')
+            username=request.form.get('username')
+            password=request.form.get('password')
+            if CenterName =="" or CenterCode=="" or username=="" or password=="":
+                flash('لطفا تمام موارد را کامل کنید','error')
+                return redirect('/user/update-profile')
+            else:
+                session['username']=None
+                User.query.filter_by(id=id).update(dict(CenterName=CenterName,CenterCode=CenterCode,username=username,password=password))
+                db.session.commit()
+                session['username']=username
+                flash('پروفایل بروزرسانی شد','message')
+                return redirect('/user/update-profile')
         else:
-            session['username']=None
-            User.query.filter_by(id=id).update(dict(CenterName=CenterName,CenterCode=CenterCode,username=username))
-            db.session.commit()
-            session['username']=username
-            flash('پروفایل بروزرسانی شد','message')
-            return redirect('/user/dashboard')
-    else:
-        return render_template('user/update-profile.html',
-                               title="بروز رسانی پروفایل",users=users)
+            return render_template('user/update-profile.html',title="بروز رسانی پروفایل",users=users)
+
 
 if __name__=="__main__":
     app.run(debug=True)
