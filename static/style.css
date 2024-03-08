@@ -245,6 +245,12 @@ justify-content:space-between;
 float: inline-start;
 margin-top: 130px;
 }
+.dash button{
+    border: none;
+    outline: none;
+    width: 300px;
+    background: rgb(210, 255, 210)5%;
+}
 
 .credit-container {
 position: relative;
@@ -265,7 +271,7 @@ justify-content: space-between;
 }
 .credit-logo img {
 width: 48px;
-margin-right: 10px;
+margin-right: 90px;
 }
 .bank-name{
     text-align: center;
