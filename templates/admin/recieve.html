@@ -1,0 +1,60 @@
+{% extends 'admin/layout.html' %}
+
+{% block content %}
+<div class="container">
+    {% include 'admin/navbar.html' %}
+</div>
+<div class="container">
+    <h1 class="text-center my-3">
+        خزانه دریافتی
+    </h1>
+    <div class="row d-flex justify-content-center">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+
+            {% if session.admin_id %}
+            {% endif %}
+            <div class="card">
+                <div class="card-body">
+                    <form action="" method="POST">
+                        <div class="my-2">
+                            <label for=""><b> دریافت محموله جدید</b></label>
+                            <fieldset>
+                                <select name="typeOfCards" id="typeOfCards">
+                                    <option value="" disabled selected>نوع کارت را انتخاب کنید</option>
+                                    {% for type in types %}
+                                    <option value="{{type.typeOfCards}}">
+                                        {{type.typeOfCards}}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </fieldset>
+                            <input type="text" placeholder="تعداد کارت " name="adminRecieve" id="adminRecieve" class="form-control my-1">
+                        </div>
+                        <button class="btn btn-success">افزودن</button>
+                    </form>
+                </div>
+            </div>
+            {% with messages=get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category,message in messages %}
+            <div class="alert alert-{{category}}">
+                <strong>{{message}}</strong>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    <div class="my-2">
+
+        {% for rec in _recieve %}
+            <h3>نوع کارت </h3>
+            <h4>{{rec._type}}</h4>
+            <h3>موجودی کارت ها</h3>
+            <h4>{{rec.admin_supply}}</h4>
+            <h3>اخرین دریافت</h3>
+            <h4>{{rec.recieve_date}}</h4>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

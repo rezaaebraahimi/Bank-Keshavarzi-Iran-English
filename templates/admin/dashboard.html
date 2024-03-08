@@ -1,35 +1,36 @@
 {% extends "admin/layout.html"%}
-
 {% block content %}
-<div class="container">
-    {% include 'admin/navbar.html' %}
-</div>
+{% include 'admin/navbar.html' %}
 {% for user in users %}
-<form class="dash" action="/admin/dashboard" method="post"> 
-    <label for="usercode">
-        <body>
-            <div class="credit-container">
-                <header>
-                    <span class="credit-logo">
-                        <img src="/static/icon/Logo.png" alt="" />
-                        <h5>{{user.CenterName}}</h5><br><br>
-                        <input class="chip" type="submit" value="{{user.CenterCode}}" id="usercode" name="usercode">
-                    </span>
-                    <img src="/static/icon/chip.png" alt="" class="chip" />
-                </header>
-                <div class="credit-details">
-                    <div class="name-number">
-                        <h6>موجودی</h6>
-                        <h5 class="number">{{user.sum_supply}}</h5>
+<body>
+    <div class="card-en">
+        <form class="dash" action="/admin/dashboard" method="post"> 
+            <label for="usercode">
+                    <button type="submit" value="{{user.CenterCode}}" id="usercode" name="usercode"><div class="credit-container">
+                        <header>
+                            <span class="credit-logo">
+                                <img src="/static/icon/Logo.png" alt="" />
+                            </span>
+                            <img src="/static/icon/chip.png" alt="" class="chip" />
+                        </header>
+                        <div class="bank-name">
+                            <h5>{{user.CenterName}} - {{user.CenterCode}}</h5>
+                        </div>
+                        <div class="credit-details">
+                            <div class="name-number">
+                                <h6>موجودی</h6>
+                                <h6 class="number">{{user.sum_supply}}</h6>
+                            </div>
+                            <div class="valid-date">
+                                <h6>آخرین دریافت</h6>
+                                <h6>{{user.date_added}}</h6>
+                            </div>
+                        </div>
                     </div>
-                    <div class="valid-date">
-                        <h6>آخرین دریافت</h6>
-                        <h5>{{user.date_added}}</h5>
-                    </div>
-                </div>
-            </div>
-        </body>
-    </label>
-</form>
+                </button>
+            </label>
+        </form>
+    </div>
+    </body>
 {% endfor %}
 {% endblock content %}

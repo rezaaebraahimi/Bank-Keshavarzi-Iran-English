@@ -29,7 +29,7 @@ class Property(db.Model):
     supply = db.Column(db.Integer,default=0, nullable=False)   
     
     def __repr__(self):
-        return f'Admin("{self.user_code}","{self.cardType}","{self.supply}")' 
+        return f'Property("{self.user_code}","{self.cardType}","{self.supply}")' 
 
 
 class User(db.Model):
@@ -58,14 +58,29 @@ class Admin(db.Model):
         return f'Admin("{self.admin_user}","{self.id}")'
 
 
+
+
 class Card(db.Model):
     __tablename__ = 'card'
     id=db.Column(db.Integer, primary_key=True)
     typeOfCards = db.Column(db.String(45), nullable=False)
     asset = db.relationship('User', secondary='property')
+    _type = db.relationship('Recieve')
     def __repr__(self):
-        return f'Admin("{self.typeOfCards}","{self.id}","{self.asset}")'
+        return f'Card("{self.typeOfCards}","{self.id}","{self.asset}",""{self._type})'
     
+
+class Recieve(db.Model):
+    __tablename__ = 'recieve'
+    id=db.Column(db.Integer, primary_key=True)
+    admin_supply  = db.Column(db.Integer, default=0, nullable=False)
+    recieve_date = db.Column(db.Date, default=JalaliDate.today())
+    _type = db.Column(db.String(45), db.ForeignKey('card.typeOfCards'))
+    
+    def __repr__(self):
+        return f'Recieve("{self.id}","{self.admin_supply}","{self.recieve_date}","{self._type}")'
+
+
 
 @app.route('/')
 def index():
@@ -97,11 +112,8 @@ def adminIndex():
 
 @app.route('/admin/dashboard', methods=["POST","GET"])
 def adminDashboard():
-
     if not session.get('admin_id'):
         return redirect('/admin/')
-    
-
     else:
         if request.method == 'POST':
             usercode = request.form.get('usercode')
@@ -149,6 +161,7 @@ def addCardToUser():
             Checker.supply = sum
             Checker.date_add = JalaliDate.today()
             User.query.filter_by(CenterCode=CenterCode).update(dict(date_added=JalaliDate.today()))
+
             db.session.commit()
             flash('تخصیص داده شد','message')
             return redirect('/admin/addCardToUser')          
@@ -162,6 +175,41 @@ def addCardToUser():
             return redirect('/admin/addCardToUser')
     else:
         return render_template('admin/add-card-to-user.html', title='توزیع کارت',users=users,types=types)
+    
+
+
+@app.route('/admin/recieve', methods=["POST","GET"])
+def recieve():
+    if not session.get('admin_id'):
+        return redirect('/admin/')
+    types = Card.query.all()
+    _recieve = Recieve.query.all()
+    if request.method == 'POST':
+        adminRecieve = request.form.get('adminRecieve')
+        typeOfCards = request.form.get('typeOfCards')
+        Checker = Recieve.query.filter_by(_type=typeOfCards).first()
+        if adminRecieve == '':
+            flash('لطفا با دقت کامل کنید','error')
+            return redirect('/admin/recieve')
+        elif typeOfCards == Checker:
+            sum = Recieve.admin_supply + adminRecieve
+            _recieve.admin_supply = sum
+            Recieve.query.filter_by(_type=typeOfCards).update(dict(recieve_date=JalaliDate.today()))
+            db.session.commit()
+            flash('توسط خزانه دریافت شد','message')
+            return redirect('/admin/addCardToUser')  
+        else :
+            new_recieve = Recieve(admin_supply = adminRecieve, recieve_date = JalaliDate.today(), _type = typeOfCards)
+            db.session.add(new_recieve)
+            db.session.commit()
+            flash('توسط خزانه دریافت شد','message')
+            return redirect('/admin/recieve')          
+
+    else:
+        return render_template('admin/recieve.html', title='توزیع کارت',_recieve=_recieve,types=types)
+    
+    
+
 
 
 @app.route('/admin/get-all-user', methods=["POST","GET"])
