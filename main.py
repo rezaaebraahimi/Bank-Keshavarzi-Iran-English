@@ -1,5 +1,5 @@
 import os
-from flask import Flask, flash, render_template, request,redirect, session
+from flask import Flask, flash, render_template, request,redirect, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from dotenv import load_dotenv
@@ -39,7 +39,7 @@ class User(db.Model):
     CenterCode=db.Column(db.String(45), nullable=False)
     username=db.Column(db.String(45), nullable=False)
     password=db.Column(db.String(45), nullable=False)
-    sum_supply = db.Column(db.Integer, nullable=False)
+    sum_supply = db.Column(db.Integer,default=0, nullable=False)
     date_added=db.Column(db.Date, default=JalaliDate.today())
     status=db.Column(db.Integer,default=0, nullable=False)
     owner = db.relationship('Card', secondary='property')
@@ -67,11 +67,9 @@ class Card(db.Model):
         return f'Admin("{self.typeOfCards}","{self.id}","{self.asset}")'
     
 
-
 @app.route('/')
 def index():
     return render_template('index.html',title="")
-
 
 
 @app.route('/admin/',methods=["POST","GET"])
@@ -97,42 +95,42 @@ def adminIndex():
         return render_template('admin/index.html',title="ورود مدیریت")
 
 
-
 @app.route('/admin/dashboard', methods=["POST","GET"])
 def adminDashboard():
 
     if not session.get('admin_id'):
         return redirect('/admin/')
+    
+
     else:
-        users=User.query.all()
-        for user in users:
-            c_user = user.CenterCode
-            all_pro = Property.query.all()
-            for pro in all_pro:
-                if pro.user_code == c_user:
-                    infos = Property.query.filter_by(user_code=c_user)
-                    
-                    return render_template('admin/dashboard.html',title="میزکار مدیریت",users=users,infos=infos)
+        if request.method == 'POST':
+            usercode = request.form.get('usercode')
+            return redirect(url_for('adminGetDetails', usercode=usercode))
+        else:
+            users=User.query.all()
+            for user in users:
+                c_user = user.CenterCode
+                all_pro = Property.query.all()
+                for pro in all_pro:
+                    if pro.user_code == c_user:
+                        infos = Property.query.filter_by(user_code=c_user)
+            return render_template('admin/dashboard.html',title="میزکار مدیریت",users=users,infos=infos)
         
-
-
 
 @app.route('/admin/get-all-details/', methods=["POST","GET"])
 def adminGetDetails():
     if not session.get('admin_id'):
         return redirect('/admin/')
-
-    else:
-        users=User.query.all()
-        for user in users:
-            c_user = user.CenterCode
+    usercode = request.args.get('usercode')
+    users=User.query.all()
+    for user in users:
+        if user.CenterCode == usercode:
             all_pro = Property.query.all()
             for pro in all_pro:
-                if pro.user_code == c_user:
-                    infos = Property.query.filter_by(user_code=c_user)
-        return render_template('admin/admin-get-details.html',title=" جزئیات موجودی",users=users,infos=infos)
-    
-
+                if pro.user_code == usercode:
+                    infos = Property.query.filter_by(user_code=usercode)
+                    return render_template('admin/admin-get-details.html',title=" جزئیات موجودی",users=users,infos=infos,usercode=usercode)
+        
     
 @app.route('/admin/addCardToUser', methods=["POST","GET"])
 def addCardToUser():
@@ -166,7 +164,6 @@ def addCardToUser():
         return render_template('admin/add-card-to-user.html', title='توزیع کارت',users=users,types=types)
 
 
-
 @app.route('/admin/get-all-user', methods=["POST","GET"])
 def adminGetAllUser():
     if not session.get('admin_id'):
@@ -179,7 +176,6 @@ def adminGetAllUser():
         users=User.query.all()
         
         return render_template('admin/all-user.html',title=' لیست کابران',users=users)
-
 
 
 @app.route('/admin/approve-user/<int:id>')
@@ -231,7 +227,6 @@ def adminLogout():
         return redirect('/')
 
 
-
 @app.route('/user/',methods=["POST","GET"])
 def userIndex():
     if  session.get('user_id'):
@@ -256,7 +251,6 @@ def userIndex():
             return redirect('/user/')
     else:
         return render_template('user/index.html',title="ورود اعضا")
-
 
 
 @app.route('/user/signup',methods=['POST','GET'])
@@ -294,7 +288,6 @@ def userSignup():
         return render_template('user/signup.html',title="ثبتنام اعضا")
 
 
-
 @app.route('/user/dashboard')
 def userDashboard():
     if not session.get('user_id'):
@@ -314,6 +307,7 @@ def userLogout():
         session['user_id'] = None
         session['username'] = None
         return redirect('/user/')
+
 
 @app.route('/user/change-password',methods=["POST","GET"])
 def userChangePassword():

@@ -3,19 +3,33 @@
 {% block content %}
 <div class="container">
     {% include 'admin/navbar.html' %}
-    <div class="my-2">
-            <div>
-                {% for user in users %}
-                    <p>{{user.CenterName}}</p>
-                    <p>{{user.CenterCode}}</p>
-                    <p>{{user.sum_supply}}</p>
-                    <p>{{user.date_added}}</p>
-                {% endfor %}
-                <a href="/admin/get-all-details/">
-                    <button class="btn btn-success">مشاهده</button>
-                </a>
-            </div>
-
-    </div>
 </div>
+{% for user in users %}
+<form class="dash" action="/admin/dashboard" method="post"> 
+    <label for="usercode">
+        <body>
+            <div class="credit-container">
+                <header>
+                    <span class="credit-logo">
+                        <img src="/static/icon/Logo.png" alt="" />
+                        <h5>{{user.CenterName}}</h5><br><br>
+                        <input class="chip" type="submit" value="{{user.CenterCode}}" id="usercode" name="usercode">
+                    </span>
+                    <img src="/static/icon/chip.png" alt="" class="chip" />
+                </header>
+                <div class="credit-details">
+                    <div class="name-number">
+                        <h6>موجودی</h6>
+                        <h5 class="number">{{user.sum_supply}}</h5>
+                    </div>
+                    <div class="valid-date">
+                        <h6>آخرین دریافت</h6>
+                        <h5>{{user.date_added}}</h5>
+                    </div>
+                </div>
+            </div>
+        </body>
+    </label>
+</form>
+{% endfor %}
 {% endblock content %}
