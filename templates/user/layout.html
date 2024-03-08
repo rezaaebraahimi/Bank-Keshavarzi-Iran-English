@@ -15,14 +15,7 @@
 </head>
 
 <body>
-    <div class="container my-2">
-        <div class="text-center my-2">
-            {% if session.get('user_id') %}
-            <button class="btn btn-info">{{session.username}}</button>
-            {% endif %}
-        </div>
-        <hr>
-    </div>
+    
     {% block content %} {% endblock content %}
 </body>
 
