@@ -82,7 +82,28 @@ a:hover .title{
     border: none;
     font-size: large;
 }
+.btn-success-user{
+    margin-top: 2%;
+    width: 80px;
+    height: 40px;
+    color: #1d6013;
+    background: white;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    font-size: large;
+}
+.signup-titel{
+    background: #1a4421;
+    width: 400px;
+    border-radius: 5px 5px 0px 0px ;
+    overflow: hidden;
+}
 .btn-success:hover{
+    background-color: #15460d;
+    color: white;
+}
+.btn-success-user:hover{
     background-color: #15460d;
     color: white;
 }
@@ -119,8 +140,11 @@ h1{
     height: 111px;
     width: 111px;
 }
+.reg{
+    margin-top: 10px;
+}
 .alert{
-    top: 80px;
+    top: 20px;
     left: 0;
     right: 0;
     margin-left: auto;

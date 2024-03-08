@@ -2,11 +2,8 @@
 
 {% block content %}
 <div class="container">
-    <h1 class="text-center my-3">
-        ورود کاربران
-    </h1>
     <div class="row d-flex justify-content-center">
-        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+        <div class="login-f">
             {% with messages=get_flashed_messages(with_categories=true) %}
             {% if messages %}
             {% for category,message in messages %}
@@ -16,20 +13,28 @@
             {% endfor %}
             {% endif %}
             {% endwith %}
-            <div class="card">
+            <div class="login">
+                <img class="user" src="/static/icon/user.png" alt="">
+                <h1 class="text-center my-3">
+                    ورود کاربران
+                </h1>
                 <div class="card-body">
                     <form action="" method="POST">
-                        <div class="my-2">
-                            <label for=""><b>نام کاربری را وارد کنید</b></label>
+                        <div class="input">
+                            <div class="label">
+                            <label for=""><b>نام کاربری</b></label>
+                            </div>
                             <input type="text" name="username" id="username" class="form-control my-1">
                         </div>
-                        <div class="my-2">
+                        <div class="input">
+                            <div class="label">
                             <label for=""><b>رمز عبور را وارد کنید</b></label>
+                            </div>
                             <input type="password" name="password" id="password" class="form-control my-1">
                         </div>
-                        <button class="btn btn-success">ورود</button>
-                        <span class="d-flex align-items-center">عضو نشده اید؟ <a href="/user/signup"
-                                class="text-center nav-link">ثبتنام کنید</a></span>
+                        <div class="reg">عضو نشده اید؟ <a href="/user/signup"
+                                class="text-center nav-link">ثبت نام کنید</a></div>
+                        <button class="btn-success-user">ورود</button>
                     </form>
                 </div>
             </div>
