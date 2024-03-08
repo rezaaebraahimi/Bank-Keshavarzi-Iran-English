@@ -82,7 +82,76 @@ a:hover .title{
     border: none;
     font-size: large;
 }
+.btn-success-user{
+    margin-top: 2%;
+    width: 80px;
+    height: 40px;
+    color: #1d6013;
+    background: white;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    font-size: large;
+}
+.navbar{
+    position: fixed;
+    background: linear-gradient(180deg, #65ca53 -0%, #26701b 71%);
+    width: 100%;
+    height: 90px ;
+    border-radius: 0px 0px 15px 15px;
+    box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
+}
+.right-nav{
+    display: flex;
+    width: 30%;
+    float: right;
+    margin-top: 8px;
+    box-sizing: border-box;
+}
+.left-nav{
+    display: flex;
+    position: absolute;
+    float: left;
+    top: 8px;
+    left: 15px;
+}
+.center-nav{
+    position: fixed;
+    left: 45%;
+    top: 23px;
+}
+.btn-username{
+    width: 150px;
+    height: 40px;
+    background: white;
+    border-radius: 5px;
+    color: #1d6013;
+    font-size: 15px;
+    border: none;
+    outline: none;
+}
+.logo-nav{
+    width: 65px;
+    height: 71px;
+}
+
+.icon-nav{
+    height: 36px;
+    width: 36px;
+}
+
+
+.signup-titel{
+    background: #1a4421;
+    width: 400px;
+    border-radius: 5px 5px 0px 0px ;
+    overflow: hidden;
+}
 .btn-success:hover{
+    background-color: #15460d;
+    color: white;
+}
+.btn-success-user:hover{
     background-color: #15460d;
     color: white;
 }
@@ -119,8 +188,11 @@ h1{
     height: 111px;
     width: 111px;
 }
+.reg{
+    margin-top: 10px;
+}
 .alert{
-    top: 80px;
+    top: 20px;
     left: 0;
     right: 0;
     margin-left: auto;
