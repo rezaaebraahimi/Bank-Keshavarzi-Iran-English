@@ -4,32 +4,23 @@
 <div class="container">
     {% include 'admin/navbar.html' %}
     <div class="my-2">
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>نام شعبه</th>
-                        <th>شماره شعبه</th>
-                        <th>نام کاربری</th>
-                        <th>موجودی کارت ها</th>
-                        <th>اخرین اهدا</th>
-                    </tr>
-                </thead>
-                {% for user in users %}
-                <tbody>
-                    {% for info in infos %}
-                    <tr>
-                        <td>{{user.CenterName}}</td>
-                        <td>{{info.user_code}}</td>
-                        <td>{{info.cardType}}</td>
-                        <td>{{info.supply}}</td>
-                        <td>{{info.date_add}}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-                {% endfor %}
-            </table>
-        </div>
+
+                        {% for user in users %}
+                            {% for info in infos %}
+                                {% if info.user_code == user.CenterCode %}
+                                    <h3>نام شعبه</h3>
+                                    <h4>{{user.CenterName}}</h4>
+                                    <h3>شماره شعبه</h3>
+                                    <h4>{{info.user_code}}</h4>
+                                    <h3>نام کاربری</h3>
+                                    <h4>{{info.cardType}}</h4>
+                                    <h3>موجودی کارت ها</h3>
+                                    <h4>{{info.supply}}</h4>
+                                    <h3>اخرین اهدا</h3>
+                                    <h4>{{info.date_add}}</h4>
+                                {% endif %}
+                            {%endfor%}
+                        {% endfor %}
     </div>
 </div>
 {% endblock content %}

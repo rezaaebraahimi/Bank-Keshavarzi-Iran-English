@@ -7,7 +7,7 @@
     margin: 0 auto;
 }
 body{
-    background: radial-gradient(50% 50%, #ffffff -0%, #B2C3AF 71%);
+    background: rgb(210, 255, 210)5%;
     height: 100%;
     background-attachment: fixed;
 }
@@ -18,6 +18,8 @@ body{
 .logo{
     margin-top: 20px;
 }
+
+
 .card{
     align-items: center;
     display: flex;
@@ -225,6 +227,65 @@ h2{
     text-align: center;
     padding-top: 20px;
 }
+
+
+.dash {
+min-width: 55vh;
+min-height: 25vh;
+display: flex;
+justify-content:space-between;
+float: inline-start;
+}
+
+.credit-container {
+position: relative;
+background-color:#53ca79;
+background-size: cover;
+padding: 25px;
+border-radius: 28px;
+max-width: 350px;
+width: 85%;
+box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+header,
+.credit-logo {
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+.credit-logo img {
+width: 48px;
+margin-right: 10px;
+}
+h5 {
+font-size: 16px;
+font-weight: 400;
+color: #fff;
+}
+header .chip {
+width: 60px;
+}
+h6 {
+color: #fff;
+font-size: 15px;
+font-weight: 400;
+}
+h5.number {
+margin-top: 4px;
+font-size: 25px;
+letter-spacing: 1px;
+}
+h5.name {
+margin-top: 20px;
+}
+.credit-container .credit-details {
+margin-top: 40px;
+display: flex;
+justify-content: space-between;
+align-items: flex-end;
+}
+
 @media only screen and (max-width: 600px){
     .card{
         display: block;
