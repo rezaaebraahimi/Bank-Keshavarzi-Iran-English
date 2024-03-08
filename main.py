@@ -161,14 +161,18 @@ def addCardToUser():
             Checker.supply = sum
             Checker.date_add = JalaliDate.today()
             User.query.filter_by(CenterCode=CenterCode).update(dict(date_added=JalaliDate.today()))
-
+            sum_2 = User.sum_supply + sendToUser
+            User.query.filter_by(CenterCode=CenterCode).update(dict(sum_supply = sum_2))
             db.session.commit()
             flash('تخصیص داده شد','message')
             return redirect('/admin/addCardToUser')          
 
         else:
+            sum_3 = User.sum_supply + sendToUser
+            _sup = User(sum_supply=sum_3)
             _property = Property(user_code=CenterCode, cardType=typeOfCards, supply=sendToUser, date_add=JalaliDate.today())
             User.query.filter_by(CenterCode=CenterCode).update(dict(date_added=JalaliDate.today()))
+            db.session.add(_sup)
             db.session.add(_property)
             db.session.commit()
             flash('تخصیص داده شد','message')
@@ -209,8 +213,6 @@ def recieve():
         return render_template('admin/recieve.html', title='توزیع کارت',_recieve=_recieve,types=types)
     
     
-
-
 
 @app.route('/admin/get-all-user', methods=["POST","GET"])
 def adminGetAllUser():
@@ -273,6 +275,7 @@ def adminLogout():
         session['admin_id']=None
         session['admin_name']=None
         return redirect('/')
+
 
 
 @app.route('/user/',methods=["POST","GET"])
@@ -340,10 +343,15 @@ def userSignup():
 def userDashboard():
     if not session.get('user_id'):
         return redirect('/user/')
-    if session.get('user_id'):
+    elif session.get('user_id'):
         id=session.get('user_id')
-    users=User().query.filter_by(id=id).first()
-    return render_template('user/dashboard.html',title="میزکار کاربر ",users=users)
+        users = User().query.filter_by(id=id).first()
+        if users:
+            all_pro = Property.query.all()
+            for pro in all_pro:
+                infos = Property.query.filter_by(user_code=users.CenterCode)
+                return render_template('user/dashboard.html',title="میزکار کاربر ",users=users,infos=infos)
+
 
 
 @app.route('/user/logout')
@@ -381,6 +389,7 @@ def userChangePassword():
 
     else:
         return render_template('user/change-password.html',title="تغییر رمز عبور")
+
 
 
 @app.route('/user/update-profile', methods=["POST","GET"])
