@@ -10,12 +10,12 @@
     </div>
     {% endfor %}
     {% endif %}
-    {% endwith %}
+    {% endwith %}       
     {% include 'user/navbar.html' %}
     {% for info in infos %}
     <body>
         <div class="card-en">
-            <form class="dash" action="/admin/dashboard" method="post"> 
+            <form class="dash" action="/user/dashboard" method="post"> 
                 <label for="usercode">
                         <div class="credit-container">
                             <header>
