@@ -144,6 +144,7 @@ def adminGetDetails():
                     return render_template('admin/admin-get-details.html',title=" جزئیات موجودی",users=users,infos=infos,usercode=usercode)
         
     
+    
 @app.route('/admin/addCardToUser', methods=["POST","GET"])
 def addCardToUser():
     users = User.query.all()
@@ -332,7 +333,7 @@ def userSignup():
                     db.session.add(_property)
                     db.session.commit()   
                 
-                flash('بعد از تایید توسط مدیریت میتوانید دسترسی به سامانه برای شما آزاد میشود','message')
+                flash('بعد از تایید توسط مدیریت دسترسی به سامانه برای شما آزاد میشود','message')
                 return redirect('/user/')
     else:
         return render_template('user/signup.html',title="ثبتنام اعضا")

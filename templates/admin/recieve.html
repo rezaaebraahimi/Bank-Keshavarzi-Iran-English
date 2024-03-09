@@ -11,8 +11,25 @@
     <div class="row d-flex justify-content-center">
         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
 
+
             {% if session.admin_id %}
             {% endif %}
+
+            {% with messages=get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category,message in messages %}
+
+            <div class="alert alert-{{category}}">
+                <p> 
+                    {{message}}
+                </p>
+            </div>
+
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <script src="/static/script/script.js"></script>
+
             <div class="card">
                 <div class="card-body">
                     <form action="" method="POST">
@@ -34,15 +51,6 @@
                     </form>
                 </div>
             </div>
-            {% with messages=get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            {% for category,message in messages %}
-            <div class="alert alert-{{category}}">
-                <strong>{{message}}</strong>
-            </div>
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
         </div>
     </div>
     <div class="my-2">
@@ -50,7 +58,7 @@
         {% for rec in _recieve %}
             <h3>نوع کارت </h3>
             <h4>{{rec._type}}</h4>
-            <h3>موجودی کارت ها</h3>
+            <h3>تعداد افزوده شده</h3>
             <h4>{{rec.admin_supply}}</h4>
             <h3>اخرین دریافت</h3>
             <h4>{{rec.recieve_date}}</h4>

@@ -7,7 +7,7 @@
     margin: 0 auto;
 }
 body{
-    background: rgb(210, 255, 210)5%;
+    background: rgb(212, 253, 212)5%;
     height: 100%;
     background-attachment: fixed;
 }
@@ -27,7 +27,7 @@ body{
     
 }
 .card-box{
-    background: linear-gradient(180deg, #35ac21 -0%, #15460d 71%);
+    background: linear-gradient(180deg, #21ac60 -0%, #0d4610 71%);
     border-radius: 3.6rem;
     box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
     height: 22rem;
@@ -201,20 +201,31 @@ h1{
 .reg{
     margin-top: 10px;
 }
+
+
 .alert{
-    top: 20px;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
+    background-color: #ffd1a5;
+    width: 165px;
+    padding: 30px 40px;
     position: absolute;
-    width: 260px;
-    background-color: #ff8787;
-    color: rgb(255, 255, 255);
-    border-radius: 10px;
-    border:solid 2px red;
-    padding: 20px;
+    transform: translate(-50%,-50%);
+    left: 50%;
+    top: 50%;
+    border-radius: 15px;
+    border:solid 2px #ff9100;
+    display: none;
+    text-align: center;
 }
+
+
+.alert p{
+    font-size: 20px;
+    text-align: center;
+    margin: auto;
+    line-height: 25px;
+}
+
+
 strong{
     margin-top: 20px;
 }

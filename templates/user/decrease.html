@@ -13,6 +13,21 @@
 
             {% if session.user_id %}
             {% endif %}
+
+            {% with messages=get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category,message in messages %}
+
+            <div class="alert alert-{{category}}">
+                <p> 
+                    {{message}}
+                </p>
+            </div>
+
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <script src="/static/script/script.js"></script>
             <div class="card">
                 <div class="card-body">
                     <form action="" method="POST">
@@ -34,15 +49,7 @@
                     </form>
                 </div>
             </div>
-            {% with messages=get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            {% for category,message in messages %}
-            <div class="alert alert-{{category}}">
-                <strong>{{message}}</strong>
-            </div>
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
+
         </div>
     </div>
 </div>

@@ -8,12 +8,17 @@
             {% with messages=get_flashed_messages(with_categories=true) %}
             {% if messages %}
             {% for category,message in messages %}
+            
             <div class="alert alert-{{category}}">
-                <strong>{{message}}</strong>
+                <p> 
+                    {{message}}
+                </p>
             </div>
+
             {% endfor %}
             {% endif %}
             {% endwith %}
+            <script src="/static/script/script.js"></script>
             
             <div class="login">
                 <img class="user" src="/static/icon/user.png" alt="">
