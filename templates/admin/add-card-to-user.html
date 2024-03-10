@@ -1,66 +1,59 @@
 {% extends 'admin/layout.html' %}
-
 {% block content %}
 <div class="container">
     {% include 'admin/navbar.html' %}
-</div>
-<div class="container">
-    <h1 class="text-center my-3">
-        تخصیص کارت
-    </h1>
-    <div class="row d-flex justify-content-center">
-        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-            
-            {% if session.admin_id %}
-            {% endif %}
-
-            {% with messages=get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            {% for category,message in messages %}
-
-            <div class="alert alert-{{category}}">
-                <p> 
-                    {{message}}
-                </p>
-            </div>
-            
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
-            <script src="/static/script/script.js"></script>
-
-
-            <div class="card">
-                <div class="card-body">
-                    <form action="" method="POST">
-                        <div class="my-2">
-                            <label for=""><b>تخصیص کارت به شعبه </b></label>
+    <div class="login-f">
+        {% if session.admin_id %}
+        {% endif %}
+        <main class="table" style="width: fit-content;">
+             <form action="" method="POST">
+                <section class="table__header" style="width: fit-content;">
+                    <h3>تخصیص کارت به شعبه </h3>
+                    </section>
+                <section style="width: fit-content;">
+                    <table>
+                        <thead>
                             <fieldset>
+                                <tr>
+                                <th>
                                 <select name="CenterCode" id="CenterCode">
                                     <option value="" disabled selected>شعبه را انتخاب کنید</option>
                                     {% for user in users %}
                                     <option value="{{user.CenterCode}}" >
-                                        {{user.CenterCode}} - {{user.CenterName}}
+                                    {{user.CenterCode}} - {{user.CenterName}}
                                     </option>
                                     {% endfor %}
                                 </select>
+                                </th>
+                                </tr>
+                                <tr>
+                                <th>
                                 <select name="typeOfCards" id="typeOfCards">
                                     <option value="" disabled selected>نوع کارت را انتخاب کنید</option>
                                     {% for type in types %}
                                     <option value="{{type.typeOfCards}}">
-                                        {{type.typeOfCards}}
+                                    {{type.typeOfCards}}
                                     </option>
                                     {% endfor %}
                                 </select>
+                                </th>
+                                </tr>
                             </fieldset>
-                            <input type="text" placeholder="تعداد کارت " name="sendToUser" id="sendToUser" class="form-control my-1">
-                        </div>
-                        <button class="btn btn-success"> تخصیص</button>
-                    </form>
-                </div>
-            </div>
 
-        </div>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="text" placeholder="تعداد کارت را وارد کنید" name="sendToUser" id="sendToUser">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn-success-2"> تخصیص</button>
+                    
+                </section>
+            </form>
+        </main>
     </div>
 </div>
 {% endblock content %}
