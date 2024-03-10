@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from dotenv import load_dotenv
 from persiantools.jdatetime import JalaliDate
+from datetime import datetime
 
 app=Flask(__name__)
 
@@ -25,7 +26,7 @@ class Property(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     user_code = db.Column(db.String(45), db.ForeignKey('user.CenterCode'))
     cardType = db.Column(db.String(45), db.ForeignKey('card.typeOfCards'))
-    date_add=db.Column(db.Date, default=JalaliDate.today())
+    date_add=db.Column(db.Date, default=datetime.utcnow)
     supply = db.Column(db.Integer,default=0, nullable=False)   
     
     def __repr__(self):
@@ -40,7 +41,7 @@ class User(db.Model):
     username=db.Column(db.String(45), nullable=False)
     password=db.Column(db.String(45), nullable=False)
     sum_supply = db.Column(db.Integer,default=0, nullable=False)
-    date_added=db.Column(db.Date, default=JalaliDate.today())
+    date_added=db.Column(db.Date, default=datetime.utcnow)
     status=db.Column(db.Integer,default=0, nullable=False)
     owner = db.relationship('Card', secondary='property')
 
@@ -58,8 +59,6 @@ class Admin(db.Model):
         return f'Admin("{self.admin_user}","{self.id}")'
 
 
-
-
 class Card(db.Model):
     __tablename__ = 'card'
     id=db.Column(db.Integer, primary_key=True)
@@ -74,12 +73,21 @@ class Recieve(db.Model):
     __tablename__ = 'recieve'
     id=db.Column(db.Integer, primary_key=True)
     admin_supply  = db.Column(db.Integer, default=0, nullable=False)
-    recieve_date = db.Column(db.Date, default=JalaliDate.today())
+    recieve_date = db.Column(db.Date, default=datetime.utcnow)
     _type = db.Column(db.String(45), db.ForeignKey('card.typeOfCards'))
     
     def __repr__(self):
         return f'Recieve("{self.id}","{self.admin_supply}","{self.recieve_date}","{self._type}")'
 
+
+class Blogpost(db.Model):
+    __tablename__ = 'blogpost'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(50))
+    subtitle = db.Column(db.String(50))
+    author = db.Column(db.String(20))
+    date_posted = db.Column(db.Date)
+    content = db.Column(db.Text)
 
 
 @app.route('/')
@@ -232,20 +240,22 @@ def adminGetAllUser():
 def adminApprove(id):
     if not session.get('admin_id'):
         return redirect('/admin/')
-    User().query.filter_by(id=id).update(dict(status=1))
-    db.session.commit()
-    flash('تایید موفقیت آمیز بود','message')
-    return redirect('/admin/get-all-user')
+    else:
+        User().query.filter_by(id=id).update(dict(status=1))
+        db.session.commit()
+        flash('تایید موفقیت آمیز بود','message')
+        return redirect('/admin/get-all-user')
 
 
 @app.route('/admin/disapprove-user/<int:id>')
 def adminDisApprove(id):
     if not session.get('admin_id'):
         return redirect('/admin/')
-    User().query.filter_by(id=id).update(dict(status=0))
-    db.session.commit()
-    flash('کاربر مورد نظر تعلیق شد','message')
-    return redirect('/admin/get-all-user')
+    else:
+        User().query.filter_by(id=id).update(dict(status=0))
+        db.session.commit()
+        flash('کاربر مورد نظر تعلیق شد','message')
+        return redirect('/admin/get-all-user')
 
 
 @app.route('/admin/change-admin-password',methods=["POST","GET"])
@@ -265,6 +275,35 @@ def adminChangePassword():
     else:
         return render_template('admin/admin-change-password.html',
                                title='تغییر رمز عبور مدیریت',admin=admin)
+
+
+@app.route('/admin/add')
+def add():
+    return render_template('/admin/add.html')
+
+
+@app.route('/admin/addpost', methods=['POST'])
+def addpost():
+    title = request.form['title']
+    subtitle = request.form['subtitle']
+    author = request.form['author']
+    content = request.form['content']
+    post = Blogpost(title=title, subtitle=subtitle, author=author, content=content, date_posted=JalaliDate.today())
+    db.session.add(post)
+    db.session.commit()
+    return redirect('/admin/dashboard')
+
+
+@app.route('/admin/allPosts')
+def allPosts():
+    posts = Blogpost.query.order_by(Blogpost.date_posted.desc()).all()
+    return render_template('/admin/all-posts.html', posts=posts)
+
+
+@app.route('/admin/post/<int:post_id>')
+def post(post_id):
+    post = Blogpost.query.filter_by(id=post_id).one()
+    return render_template('/admin/post.html', post=post)
 
 
 @app.route('/admin/logout')
@@ -357,10 +396,13 @@ def userDashboard():
 def decrease():
     if not session.get('user_id'):
         return redirect('/user/')
-    types = Card.query.all()
-    users = User.query.all()
-    if request.method == 'POST':
+    
+    elif session.get('user_id'):
         id=session.get('user_id')
+  
+        types = Card.query.all()
+        users=User.query.get(id)
+    if request.method == 'POST':
         thisUser = User().query.filter_by(id=id).first()
         userDecrease = int(request.form.get('userDecrease'))
         typeOfCards = request.form.get('typeOfCards')
@@ -370,7 +412,6 @@ def decrease():
             return redirect('/user/decrease')
         elif checker:
             checker.supply = checker.supply - userDecrease
-
             Property.query.filter_by(cardType=typeOfCards).update(dict(supply=checker.supply))
             db.session.commit()
             flash('گزارش با موفقیت ثبت شد','message')

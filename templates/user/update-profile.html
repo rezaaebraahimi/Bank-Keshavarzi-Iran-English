@@ -3,52 +3,47 @@
 {% block content %}
 <div class="container">
     {% include 'user/navbar.html' %}
-    <h4 class="text-center my-3">
-        بروزرسانی اطلاعات
-    </h4>
-    <div class="row d-flex justify-content-center">
-        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-            {% with messages=get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            {% for category,message in messages %}
 
-            <div class="alert alert-{{category}}">
-                <p> 
-                    {{message}}
-                </p>
-            </div>
+    <div class="login-f">
+        <div class="login">
 
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
-            <script src="/static/script/script.js"></script>
-            <div class="card">
                 <div class="card-body">
+                    <h3 class="text-center my-3">
+                        بروزرسانی اطلاعات شعبه
+                    </h3>
                     <form action="" method="POST">
-                        <div class="my-2">
-                            <label for=""><b>نام شعبه</b></label>
+                        <div class="input">
+                            <div class="label">
+                            <label class="label" for=""><b>نام شعبه</b></label>
+                            </div>
                             <input type="text" value="{{users.CenterName}}" name="CenterName" id="CenterName"
                                 class="form-control my-1">
                         </div>
-                        <div class="my-2">
-                            <label for=""><b>شماره شعبه</b></label>
+                        <div class="input">
+                            <div class="label">
+                            <label class="label" for=""><b>شماره شعبه</b></label>
+                            </div>
                             <input type="text" value="{{users.CenterCode}}" name="CenterCode" id="CenterCode"
                                 class="form-control my-1">
                         </div>
-                        <div class="my-2">
-                            <label for=""><b>نام کاربری</b></label>
+                        <div class="input">
+                            <div class="label">
+                            <label class="label" for=""><b>نام کاربری</b></label>
+                            </div>
                             <input type="text" value="{{users.username}}" name="username" id="username"
                                 class="form-control my-1">
                         </div>
-                        <div class="my-2">
-                            <label for=""><b>رمز عبور </b></label>
+                        <div class="input">
+                            <div class="label">
+                            <label class="label" for=""><b>رمز عبور </b></label>
                             </div>
                             <input type="text" value="{{users.password}}" name="password" id="password" class="form-control my-1">
                         </div>
-                        <button class="btn btn-success">اعمال تغییرات</button>
+                        <button class="btn-success">اعمال تغییرات</button>
                     </form>
+
                 </div>
-            </div>
+
         </div>
     </div>
 </div>

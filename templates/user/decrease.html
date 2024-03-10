@@ -1,56 +1,44 @@
 {% extends 'user/layout.html' %}
-
 {% block content %}
 <div class="container">
     {% include 'user/navbar.html' %}
-</div>
-<div class="container">
-    <h1 class="text-center my-3">
-        اعلام کاهش موجودی
-    </h1>
-    <div class="row d-flex justify-content-center">
-        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-
-            {% if session.user_id %}
-            {% endif %}
-
-            {% with messages=get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            {% for category,message in messages %}
-
-            <div class="alert alert-{{category}}">
-                <p> 
-                    {{message}}
-                </p>
-            </div>
-
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
-            <script src="/static/script/script.js"></script>
-            <div class="card">
-                <div class="card-body">
-                    <form action="" method="POST">
-                        <div class="my-2">
-                            <label for=""><b> اعلام کاهش موجودی</b></label>
-                            <fieldset>
-                                <select name="typeOfCards" id="typeOfCards">
-                                    <option value="" disabled selected>نوع کارت را انتخاب کنید</option>
-                                    {% for type in types %}
-                                    <option value="{{type.typeOfCards}}">
-                                        {{type.typeOfCards}}
-                                    </option>
-                                    {% endfor %}
-                                </select>
-                            </fieldset>
-                            <input type="number" placeholder=" تعداد کارت کاسته شده" name="userDecrease" id="userDecrease" class="form-control my-1">
-                        </div>
-                        <button class="btn btn-success">کاستن</button>
-                    </form>
-                </div>
-            </div>
-
-        </div>
-    </div>
+    <main class="table" style="width: fit-content;">
+        <form action="" method="POST">
+            <section class="table__header" style="width: fit-content;">
+                <h3> اعلام کاهش موجودی</h3>
+            <section class="table__header" style="width: fit-content;">
+            <section style="width: fit-content;">
+                <table>
+                    <thead>
+                        <fieldset>
+                            <tr>
+                            <th>
+                            <select name="typeOfCards" id="typeOfCards">
+                                <option value="" disabled selected>نوع کارت را انتخاب کنید</option>
+                                {% for type in types %}
+                                <option value="{{type.typeOfCards}}">
+                                    {{type.typeOfCards}}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            </th>
+                            </tr>
+                        </fieldset> 
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="input">
+                                    <input type="number" placeholder=" تعداد کارت کاسته شده" name="userDecrease" id="userDecrease" class="form-control my-1">
+                                    <button class="btn-success-2">کاستن</button>
+                                    </div>
+                            </td>
+                        </tr>
+      
+                    </tbody>
+                </table>
+            </section>
+        </form>
+    </main>
 </div>
 {% endblock content %}

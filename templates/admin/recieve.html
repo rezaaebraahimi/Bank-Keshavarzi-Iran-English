@@ -1,68 +1,59 @@
 {% extends 'admin/layout.html' %}
-
 {% block content %}
 <div class="container">
     {% include 'admin/navbar.html' %}
-</div>
-<div class="container">
-    <h1 class="text-center my-3">
-        خزانه دریافتی
-    </h1>
-    <div class="row d-flex justify-content-center">
-        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-
-
             {% if session.admin_id %}
             {% endif %}
-
-            {% with messages=get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            {% for category,message in messages %}
-
-            <div class="alert alert-{{category}}">
-                <p> 
-                    {{message}}
-                </p>
-            </div>
-
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
-            <script src="/static/script/script.js"></script>
-
-            <div class="card">
-                <div class="card-body">
-                    <form action="" method="POST">
-                        <div class="my-2">
-                            <label for=""><b> دریافت محموله جدید</b></label>
-                            <fieldset>
-                                <select name="typeOfCards" id="typeOfCards">
-                                    <option value="" disabled selected>نوع کارت را انتخاب کنید</option>
-                                    {% for type in types %}
-                                    <option value="{{type.typeOfCards}}">
-                                        {{type.typeOfCards}}
-                                    </option>
-                                    {% endfor %}
-                                </select>
-                            </fieldset>
-                            <input type="text" placeholder="تعداد کارت " name="adminRecieve" id="adminRecieve" class="form-control my-1">
-                        </div>
-                        <button class="btn btn-success">افزودن</button>
-                    </form>
+            <section class="table__header" style="width: fit-content;">
+                <h3>دریافت محموله جدید</h3>
+            </section>
+            <section class="table__body" style="width: fit-content;">
+            <form action="" method="POST">
+                <fieldset>
+                    <select name="typeOfCards" id="typeOfCards">
+                        <option value="" disabled selected>نوع کارت را انتخاب کنید</option>
+                        {% for type in types %}
+                        <option value="{{type.typeOfCards}}">
+                            {{type.typeOfCards}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </fieldset>
+                <div class="input">
+                    <input type="text" placeholder="تعداد کارت " name="adminRecieve" id="adminRecieve">
+                    <button class="btn-success-2">افزودن</button>
                 </div>
+            </form>
+            <div class="input">
             </div>
-        </div>
-    </div>
-    <div class="my-2">
+            </section>
 
-        {% for rec in _recieve %}
-            <h3>نوع کارت </h3>
-            <h4>{{rec._type}}</h4>
-            <h3>تعداد افزوده شده</h3>
-            <h4>{{rec.admin_supply}}</h4>
-            <h3>اخرین دریافت</h3>
-            <h4>{{rec.recieve_date}}</h4>
-        {% endfor %}
-    </div>
+
+
+        <main class="table">
+            <section class="table__header">
+                <h3> تاریخچه </h3>
+            </section>
+            <section class="table__body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>اخرین دریافت </th>
+                            <th>تعداد افزوده شده  </th>
+                            <th>نوع کارت </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rec in _recieve %}
+                        <tr>
+                            <td>{{rec.recieve_date}} </td>    
+                            <td>{{rec.admin_supply}} </td>
+                            <td>{{rec._type}} </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </main>
 </div>
 {% endblock content %}

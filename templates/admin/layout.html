@@ -15,15 +15,29 @@
 </head>
 
 <body>
-    <div class="container my-2">
-        <div class="my-2 text-center">
+    <div>
+        <div>
             {% if session.admin_id %}
             {% endif %}
             {% if session.admin_name %}
             {% endif %}
         </div>
-        
     </div>
+    {% with messages=get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category,message in messages %}
+
+    <div class="alert alert-{{category}}">
+        <p> 
+            {{message}}
+        </p>
+    </div>
+
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <script src="/static/script/script.js"></script>
+    
     {% block content %} {% endblock content %}
 </body>
 

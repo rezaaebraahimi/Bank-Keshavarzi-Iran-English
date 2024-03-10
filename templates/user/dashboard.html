@@ -3,6 +3,7 @@
 {% block content %}
 <div class="container">
     {% include 'user/navbar.html' %}
+    {% for info in infos %}
         <div class="card-en">
             <form class="dash" action="/user/dashboard" method="post"> 
                 <label for="usercode">
@@ -33,4 +34,5 @@
         </div>
         </body>
     {% endfor %}
+</div>
 {% endblock content %}

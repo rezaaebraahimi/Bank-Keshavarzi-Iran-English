@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fa">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>انتشار اعلامیه جدید</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo-nav">
+            <a href="/">
+            <img class="logo-nav" src="/static/icon/Logo.png" alt="" style="align-items: center;">
+            </a>
+        </div>
+    </div>
+    <div class="container">
+        <section class="table__header">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="page-heading">
+                    <h3>انتشار اعلامیه جدید </h3>
+                </div>
+            </div>
+        </div>
+        </section>
+    </div>
+<div class="container">
+    <main class="table">
+    <section>
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+        <form name="addForm" id="addForm" method="POST" action="/admin/addpost" novalidate>
+            <div class="control-group">
+            <div class="form-group floating-label-form-group controls">
+                <label class="label">عنوان</label>
+                <div class="input">
+                    <input type="text" class="form-control" placeholder="عنوان" name="title" id="title" required data-validation-required-message="لطفا یک عنوان بنویسید">
+                <p class="help-block text-danger"></p>
+                </div>
+            </div>
+            </div>
+            <div class="control-group">
+            <div class="form-group floating-label-form-group controls">
+                <label class="label">موضوع</label>
+                <div class="input">
+                <input type="text" class="form-control" placeholder="موضوع" name="subtitle" id="subtitle" required data-validation-required-message="لطفا موضوع را تعیین کنید">
+                <p class="help-block text-danger"></p>
+                </div>
+            </div>
+            </div>
+            <div class="control-group">
+            <div class="form-group col-xs-12 floating-label-form-group controls">
+                <label class="label">ابلاغ شده از طرف</label>
+                <div class="input">
+                <input type="text" class="form-control" placeholder="نام شخص یا نهاد ابلاغ کننده" name="author" id="author" required data-validation-required-message="لطفا نام شخص یا نهاد ابلاغ کننده را ذکر کنید">
+                <p class="help-block text-danger"></p>
+                </div>
+            </div>
+
+
+            <div class="control-group">
+            <div class="form-group floating-label-form-group controls">
+                <label class="label">شرح اعلامیه</label>
+                <textarea rows="10" class="form-control" placeholder="شرح اعلامیه..." name="content" id="content" required data-validation-required-message="متن اعلامیه را در این قسمت بنویسید"></textarea>
+                <p class="help-block text-danger"></p>
+            </div>
+            </div>
+            <br>
+            <div id="success"></div>
+            <div class="form-group">
+            <button type="submit" class="btn-secondary" id="sendMessageButton">انتشار</button>
+            </div>
+        </form>
+        </div>
+    </section>
+    </div>
+</div>
+</main>
+</body>
