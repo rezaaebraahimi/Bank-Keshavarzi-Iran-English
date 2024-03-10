@@ -4,32 +4,8 @@
     {% include 'admin/navbar.html' %}
             {% if session.admin_id %}
             {% endif %}
-            <section class="table__header" style="width: fit-content;">
-                <h3>دریافت محموله جدید</h3>
-            </section>
-            <section class="table__body" style="width: fit-content;">
-            <form action="" method="POST">
-                <fieldset>
-                    <select name="typeOfCards" id="typeOfCards">
-                        <option value="" disabled selected>نوع کارت را انتخاب کنید</option>
-                        {% for type in types %}
-                        <option value="{{type.typeOfCards}}">
-                            {{type.typeOfCards}}
-                        </option>
-                        {% endfor %}
-                    </select>
-                </fieldset>
-                <div class="input">
-                    <input type="text" placeholder="تعداد کارت " name="adminRecieve" id="adminRecieve">
-                    <button class="btn-success-2">افزودن</button>
-                </div>
-            </form>
-            <div class="input">
-            </div>
-            </section>
-
-
-
+    <div class="main">
+        <div class="left">
         <main class="table">
             <section class="table__header">
                 <h3> تاریخچه </h3>
@@ -55,5 +31,35 @@
                 </table>
             </section>
         </main>
+        </div>
+
+        <div class="right" style="margin-top: 20px;">
+        <div class="table">
+            <div class="table__body" style="box-shadow: 0 .4rem .8rem #0005;overflow: hidden;">
+                <div class="table__header" style="text-align: center;">
+                    <h3 style="margin-right: 30px;">رسید</h3>
+                </div>
+            <form action="" method="POST">
+                <div>
+                    <select name="typeOfCards" id="typeOfCards">
+                        <option value="" disabled selected>نوع کارت را انتخاب کنید</option>
+                        {% for type in types %}
+                        <option value="{{type.typeOfCards}}">
+                            {{type.typeOfCards}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="input-form">
+                    <input type="text" placeholder="تعداد کارت " name="adminRecieve" id="adminRecieve" style="border-radius: 5px; width:70% ;border: solid 1px rgb(125, 124, 124);">
+                    <button class="btn-success-2">افزودن</button>
+                </div>
+            </form>
+            <div class="input">
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
 </div>
 {% endblock content %}

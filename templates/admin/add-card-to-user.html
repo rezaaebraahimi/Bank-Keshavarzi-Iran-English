@@ -5,17 +5,16 @@
     <div class="login-f">
         {% if session.admin_id %}
         {% endif %}
-        <main class="table" style="width: fit-content;">
-             <form action="" method="POST">
-                <section class="table__header" style="width: fit-content;">
+        <div class="table" style="width: 40%;">
+            <div class="table__body" style="overflow: hidden;">
+            <form action="" method="POST">
+                <div class="table__header">
                     <h3>تخصیص کارت به شعبه </h3>
-                    </section>
-                <section style="width: fit-content;">
+                    </div>
+                <section>
                     <table>
-                        <thead>
-                            <fieldset>
-                                <tr>
-                                <th>
+                        
+                            <div>
                                 <select name="CenterCode" id="CenterCode">
                                     <option value="" disabled selected>شعبه را انتخاب کنید</option>
                                     {% for user in users %}
@@ -24,10 +23,6 @@
                                     </option>
                                     {% endfor %}
                                 </select>
-                                </th>
-                                </tr>
-                                <tr>
-                                <th>
                                 <select name="typeOfCards" id="typeOfCards">
                                     <option value="" disabled selected>نوع کارت را انتخاب کنید</option>
                                     {% for type in types %}
@@ -36,24 +31,15 @@
                                     </option>
                                     {% endfor %}
                                 </select>
-                                </th>
-                                </tr>
-                            </fieldset>
-
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <input type="text" placeholder="تعداد کارت را وارد کنید" name="sendToUser" id="sendToUser">
-                                </td>
-                            </tr>
-                        </tbody>
+                            </div>
+                        <input type="text" placeholder="تعداد کارت را وارد کنید" name="sendToUser" id="sendToUser" style="margin-top: 40px; border-radius: 5px; width:70% ;border: solid 1px rgb(125, 124, 124);">
                     </table>
-                    <button class="btn-success-2"> تخصیص</button>
+                    <button class="btn-success-2" style="margin-bottom: 40px;"> تخصیص</button>
                     
                 </section>
             </form>
-        </main>
+        </div>
+        </div>
     </div>
 </div>
 {% endblock content %}
