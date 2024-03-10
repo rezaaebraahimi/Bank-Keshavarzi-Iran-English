@@ -15,8 +15,23 @@
 </head>
 
 <body>
+    {% with messages=get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category,message in messages %}
+
+    <div class="alert alert-{{category}}">
+        <p> 
+            {{message}}
+        </p>
+    </div>
+
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <script src="/static/script/script.js"></script>
     
-    {% block content %} {% endblock content %}
+    {% block content %}
+    {% endblock content %}
 </body>
 
 </html>

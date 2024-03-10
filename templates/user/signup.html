@@ -2,17 +2,12 @@
 
 {% block content %}
 <div class="container">
-    <div class="row d-flex justify-content-center">
+    <div class="logo-nav">
+        <a href="/">
+        <img class="logo-nav" src="/static/icon/Logo.png" alt="" style="align-items: center;">
+        </a>
+    </div>
         <div class="login-f">
-            {% with messages=get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            {% for category,message in messages %}
-            <div class="alert alert-{{category}}">
-                <strong>{{message}}</strong>
-            </div>
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
             <div class="login">
                 <div class="signup-titel">
                 <h1>

@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from dotenv import load_dotenv
 from persiantools.jdatetime import JalaliDate
+from datetime import datetime
 
 app=Flask(__name__)
 
@@ -25,11 +26,11 @@ class Property(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     user_code = db.Column(db.String(45), db.ForeignKey('user.CenterCode'))
     cardType = db.Column(db.String(45), db.ForeignKey('card.typeOfCards'))
-    date_add=db.Column(db.Date, default=JalaliDate.today())
+    date_add=db.Column(db.Date, default=datetime.utcnow)
     supply = db.Column(db.Integer,default=0, nullable=False)   
     
     def __repr__(self):
-        return f'Admin("{self.user_code}","{self.cardType}","{self.supply}")' 
+        return f'Property("{self.user_code}","{self.cardType}","{self.supply}","{self.date_add}")' 
 
 
 class User(db.Model):
@@ -40,12 +41,12 @@ class User(db.Model):
     username=db.Column(db.String(45), nullable=False)
     password=db.Column(db.String(45), nullable=False)
     sum_supply = db.Column(db.Integer,default=0, nullable=False)
-    date_added=db.Column(db.Date, default=JalaliDate.today())
+    date_added=db.Column(db.Date, default=datetime.utcnow)
     status=db.Column(db.Integer,default=0, nullable=False)
     owner = db.relationship('Card', secondary='property')
 
     def __repr__(self):
-        return f'User("{self.id}","{self.CenterName}","{self.CenterCode}","{self.username}","{self.status}","{self.owner}")'
+        return f'User("{self.id}","{self.CenterName}","{self.CenterCode}","{self.username}","{self.status}","{self.owner}","{self.date_added}","{self.sum_supply}")'
 
 
 class Admin(db.Model):
@@ -63,9 +64,31 @@ class Card(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     typeOfCards = db.Column(db.String(45), nullable=False)
     asset = db.relationship('User', secondary='property')
+    _type = db.relationship('Recieve')
     def __repr__(self):
-        return f'Admin("{self.typeOfCards}","{self.id}","{self.asset}")'
+        return f'Card("{self.typeOfCards}","{self.id}","{self.asset}",""{self._type})'
     
+
+class Recieve(db.Model):
+    __tablename__ = 'recieve'
+    id=db.Column(db.Integer, primary_key=True)
+    admin_supply  = db.Column(db.Integer, default=0, nullable=False)
+    recieve_date = db.Column(db.Date, default=datetime.utcnow)
+    _type = db.Column(db.String(45), db.ForeignKey('card.typeOfCards'))
+    
+    def __repr__(self):
+        return f'Recieve("{self.id}","{self.admin_supply}","{self.recieve_date}","{self._type}")'
+
+
+class Blogpost(db.Model):
+    __tablename__ = 'blogpost'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(50))
+    subtitle = db.Column(db.String(50))
+    author = db.Column(db.String(20))
+    date_posted = db.Column(db.Date)
+    content = db.Column(db.Text)
+
 
 @app.route('/')
 def index():
@@ -97,11 +120,8 @@ def adminIndex():
 
 @app.route('/admin/dashboard', methods=["POST","GET"])
 def adminDashboard():
-
     if not session.get('admin_id'):
         return redirect('/admin/')
-    
-
     else:
         if request.method == 'POST':
             usercode = request.form.get('usercode')
@@ -132,6 +152,7 @@ def adminGetDetails():
                     return render_template('admin/admin-get-details.html',title=" جزئیات موجودی",users=users,infos=infos,usercode=usercode)
         
     
+    
 @app.route('/admin/addCardToUser', methods=["POST","GET"])
 def addCardToUser():
     users = User.query.all()
@@ -149,20 +170,57 @@ def addCardToUser():
             Checker.supply = sum
             Checker.date_add = JalaliDate.today()
             User.query.filter_by(CenterCode=CenterCode).update(dict(date_added=JalaliDate.today()))
+            sum_2 = User.sum_supply + sendToUser
+            User.query.filter_by(CenterCode=CenterCode).update(dict(sum_supply = sum_2))
             db.session.commit()
             flash('تخصیص داده شد','message')
             return redirect('/admin/addCardToUser')          
-
         else:
+            sum_3 = User.sum_supply + sendToUser
+            _sup = User(sum_supply=sum_3)
             _property = Property(user_code=CenterCode, cardType=typeOfCards, supply=sendToUser, date_add=JalaliDate.today())
             User.query.filter_by(CenterCode=CenterCode).update(dict(date_added=JalaliDate.today()))
+            db.session.add(_sup)
             db.session.add(_property)
             db.session.commit()
             flash('تخصیص داده شد','message')
             return redirect('/admin/addCardToUser')
     else:
         return render_template('admin/add-card-to-user.html', title='توزیع کارت',users=users,types=types)
+    
 
+
+@app.route('/admin/recieve', methods=["POST","GET"])
+def recieve():
+    if not session.get('admin_id'):
+        return redirect('/admin/')
+    types = Card.query.all()
+    _recieve = Recieve.query.all()
+    if request.method == 'POST':
+        adminRecieve = request.form.get('adminRecieve')
+        typeOfCards = request.form.get('typeOfCards')
+        Checker = Recieve.query.filter_by(_type=typeOfCards).first()
+        if adminRecieve == '':
+            flash('لطفا با دقت کامل کنید','error')
+            return redirect('/admin/recieve')
+        elif typeOfCards == Checker:
+            sum = Recieve.admin_supply + adminRecieve
+            _recieve.admin_supply = sum
+            Recieve.query.filter_by(_type=typeOfCards).update(dict(recieve_date=JalaliDate.today()))
+            db.session.commit()
+            flash('توسط خزانه دریافت شد','message')
+            return redirect('/admin/recieve')  
+        else :
+            new_recieve = Recieve(admin_supply = adminRecieve, recieve_date = JalaliDate.today(), _type = typeOfCards)
+            db.session.add(new_recieve)
+            db.session.commit()
+            flash('توسط خزانه دریافت شد','message')
+            return redirect('/admin/recieve')          
+
+    else:
+        return render_template('admin/recieve.html', title=' خزانه',_recieve=_recieve,types=types)
+    
+    
 
 @app.route('/admin/get-all-user', methods=["POST","GET"])
 def adminGetAllUser():
@@ -182,20 +240,22 @@ def adminGetAllUser():
 def adminApprove(id):
     if not session.get('admin_id'):
         return redirect('/admin/')
-    User().query.filter_by(id=id).update(dict(status=1))
-    db.session.commit()
-    flash('تایید موفقیت آمیز بود','message')
-    return redirect('/admin/get-all-user')
+    else:
+        User().query.filter_by(id=id).update(dict(status=1))
+        db.session.commit()
+        flash('تایید موفقیت آمیز بود','message')
+        return redirect('/admin/get-all-user')
 
 
 @app.route('/admin/disapprove-user/<int:id>')
 def adminDisApprove(id):
     if not session.get('admin_id'):
         return redirect('/admin/')
-    User().query.filter_by(id=id).update(dict(status=0))
-    db.session.commit()
-    flash('کاربر مورد نظر تعلیق شد','message')
-    return redirect('/admin/get-all-user')
+    else:
+        User().query.filter_by(id=id).update(dict(status=0))
+        db.session.commit()
+        flash('کاربر مورد نظر تعلیق شد','message')
+        return redirect('/admin/get-all-user')
 
 
 @app.route('/admin/change-admin-password',methods=["POST","GET"])
@@ -217,6 +277,35 @@ def adminChangePassword():
                                title='تغییر رمز عبور مدیریت',admin=admin)
 
 
+@app.route('/admin/add')
+def add():
+    return render_template('/admin/add.html')
+
+
+@app.route('/admin/addpost', methods=['POST'])
+def addpost():
+    title = request.form['title']
+    subtitle = request.form['subtitle']
+    author = request.form['author']
+    content = request.form['content']
+    post = Blogpost(title=title, subtitle=subtitle, author=author, content=content, date_posted=JalaliDate.today())
+    db.session.add(post)
+    db.session.commit()
+    return redirect('/admin/dashboard')
+
+
+@app.route('/admin/allPosts')
+def allPosts():
+    posts = Blogpost.query.order_by(Blogpost.date_posted.desc()).all()
+    return render_template('/admin/all-posts.html', posts=posts)
+
+
+@app.route('/admin/post/<int:post_id>')
+def post(post_id):
+    post = Blogpost.query.filter_by(id=post_id).one()
+    return render_template('/admin/post.html', post=post)
+
+
 @app.route('/admin/logout')
 def adminLogout():
     if not session.get('admin_id'):
@@ -225,6 +314,7 @@ def adminLogout():
         session['admin_id']=None
         session['admin_name']=None
         return redirect('/')
+
 
 
 @app.route('/user/',methods=["POST","GET"])
@@ -282,7 +372,7 @@ def userSignup():
                     db.session.add(_property)
                     db.session.commit()   
                 
-                flash('بعد از تایید توسط مدیریت میتوانید دسترسی به سامانه برای شما آزاد میشود','message')
+                flash('بعد از تایید توسط مدیریت دسترسی به سامانه برای شما آزاد میشود','message')
                 return redirect('/user/')
     else:
         return render_template('user/signup.html',title="ثبتنام اعضا")
@@ -292,10 +382,43 @@ def userSignup():
 def userDashboard():
     if not session.get('user_id'):
         return redirect('/user/')
-    if session.get('user_id'):
+    elif session.get('user_id'):
         id=session.get('user_id')
-    users=User().query.filter_by(id=id).first()
-    return render_template('user/dashboard.html',title="میزکار کاربر ",users=users)
+        users = User().query.filter_by(id=id).first()
+        if users:
+            all_pro = Property.query.all()
+            for pro in all_pro:
+                infos = Property.query.filter_by(user_code=users.CenterCode)
+                return render_template('user/dashboard.html',title="میزکار کاربر ",users=users,infos=infos)
+
+
+@app.route('/user/decrease', methods=["POST","GET"])
+def decrease():
+    if not session.get('user_id'):
+        return redirect('/user/')
+    
+    elif session.get('user_id'):
+        id=session.get('user_id')
+  
+        types = Card.query.all()
+        users=User.query.get(id)
+    if request.method == 'POST':
+        thisUser = User().query.filter_by(id=id).first()
+        userDecrease = int(request.form.get('userDecrease'))
+        typeOfCards = request.form.get('typeOfCards')
+        checker = Property.query.filter_by(user_code=thisUser.CenterCode,cardType=typeOfCards ).first()
+        if userDecrease == '':
+            flash('لطفا با دقت کامل کنید','error')
+            return redirect('/user/decrease')
+        elif checker:
+            checker.supply = checker.supply - userDecrease
+            Property.query.filter_by(cardType=typeOfCards).update(dict(supply=checker.supply))
+            db.session.commit()
+            flash('گزارش با موفقیت ثبت شد','message')
+            return redirect('/user/decrease')          
+
+    else:
+        return render_template('user/decrease.html', title=' اعلام کسری',users=users,types=types)
 
 
 @app.route('/user/logout')
@@ -309,57 +432,33 @@ def userLogout():
         return redirect('/user/')
 
 
-@app.route('/user/change-password',methods=["POST","GET"])
-def userChangePassword():
-    if not session.get('user_id'):
-        return redirect('/user/')
-    if request.method == 'POST':
-        username=request.form.get('username')
-        password=request.form.get('password')
-        if username == "" or password == "":
-            flash('لطفا تمام موارد را کامل کنید','error')
-            return redirect('/user/change-password')
-        else:
-            users=User.query.filter_by(username=username).first()
-            if users:
-
-               User.query.filter_by(username=username).update(dict(password=password))
-               db.session.commit()
-               flash('رمز عبور تغییر کرد','message')
-               return redirect('/user/change-password')
-            else:
-                flash('نام کاربری نادرست است','error')
-                return redirect('/user/change-password')
-
-    else:
-        return render_template('user/change-password.html',title="تغییر رمز عبور")
-
-
 @app.route('/user/update-profile', methods=["POST","GET"])
 def userUpdateProfile():
     if not session.get('user_id'):
         return redirect('/user/')
-    if session.get('user_id'):
+    
+    elif session.get('user_id'):
         id=session.get('user_id')
-    users=User.query.get(id)
-    if request.method == 'POST':
-
-        CenterName=request.form.get('CenterName')
-        CenterCode=request.form.get('CenterCode')
-        username=request.form.get('username')
-        if CenterName =="" or CenterCode=="" or username=="":
-            flash('لطفا تمام موارد را کامل کنید','error')
-            return redirect('/user/update-profile')
+        
+        users=User.query.get(id)
+        if request.method == 'POST':
+            CenterName=request.form.get('CenterName')
+            CenterCode=request.form.get('CenterCode')
+            username=request.form.get('username')
+            password=request.form.get('password')
+            if CenterName =="" or CenterCode=="" or username=="" or password=="":
+                flash('لطفا تمام موارد را کامل کنید','error')
+                return redirect('/user/update-profile')
+            else:
+                session['username']=None
+                User.query.filter_by(id=id).update(dict(CenterName=CenterName,CenterCode=CenterCode,username=username,password=password))
+                db.session.commit()
+                session['username']=username
+                flash('پروفایل بروزرسانی شد','message')
+                return redirect('/user/update-profile')
         else:
-            session['username']=None
-            User.query.filter_by(id=id).update(dict(CenterName=CenterName,CenterCode=CenterCode,username=username))
-            db.session.commit()
-            session['username']=username
-            flash('پروفایل بروزرسانی شد','message')
-            return redirect('/user/dashboard')
-    else:
-        return render_template('user/update-profile.html',
-                               title="بروز رسانی پروفایل",users=users)
+            return render_template('user/update-profile.html',title="بروز رسانی پروفایل",users=users)
+
 
 if __name__=="__main__":
     app.run(debug=True)

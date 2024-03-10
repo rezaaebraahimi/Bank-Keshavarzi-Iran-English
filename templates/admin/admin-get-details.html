@@ -2,25 +2,39 @@
 
 {% block content %}
 <div class="container">
-    {% include 'admin/navbar.html' %}
-    <div class="my-2">
-
-                        {% for user in users %}
-                            {% for info in infos %}
-                                {% if info.user_code == user.CenterCode %}
-                                    <h3>نام شعبه</h3>
-                                    <h4>{{user.CenterName}}</h4>
-                                    <h3>شماره شعبه</h3>
-                                    <h4>{{info.user_code}}</h4>
-                                    <h3>نام کاربری</h3>
-                                    <h4>{{info.cardType}}</h4>
-                                    <h3>موجودی کارت ها</h3>
-                                    <h4>{{info.supply}}</h4>
-                                    <h3>اخرین اهدا</h3>
-                                    <h4>{{info.date_add}}</h4>
-                                {% endif %}
-                            {%endfor%}
-                        {% endfor %}
-    </div>
+{% include 'admin/navbar.html' %}
+    <main class="table">
+        <section class="table__header">
+            <h3>جزئیات موجودی شعبه</h3>
+        </section>
+        <section class="table__body">
+            <table>
+                <thead>
+                    <tr>
+                        <th>اخرین حواله</th>
+                        <th>موجودی کارت</th>
+                        <th>نوع کارت</th>
+                        <th>شماره شعبه</th>
+                        <th>نام شعبه</th>
+                    </tr>
+                </thead>
+                <tbody>                            
+                    {% for user in users %}
+                        {% for info in infos %}
+                            {% if info.user_code == user.CenterCode %}
+                            <tr>
+                                <td>{{info.date_add}} </td>    
+                                <td>{{info.supply}} </td>
+                                <td>{{info.cardType}} </td>
+                                <td>{{info.user_code}} </td>
+                                <td>{{user.CenterName}} </td>
+                            </tr>
+                            {% endif %}
+                        {%endfor%}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
 </div>
 {% endblock content %}

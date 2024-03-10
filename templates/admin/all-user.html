@@ -1,58 +1,61 @@
 {% extends "admin/layout.html"%}
-
 {% block content %}
 <div class="container">
-    {% include 'admin/navbar.html' %}
+{% include 'admin/navbar.html' %}
     <div class="my-2">
-        <form action="" method="POST" style="width:100%">
-            <div class="d-flex align-items-center">
-                <input type="text" placeholder="شماره شعبه را وارد کنید" name="search" id="search" class="form-control my-1 w-50">
-                <button type="submit" class="btn btn-success " style="margin-left:10px;">جستجو</button>
+        <main class="table">
+            <section class="table__header">
+                <h3>لیست کاربران</h3>
+            </section>
+            <div>
+                <form action="" method="POST">
+                    <div>
+                        <input type="text" placeholder="شماره شعبه را وارد کنید" name="search" id="search">
+                        <button type="submit" class="btn">جستجو</button>
+                    </div>
+                </form>
             </div>
-        </form>
-    </div>
-    <div class="my-2">
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>نام شعبه</th>
-                        <th>شماره شعبه</th>
-                        <th>نام کاربری</th>
-                        <th>وضعیت دسترسی </th>
-                        <th>تغییر وضعیت</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for user in users %}
-                    <tr>
-                        <td>{{user.CenterName}}</td>
-                        <td>{{user.CenterCode}}</td>
-                        <td>{{user.username}}</td>
-                        <td>
-                            {% if user.status == 1 %}
-                            تایید شده
-                            {% else %}
-                            در انتظار تایید
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if user.status == 1 %}
-                                <a href="/admin/disapprove-user/{{user.id}}">
-                                    <button class="btn btn-warning">تعلیق کاربر </button>
-                                </a>
-                      
-                            {% else %}
-                                <a href="/admin/approve-user/{{user.id}}">
-                                    <button class="btn btn-warning"> تایید</button>
-                                </a>
-                            {% endif %}      
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+            <section class="table__body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>تغییر وضعیت</th>
+                            <th>وضعیت دسترسی </th>
+                            <th>نام کاربری</th>
+                            <th>شماره شعبه</th>
+                            <th>نام شعبه</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>
+                                {% if user.status == 1 %}
+                                    <a href="/admin/disapprove-user/{{user.id}}">
+                                        <button class="status disApprove">تعلیق کاربر </button>
+                                    </a>
+                                {% else %}
+                                    <a href="/admin/approve-user/{{user.id}}">
+                                        <button class="status approve"> تایید</button>
+                                    </a>                              
+                                {% endif %}  
+                            </td>    
+                            <td>
+                                {% if user.status == 1 %}
+                                تایید شده
+                                {% else %}
+                                در انتظار تایید
+                                {% endif %}
+                            </td>
+                            <td>{{user.username}}</td>
+                            <td>{{user.CenterCode}}</td>
+                            <td>{{user.CenterName}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </main>
     </div>
 </div>
 {% endblock content %}

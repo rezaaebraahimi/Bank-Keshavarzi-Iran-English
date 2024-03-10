@@ -5,9 +5,10 @@
 *{
     font-family: samim;
     margin: 0 auto;
+
 }
 body{
-    background: rgb(210, 255, 210)5%;
+    background: rgb(220, 255, 220)5%;
     height: 100%;
     background-attachment: fixed;
 }
@@ -27,7 +28,7 @@ body{
     
 }
 .card-box{
-    background: linear-gradient(180deg, #35ac21 -0%, #15460d 71%);
+    background: linear-gradient(180deg, #21ac60 -0%, #0d4610 71%);
     border-radius: 3.6rem;
     box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
     height: 22rem;
@@ -74,9 +75,10 @@ a:hover .title{
     overflow: hidden;
 
 }
+
 .btn-success{
     margin-top: 25px;
-    width: 80px;
+    width: 115px;
     height: 40px;
     color: #1d6013;
     background: white;
@@ -85,6 +87,19 @@ a:hover .title{
     border: none;
     font-size: large;
 }
+
+.btn-success-2{
+    margin-top: 25px;
+    width: 115px;
+    height: 40px;
+    color: #ffffff;
+    background: #1d6013;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    font-size: large;
+}
+
 .btn-success-user{
     margin-top: 2%;
     width: 80px;
@@ -97,7 +112,7 @@ a:hover .title{
     font-size: large;
 }
 .navbar{
-    position: fixed;
+    position: relative;
     background: linear-gradient(180deg, #65ca53 -0%, #26701b 71%);
     width: 100%;
     height: 90px ;
@@ -161,6 +176,12 @@ a:hover .title{
     background-color: #15460d;
     color: white;
 }
+
+.btn-success-2:hover{
+    background-color: #ffffff;
+    color: #15460d;
+} 
+
 .btn-success-user:hover{
     background-color: #15460d;
     color: white;
@@ -201,23 +222,119 @@ h1{
 .reg{
     margin-top: 10px;
 }
+
+
 .alert{
-    top: 20px;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    position: absolute;
-    width: 260px;
-    background-color: #ff8787;
-    color: rgb(255, 255, 255);
-    border-radius: 10px;
-    border:solid 2px red;
-    padding: 20px;
+    background-color: rgba(255, 225, 175, 0.550);
+    width: 250px;
+    padding: 20px 30px;
+    position:absolute;
+    left: 42%;
+    top: 11.5%;
+    border-radius: .8rem;
+    border:solid 1px #ff9100;
+    box-shadow: 0 .4rem .8rem #0005;
+    display: none;
+    text-align: center;
 }
+
+.alert p{
+    font-size: 16px;
+    text-align: center;
+    margin: auto;
+    line-height: 25px;
+}
+
+
+main.table {
+    margin-top: 5%;
+    width: 40vw;
+    height: 65vh;
+    background-color: #fff5;
+    backdrop-filter: blur(7px);
+    box-shadow: 0 .4rem .8rem #0005;
+    border-radius: .8rem;
+    overflow: hidden;
+}
+
+table, th, td {
+    padding: 1rem;
+    border-collapse: collapse;
+}
+
+
+.table__header {
+    width: 100%;
+    height: 5%;
+    background-color: #fff4;
+    padding: .5rem 1rem;
+}
+
+.table__body {
+    width: 95%;
+    height: calc(90% - .5rem);
+    background-color: #fffb;
+    margin: .5rem auto;
+    border-radius: .6rem;
+    overflow: auto;
+}
+
+.table__body::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+.table__body::-webkit-scrollbar-thumb{
+    border-radius: .5rem;
+    background-color: #0004;
+    visibility: hidden;
+}
+
+.table__body:hover::-webkit-scrollbar-thumb{
+    visibility: visible;
+}
+
+table {
+    width: 100%;
+}
+
+thead th {
+    position: sticky;
+    top: 0;
+    left: 0;
+    background-color: #d5d1defe;
+
+}
+
+tbody tr:nth-child(even) {
+    background-color: #0000000b;
+
+}
+
+tbody tr:hover {
+    background-color: #fff6;
+}
+
+
+.status {
+    padding: .4rem .4rem;
+    border-radius: 5rem;
+}
+
+.status.approve {
+    background-color: #35ac21;
+}
+
+.status.disApprove {
+    background-color: #ffc400;
+}
+
+
+
 strong{
     margin-top: 20px;
 }
+
 footer{
     position: fixed;
     bottom: 0px;
@@ -263,12 +380,18 @@ width: 85%;
 box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
 }
 
+.credit-container:hover {
+    background: linear-gradient(146.73deg, #d1d400 19.37%, #c98021 80.63%);
+}
+
+
 header,
 .credit-logo {
 display: flex;
 align-items: center;
 justify-content: space-between;
 }
+
 .credit-logo img {
 width: 48px;
 margin-right: 90px;
@@ -285,22 +408,26 @@ font-size: 16px;
 font-weight: 400;
 color: #000000;
 }
+
 header .chip {
 width: 60px;
 }
+
 h6 {
 color: #fff;
 font-size: 15px;
 font-weight: 400;
 }
-h5.number {
 
+h5.number {
 font-size: 25px;
 letter-spacing: 1px;
 }
+
 h5.name {
 margin-top: 20px;
 }
+
 .credit-container .credit-details {
 margin-top: 20px;
 display: flex;

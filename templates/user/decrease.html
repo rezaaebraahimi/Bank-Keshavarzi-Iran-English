@@ -1,0 +1,44 @@
+{% extends 'user/layout.html' %}
+{% block content %}
+<div class="container">
+    {% include 'user/navbar.html' %}
+    <main class="table" style="width: fit-content;">
+        <form action="" method="POST">
+            <section class="table__header" style="width: fit-content;">
+                <h3> اعلام کاهش موجودی</h3>
+            <section class="table__header" style="width: fit-content;">
+            <section style="width: fit-content;">
+                <table>
+                    <thead>
+                        <fieldset>
+                            <tr>
+                            <th>
+                            <select name="typeOfCards" id="typeOfCards">
+                                <option value="" disabled selected>نوع کارت را انتخاب کنید</option>
+                                {% for type in types %}
+                                <option value="{{type.typeOfCards}}">
+                                    {{type.typeOfCards}}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            </th>
+                            </tr>
+                        </fieldset> 
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="input">
+                                    <input type="number" placeholder=" تعداد کارت کاسته شده" name="userDecrease" id="userDecrease" class="form-control my-1">
+                                    <button class="btn-success-2">کاستن</button>
+                                    </div>
+                            </td>
+                        </tr>
+      
+                    </tbody>
+                </table>
+            </section>
+        </form>
+    </main>
+</div>
+{% endblock content %}

@@ -1,0 +1,59 @@
+{% extends 'admin/layout.html' %}
+{% block content %}
+<div class="container">
+    {% include 'admin/navbar.html' %}
+            {% if session.admin_id %}
+            {% endif %}
+            <section class="table__header" style="width: fit-content;">
+                <h3>دریافت محموله جدید</h3>
+            </section>
+            <section class="table__body" style="width: fit-content;">
+            <form action="" method="POST">
+                <fieldset>
+                    <select name="typeOfCards" id="typeOfCards">
+                        <option value="" disabled selected>نوع کارت را انتخاب کنید</option>
+                        {% for type in types %}
+                        <option value="{{type.typeOfCards}}">
+                            {{type.typeOfCards}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </fieldset>
+                <div class="input">
+                    <input type="text" placeholder="تعداد کارت " name="adminRecieve" id="adminRecieve">
+                    <button class="btn-success-2">افزودن</button>
+                </div>
+            </form>
+            <div class="input">
+            </div>
+            </section>
+
+
+
+        <main class="table">
+            <section class="table__header">
+                <h3> تاریخچه </h3>
+            </section>
+            <section class="table__body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>اخرین دریافت </th>
+                            <th>تعداد افزوده شده  </th>
+                            <th>نوع کارت </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rec in _recieve %}
+                        <tr>
+                            <td>{{rec.recieve_date}} </td>    
+                            <td>{{rec.admin_supply}} </td>
+                            <td>{{rec._type}} </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </main>
+</div>
+{% endblock content %}
