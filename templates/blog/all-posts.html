@@ -1,23 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اعلامیه ها</title>
+    {% if title %}
+    <title>{{title}} - سامانه پشتیبانی شعب </title>
+    {% else %}
+    <title>سامانه پشتیبانی شعب </title>
+    {% endif %}
+
     <link rel="stylesheet" href="/static/style.css">
 </head>
 
-
-<body dir="rtl">
-  <div class="container">
-    <div class="logo-nav">
-        <a href="/">
-        <img class="logo-nav" src="/static/icon/Logo.png" alt="" style="align-items: center;">
-        </a>
-    </div>
-
+<body>
+<div class="container">
         <div class="container">
             <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
@@ -48,5 +46,7 @@
                 </div>
             </div>
         </div>
-  </div>
-</body>
+</div>
+</body>>
+</html>
+

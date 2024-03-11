@@ -4,7 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from dotenv import load_dotenv
 from persiantools.jdatetime import JalaliDate
-from datetime import datetime
 
 app=Flask(__name__)
 
@@ -26,7 +25,7 @@ class Property(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     user_code = db.Column(db.String(45), db.ForeignKey('user.CenterCode'))
     cardType = db.Column(db.String(45), db.ForeignKey('card.typeOfCards'))
-    date_add=db.Column(db.Date, default=datetime.utcnow)
+    date_add=db.Column(db.Date, default=JalaliDate.today())
     supply = db.Column(db.Integer,default=0, nullable=False)   
     
     def __repr__(self):
@@ -41,7 +40,7 @@ class User(db.Model):
     username=db.Column(db.String(45), nullable=False)
     password=db.Column(db.String(45), nullable=False)
     sum_supply = db.Column(db.Integer,default=0, nullable=False)
-    date_added=db.Column(db.Date, default=datetime.utcnow)
+    date_added=db.Column(db.Date, default=JalaliDate.today())
     status=db.Column(db.Integer,default=0, nullable=False)
     owner = db.relationship('Card', secondary='property')
 
@@ -73,7 +72,7 @@ class Recieve(db.Model):
     __tablename__ = 'recieve'
     id=db.Column(db.Integer, primary_key=True)
     admin_supply  = db.Column(db.Integer, default=0, nullable=False)
-    recieve_date = db.Column(db.Date, default=datetime.utcnow)
+    recieve_date = db.Column(db.Date, default=JalaliDate.today())
     _type = db.Column(db.String(45), db.ForeignKey('card.typeOfCards'))
     
     def __repr__(self):
@@ -88,6 +87,7 @@ class Blogpost(db.Model):
     author = db.Column(db.String(20))
     date_posted = db.Column(db.Date)
     content = db.Column(db.Text)
+
 
 
 @app.route('/')
@@ -128,13 +128,19 @@ def adminDashboard():
             return redirect(url_for('adminGetDetails', usercode=usercode))
         else:
             users=User.query.all()
-            for user in users:
-                c_user = user.CenterCode
-                all_pro = Property.query.all()
-                for pro in all_pro:
-                    if pro.user_code == c_user:
-                        infos = Property.query.filter_by(user_code=c_user)
-            return render_template('admin/dashboard.html',title="میزکار مدیریت",users=users,infos=infos)
+            all_pro = Property.query.all()
+            if all_pro and users:   
+                for user in users:
+                    c_user = user.CenterCode
+                    for pro in all_pro:
+                        if pro.user_code == c_user:
+                            infos = Property.query.filter_by(user_code=c_user)
+                            return render_template('admin/dashboard.html',title="میزکار مدیریت",users=users,infos=infos)
+            else:
+                return render_template('admin/empty-dashboard.html', title="میزکار مدیریت")
+
+
+
         
 
 @app.route('/admin/get-all-details/', methods=["POST","GET"])
@@ -162,28 +168,37 @@ def addCardToUser():
         sendToUser = request.form.get('sendToUser')
         typeOfCards = request.form.get('typeOfCards')
         Checker = Property.query.filter_by(user_code=CenterCode,cardType=typeOfCards ).first()
-        if sendToUser == '':
-            flash('لطفا با دقت کامل کنید','error')
+        adminChecker = Recieve.query.filter_by(_type=typeOfCards).first()
+        if sendToUser == '' or CenterCode == None or typeOfCards == None:
+            flash('لطفا فرم را با دقت کامل کنید','error')
             return redirect('/admin/addCardToUser')
-        elif Checker:
-            sum = Property.supply + sendToUser
-            Checker.supply = sum
-            Checker.date_add = JalaliDate.today()
-            User.query.filter_by(CenterCode=CenterCode).update(dict(date_added=JalaliDate.today()))
-            sum_2 = User.sum_supply + sendToUser
-            User.query.filter_by(CenterCode=CenterCode).update(dict(sum_supply = sum_2))
-            db.session.commit()
-            flash('تخصیص داده شد','message')
-            return redirect('/admin/addCardToUser')          
+        elif adminChecker and adminChecker.admin_supply >= int(sendToUser) :
+            if Checker:
+                adminChecker.admin_supply = minus
+                db.session.commit()
+                sum = Property.supply + sendToUser
+                Checker.supply = sum
+                Checker.date_add = JalaliDate.today()
+                User.query.filter_by(CenterCode=CenterCode).update(dict(date_added=JalaliDate.today()))
+                sum_2 = User.sum_supply + sendToUser
+                User.query.filter_by(CenterCode=CenterCode).update(dict(sum_supply = sum_2))
+                minus = Recieve.admin_supply - sendToUser
+                flash('تخصیص داده شد','message')
+                return redirect('/admin/addCardToUser') 
+            else:
+                minus = Recieve.admin_supply - sendToUser
+                adminChecker.admin_supply = minus
+                sum_3 = User.sum_supply + sendToUser
+                _sup = User(sum_supply=sum_3)
+                _property = Property(user_code=CenterCode, cardType=typeOfCards, supply=sendToUser, date_add=JalaliDate.today())
+                User.query.filter_by(CenterCode=CenterCode).update(dict(date_added=JalaliDate.today()))
+                db.session.add(_sup)
+                db.session.add(_property)
+                db.session.commit()
+                flash('تخصیص داده شد','message')
+                return redirect('/admin/addCardToUser')
         else:
-            sum_3 = User.sum_supply + sendToUser
-            _sup = User(sum_supply=sum_3)
-            _property = Property(user_code=CenterCode, cardType=typeOfCards, supply=sendToUser, date_add=JalaliDate.today())
-            User.query.filter_by(CenterCode=CenterCode).update(dict(date_added=JalaliDate.today()))
-            db.session.add(_sup)
-            db.session.add(_property)
-            db.session.commit()
-            flash('تخصیص داده شد','message')
+            flash('مقادیر وارد شده در خزانه موجود نمیباشد','error')
             return redirect('/admin/addCardToUser')
     else:
         return render_template('admin/add-card-to-user.html', title='توزیع کارت',users=users,types=types)
@@ -194,23 +209,29 @@ def addCardToUser():
 def recieve():
     if not session.get('admin_id'):
         return redirect('/admin/')
+    
+    sum_4 = 0
     types = Card.query.all()
     _recieve = Recieve.query.all()
+    for r in _recieve:
+        sum_4 = r.admin_supply + sum_4
+    
+    
     if request.method == 'POST':
         adminRecieve = request.form.get('adminRecieve')
         typeOfCards = request.form.get('typeOfCards')
         Checker = Recieve.query.filter_by(_type=typeOfCards).first()
-        if adminRecieve == '':
-            flash('لطفا با دقت کامل کنید','error')
+        if adminRecieve == '' or typeOfCards == None:
+            flash('لطفا فرم را با دقت کامل کنید','error')
             return redirect('/admin/recieve')
-        elif typeOfCards == Checker:
+        elif Checker:
             sum = Recieve.admin_supply + adminRecieve
-            _recieve.admin_supply = sum
+            Checker.admin_supply = sum
             Recieve.query.filter_by(_type=typeOfCards).update(dict(recieve_date=JalaliDate.today()))
             db.session.commit()
             flash('توسط خزانه دریافت شد','message')
             return redirect('/admin/recieve')  
-        else :
+        else:
             new_recieve = Recieve(admin_supply = adminRecieve, recieve_date = JalaliDate.today(), _type = typeOfCards)
             db.session.add(new_recieve)
             db.session.commit()
@@ -218,7 +239,7 @@ def recieve():
             return redirect('/admin/recieve')          
 
     else:
-        return render_template('admin/recieve.html', title=' خزانه',_recieve=_recieve,types=types)
+        return render_template('admin/recieve.html', title=' خزانه',_recieve=_recieve,types=types,sum_4=sum_4)
     
     
 
@@ -232,7 +253,6 @@ def adminGetAllUser():
         return render_template('admin/all-user.html',title='لیست کاربران',users=users)
     else:
         users=User.query.all()
-        
         return render_template('admin/all-user.html',title=' لیست کابران',users=users)
 
 
@@ -279,10 +299,11 @@ def adminChangePassword():
 
 @app.route('/admin/add')
 def add():
-    return render_template('/admin/add.html')
+    posts = Blogpost.query.order_by(Blogpost.date_posted.desc()).all()
+    return render_template('blog/add.html',posts=posts)
 
 
-@app.route('/admin/addpost', methods=['POST'])
+@app.route('/blog/addpost', methods=['POST'])
 def addpost():
     title = request.form['title']
     subtitle = request.form['subtitle']
@@ -291,19 +312,19 @@ def addpost():
     post = Blogpost(title=title, subtitle=subtitle, author=author, content=content, date_posted=JalaliDate.today())
     db.session.add(post)
     db.session.commit()
-    return redirect('/admin/dashboard')
+    return redirect('/admin/add')
 
 
-@app.route('/admin/allPosts')
+@app.route('/blog/allPosts')
 def allPosts():
     posts = Blogpost.query.order_by(Blogpost.date_posted.desc()).all()
-    return render_template('/admin/all-posts.html', posts=posts)
+    return render_template('blog/all-posts.html', posts=posts)
 
 
-@app.route('/admin/post/<int:post_id>')
+@app.route('/blog/post/<int:post_id>')
 def post(post_id):
     post = Blogpost.query.filter_by(id=post_id).one()
-    return render_template('/admin/post.html', post=post)
+    return render_template('blog/post.html', post=post)
 
 
 @app.route('/admin/logout')
@@ -390,6 +411,8 @@ def userDashboard():
             for pro in all_pro:
                 infos = Property.query.filter_by(user_code=users.CenterCode)
                 return render_template('user/dashboard.html',title="میزکار کاربر ",users=users,infos=infos)
+        else:
+            return render_template('user/empty-dashboard.html', title="میزکار کاربر")
 
 
 @app.route('/user/decrease', methods=["POST","GET"])
@@ -407,16 +430,19 @@ def decrease():
         userDecrease = int(request.form.get('userDecrease'))
         typeOfCards = request.form.get('typeOfCards')
         checker = Property.query.filter_by(user_code=thisUser.CenterCode,cardType=typeOfCards ).first()
-        if userDecrease == '':
-            flash('لطفا با دقت کامل کنید','error')
-            return redirect('/user/decrease')
-        elif checker:
-            checker.supply = checker.supply - userDecrease
-            Property.query.filter_by(cardType=typeOfCards).update(dict(supply=checker.supply))
-            db.session.commit()
-            flash('گزارش با موفقیت ثبت شد','message')
-            return redirect('/user/decrease')          
-
+        if checker.supply >= userDecrease:
+            if userDecrease == '' or typeOfCards == None:
+                flash('لطفا فرم را با دقت کامل کنید','error')
+                return redirect('/user/decrease')
+            elif checker:
+                checker.supply = checker.supply - userDecrease
+                Property.query.filter_by(cardType=typeOfCards).update(dict(supply=checker.supply))
+                db.session.commit()
+                flash('گزارش با موفقیت ثبت شد','message')
+                return redirect('/user/decrease')   
+        else:
+            flash('مقادیر وارد شده در خزانه موجود نمیباشد','error')
+            return redirect('/user/decrease') 
     else:
         return render_template('user/decrease.html', title=' اعلام کسری',users=users,types=types)
 
@@ -458,6 +484,23 @@ def userUpdateProfile():
                 return redirect('/user/update-profile')
         else:
             return render_template('user/update-profile.html',title="بروز رسانی پروفایل",users=users)
+
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("error/404.html")
+
+
+@app.errorhandler(403)
+def forbidden(e):
+    app.logger.error(f"Forbidden Access: {e}, --> route: {request.url}")
+    return render_template("error/403.html")
+
+@app.errorhandler(500)
+def server_error(e):
+    app.logger.error(f"Server Error: {e}, --> route: {request.url}")
+    return render_template("error/500.html")
+
 
 
 if __name__=="__main__":
