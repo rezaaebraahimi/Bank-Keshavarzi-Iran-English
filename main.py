@@ -174,8 +174,9 @@ def addCardToUser():
             return redirect('/admin/addCardToUser')
         elif adminChecker and adminChecker.admin_supply >= int(sendToUser) :
             if Checker:
+                minus = Recieve.admin_supply - sendToUser
                 adminChecker.admin_supply = minus
-                db.session.commit()
+
                 sum = Property.supply + sendToUser
                 Checker.supply = sum
                 Checker.date_add = JalaliDate.today()
@@ -183,6 +184,7 @@ def addCardToUser():
                 sum_2 = User.sum_supply + sendToUser
                 User.query.filter_by(CenterCode=CenterCode).update(dict(sum_supply = sum_2))
                 minus = Recieve.admin_supply - sendToUser
+                db.session.commit()
                 flash('تخصیص داده شد','message')
                 return redirect('/admin/addCardToUser') 
             else:
