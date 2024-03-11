@@ -1,48 +1,64 @@
 {% extends "admin/layout.html"%}
-
 {% block content %}
 <div class="container">
 {% include 'admin/navbar.html' %}
-
-                  
-
 <div class="main" style="margin-left: 52%;position:absolute;">
     <div class="left">
+    <form name="addForm" id="addForm" method="POST" action="/blog/addpost" novalidate>
         <main class="table">
             <section class="table__header">
-                <h3>انتشار ابلاغیه جدید </h3>
+                <h3>ابلاغیه جدید</h3>
             </section>
             <section class="table__body">
+                <table>
+                    <thead>
+                        <tr>
+                        <div>
+                            <th>
+                                <input type="text" name="title" id="title">
 
-            <form name="addForm" id="addForm" method="POST" action="/blog/addpost" novalidate>
-            <div class="input">
-                <label for="title">عنوان</label>
-                <input type="text" name="title" id="title">
-            </div>
-            <div class="input">
-                <label for="subtitle">موضوع</label>
-                <input type="text" name="subtitle" id="subtitle">
-            </div>
-            <div class="input">
-                <label for="author">ابلاغ شده از طرف</label>
-                <input type="text" name="author" id="author">
-            </div>
-            <div class="input">
-                <label for="content">شرح اعلامیه</label>
-                <textarea name="content" id="content" cols="30" rows="10"></textarea>
-            </div>
-            <button type="submit" id="sendMessageButton">انتشار</button>
-            </form>
+                                <label for="title" style="color: black;">عنوان</label>
+                            </th>
+                        </div>
+                        </tr>
+                        <tr>
+                        <div>
+                            <th>
+                            <input type="text" name="subtitle" id="subtitle">
+                            <label for="subtitle" style="color: black;">موضوع</label>
+                            </th>
+                        </div>
+                        </tr>
+                        <tr>
+                        <div>
+                            <th>
+                            <input type="text" name="author" id="author">
+                            <label for="author" style="color: black;">ابلاغ توسط</label>
+                            </th>
+                        </div>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <td>
+                            <div>
+                            <label for="content" style="color: black;">شرح</label>
+                            </div>
+                            <div>
+                            <textarea name="content" id="content" cols="30" rows="10" style="width: 500px;margin:auto"></textarea>
+                            </div>
+                        </tbody>
+                </table>
             </section>
+            <button type="submit" class="btn-success-2" id="sendMessageButton">انتشار</button>
         </main>
+    </form>
     </div>
 </div>
-
 <div class="main" style="margin-left: 7%;position:absolute;">
     <div class="right">
         <main class="table">
             <section class="table__header">
-                <h3> ابلاغ شده ها </h3>
+                <h3>تاریخچه ابلاغ</h3>
             </section>
             <section class="table__body">
                 <table>
@@ -57,21 +73,17 @@
                     </thead>
                     <tbody>
                         {% for post in posts %}
-
                         <tr>
-                                <td>
-                                <a href="/blog/post/{{post.id}}">
-                                    <button style="color: black;">مشاهده</button>
-                                </a>
-                                </td>
-                                <td>{{ post.date_posted}}</td>
-                                <td>{{ post.author }} </td>
-                                <td>{{ post.subtitle }}</td>
-                                <td>{{ post.title }}</td>
-
-
+                            <td>
+                            <a href="/blog/post/{{post.id}}">
+                                <button style="color: black;">مشاهده</button>
+                            </a>
+                            </td>
+                            <td>{{ post.date_posted}}</td>
+                            <td>{{ post.author }} </td>
+                            <td>{{ post.subtitle }}</td>
+                            <td>{{ post.title }}</td>
                         </tr>
-
                         {% endfor %}
                     </tbody>
                 </table>

@@ -277,7 +277,7 @@ h1{
 main.table {
     margin-top: 5%;
     width: 40vw;
-    height: 65vh;
+    height: 70vh;
     background: linear-gradient(180deg, #d5ffcd -0%, #bbffb1 71%);
     backdrop-filter: blur(7px);
     box-shadow: 0 .4rem .8rem #0005;
@@ -306,7 +306,7 @@ h3{
 
 .table__body {
     width: 95%;
-    height: calc(75% - .5rem);
+    height: calc(77% - .5rem);
     background-color: #ffffffbc;
     margin: .5rem auto;
     border-radius: .6rem;

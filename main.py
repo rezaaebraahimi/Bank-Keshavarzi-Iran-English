@@ -431,15 +431,15 @@ def decrease():
         users=User.query.get(id)
     if request.method == 'POST':
         thisUser = User().query.filter_by(id=id).first()
-        userDecrease = int(request.form.get('userDecrease'))
+        userDecrease = request.form.get('userDecrease')
         typeOfCards = request.form.get('typeOfCards')
         checker = Property.query.filter_by(user_code=thisUser.CenterCode,cardType=typeOfCards ).first()
         if userDecrease == '' or typeOfCards == None:
             flash('لطفا فرم را با دقت کامل کنید','error')
             return redirect('/user/decrease')
-        elif checker.supply >= userDecrease:
+        elif checker.supply >= int(userDecrease):
             if checker:
-                checker.supply = checker.supply - userDecrease
+                checker.supply = checker.supply - int(userDecrease)
                 Property.query.filter_by(cardType=typeOfCards).update(dict(supply=checker.supply))
                 db.session.commit()
                 flash('گزارش با موفقیت ثبت شد','message')

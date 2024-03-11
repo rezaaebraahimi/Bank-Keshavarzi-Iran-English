@@ -5,48 +5,57 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% if title %}
-    <title>{{title}} - سامانه پشتیبانی شعب </title>
-    {% else %}
     <title>سامانه پشتیبانی شعب </title>
-    {% endif %}
+
 
     <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
-<div class="container">
-        <div class="container">
-            <div class="row">
-            <div class="col-lg-8 col-md-10 mx-auto">
-                <div class="site-heading">
-                <h1> اعلامیه ها منتشر شده</h1>
-                </div>
-            </div>
-            </div>
-        </div>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-md-10 mx-auto">
-                {% for post in posts %}
-                <div class="post-preview">
-                    <a href="/admin/post/{{post.id}}">
-                    <h2 class="post-title">
-                        {{ post.title }}
-                    </h2>
-                    <h3 class="post-subtitle">
-                        {{ post.subtitle }}
-                    </h3>
-                    </a>
-                    <p class="post-meta"> ابلاغ شده توسط {{ post.author }} در {{ post.date_posted}}</p>
+    <div class="main" style="align-items: center;">
+        <div class="right">
+            <main class="table">
+                <div class="container">
+                <section class="table__header" >
+                    <h3> ابلاغ شده ها </h3>
+                </section>
                 </div>
-                {% endfor %}
-                <hr>
-                </div>
-            </div>
+                <section class="table__body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>تاریخ</th>
+                                <th>ابلاغ توسط</th>
+                                <th>موضوع</th>
+                                <th>عنوان</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for post in posts %}
+    
+                            <tr>
+                                    <td>
+                                    <a href="/blog/post/{{post.id}}">
+                                        <button style="color: black;">مشاهده</button>
+                                    </a>
+                                    </td>
+                                    <td>{{ post.date_posted}}</td>
+                                    <td>{{ post.author }} </td>
+                                    <td>{{ post.subtitle }}</td>
+                                    <td>{{ post.title }}</td>
+    
+    
+                            </tr>
+    
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+            </main>
         </div>
-</div>
+    </div>
 </body>>
 </html>
 
