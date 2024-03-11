@@ -36,7 +36,7 @@ class User(db.Model):
     __tablename__ = 'user'
     id=db.Column(db.Integer, primary_key=True)
     CenterName=db.Column(db.String(100), nullable=False)
-    CenterCode=db.Column(db.String(45), nullable=False)
+    CenterCode=db.Column(db.String(45), nullable=False) 
     username=db.Column(db.String(45), nullable=False)
     password=db.Column(db.String(45), nullable=False)
     sum_supply = db.Column(db.Integer,default=0, nullable=False)
@@ -167,7 +167,7 @@ def addCardToUser():
         CenterCode = request.form.get('CenterCode')
         sendToUser = request.form.get('sendToUser')
         typeOfCards = request.form.get('typeOfCards')
-        Checker = Property.query.filter_by(user_code=CenterCode,cardType=typeOfCards ).first()
+        Checker = Property.query.filter_by(user_code=CenterCode,cardType=typeOfCards).first()
         adminChecker = Recieve.query.filter_by(_type=typeOfCards).first()
         if sendToUser == '' or CenterCode == None or typeOfCards == None:
             flash('لطفا فرم را با دقت کامل کنید','error')
@@ -176,7 +176,6 @@ def addCardToUser():
             if Checker:
                 minus = Recieve.admin_supply - sendToUser
                 adminChecker.admin_supply = minus
-
                 sum = Property.supply + sendToUser
                 Checker.supply = sum
                 Checker.date_add = JalaliDate.today()
@@ -191,10 +190,9 @@ def addCardToUser():
                 minus = Recieve.admin_supply - sendToUser
                 adminChecker.admin_supply = minus
                 sum_3 = User.sum_supply + sendToUser
-                _sup = User(sum_supply=sum_3)
+                User.query.filter_by(CenterCode=CenterCode).update(dict(sum_supply=sum_3))
                 _property = Property(user_code=CenterCode, cardType=typeOfCards, supply=sendToUser, date_add=JalaliDate.today())
                 User.query.filter_by(CenterCode=CenterCode).update(dict(date_added=JalaliDate.today()))
-                db.session.add(_sup)
                 db.session.add(_property)
                 db.session.commit()
                 flash('تخصیص داده شد','message')
@@ -311,10 +309,14 @@ def addpost():
     subtitle = request.form['subtitle']
     author = request.form['author']
     content = request.form['content']
-    post = Blogpost(title=title, subtitle=subtitle, author=author, content=content, date_posted=JalaliDate.today())
-    db.session.add(post)
-    db.session.commit()
-    return redirect('/admin/add')
+    if title and subtitle and author and content:
+        post = Blogpost(title=title, subtitle=subtitle, author=author, content=content, date_posted=JalaliDate.today())
+        db.session.add(post)
+        db.session.commit()
+        return redirect('/admin/add')
+    else:
+        flash('لطفا تمامی موارد را کامل کنید','error')
+        return redirect('/admin/add')
 
 
 @app.route('/blog/allPosts')
@@ -432,11 +434,11 @@ def decrease():
         userDecrease = int(request.form.get('userDecrease'))
         typeOfCards = request.form.get('typeOfCards')
         checker = Property.query.filter_by(user_code=thisUser.CenterCode,cardType=typeOfCards ).first()
-        if checker.supply >= userDecrease:
-            if userDecrease == '' or typeOfCards == None:
-                flash('لطفا فرم را با دقت کامل کنید','error')
-                return redirect('/user/decrease')
-            elif checker:
+        if userDecrease == '' or typeOfCards == None:
+            flash('لطفا فرم را با دقت کامل کنید','error')
+            return redirect('/user/decrease')
+        elif checker.supply >= userDecrease:
+            if checker:
                 checker.supply = checker.supply - userDecrease
                 Property.query.filter_by(cardType=typeOfCards).update(dict(supply=checker.supply))
                 db.session.commit()
