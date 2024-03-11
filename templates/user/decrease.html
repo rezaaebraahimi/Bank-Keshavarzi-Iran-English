@@ -2,18 +2,14 @@
 {% block content %}
 <div class="container">
     {% include 'user/navbar.html' %}
-    <main class="table" style="width: fit-content;">
+    <main class="table" style="width: 440px; height: 300px;">
         <form action="" method="POST">
-            <section class="table__header" style="width: fit-content;">
+            <div class="table__header">
                 <h3> اعلام کاهش موجودی</h3>
-            <section class="table__header" style="width: fit-content;">
-            <section style="width: fit-content;">
-                <table>
-                    <thead>
-                        <fieldset>
-                            <tr>
-                            <th>
-                            <select name="typeOfCards" id="typeOfCards">
+            </div>
+            <div>
+                <div>
+                            <select name="typeOfCards" id="typeOfCards" class="CenterCode-1">
                                 <option value="" disabled selected>نوع کارت را انتخاب کنید</option>
                                 {% for type in types %}
                                 <option value="{{type.typeOfCards}}">
@@ -21,23 +17,12 @@
                                 </option>
                                 {% endfor %}
                             </select>
-                            </th>
-                            </tr>
-                        </fieldset> 
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class="input">
-                                    <input type="number" placeholder=" تعداد کارت کاسته شده" name="userDecrease" id="userDecrease" class="form-control my-1">
-                                    <button class="btn-success-2">کاستن</button>
-                                    </div>
-                            </td>
-                        </tr>
-      
-                    </tbody>
-                </table>
-            </section>
+                        </div> 
+                    <div class="input">
+                    <input type="number" placeholder=" تعداد کارت کاسته شده" name="userDecrease" id="userDecrease" class="form-control my-1">
+                    </div>
+                    <button class="btn-success-2">کاستن</button>
+            </div>
         </form>
     </main>
 </div>

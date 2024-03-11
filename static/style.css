@@ -262,6 +262,17 @@ h1{
 
 .main{
     display: flex;
+    flex-direction: column;
+}
+.label-2{
+    background: #1a4421;
+    width: 400px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.page{
+    display: flex;
+    flex-direction: row;
 }
 main.table {
     margin-top: 5%;
@@ -342,7 +353,7 @@ thead th {
     height: 30px;
     text-align: center;
 }
-#CenterCode{
+.CenterCode-1{
     margin-top: 40px;
     width: 70%;
     height: 30px;
