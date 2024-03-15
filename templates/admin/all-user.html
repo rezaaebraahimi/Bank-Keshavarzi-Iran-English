@@ -22,6 +22,8 @@
                             <th>تغییر وضعیت</th>
                             <th>وضعیت دسترسی </th>
                             <th>نام کاربری</th>
+                            <th>کد پرسنلی</th>
+                            <th>نام مسئول</th>
                             <th>کد شعبه</th>
                             <th>نام شعبه</th>
                         </tr>
@@ -48,6 +50,8 @@
                                 {% endif %}
                             </td>
                             <td>{{user.username}}</td>
+                            <td>{{user.personalCode}}</td>
+                            <td>{{user.personal}}</td>
                             <td>{{user.CenterCode}}</td>
                             <td>{{user.CenterName}}</td>
                         </tr>

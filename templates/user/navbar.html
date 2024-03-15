@@ -1,31 +1,21 @@
-<div class="navbar">
-    <div class="right-nav">
-        <div class="icon-navbar">
-            <a href="/user/logout" class="nav-link"><img class="icon-nav" src="/static/icon/logout.png" alt="Logout"><p>خروج</p></a>
-        </div>
-        <div class="icon-nav">
-            <a href="/user/update-profile" class="btn btn-info w-full"><img class="icon-nav" src="/static/icon/client.png" alt="Update data"><p>بروزرسانی</p></a>
-        </div>
-        <div class="icon-nav">
-            <a href="/blog/allPosts" class="nav-link"><img class="icon-nav" src="/static/icon/send-card.png" alt="all posts"><div class="nav-text"><p>ابلاغیه</p></div></a>
-        </div>
-        <div class="icon-nav">
-            <a href="/user/decrease" class="nav-link"><img class="icon-nav" src="/static/icon/send-card.png" alt="decrease"><div class="nav-text"><p>اعلام</p></div></a>
-        </div>
-        <div class="icon-nav">
-            <a href="/user/dashboard" class="btn btn-info w-full"><img class="icon-nav" src="/static/icon/home.png" alt="Home"><div class="nav-text"></div><p>میزکار</p></a>
-        </div>
-    </div>
-    <div class="center-nav">
-        <div class="user-nav">
-            {% if session.get('user_id') %}
-                <button class="btn-username"><p> شعبه {{users.CenterName}}</p></button>
-            {% endif %}
-        </div>
-    </div>
+<nav>
+    <ul>
+        <li><a class="exit" href="/user/logout">خروج</a></li>
+        <li><a href="/user/update-profile">ویرایش</a></li>
+        <li><a href="/blog/allPosts">ابلاغیه</a></li>
+        <li><a href="/user/userRequest">درخواست</a></li>
+        <li><a href="/user/updateSupply">اعلام</a></li>
+        <li><a class="active" href="/user/dashboard">نخست</a></li>
+    </ul>
+
     <div class="left-nav">
         <div class="logo-nav">
             <img class="logo-nav" src="/static/icon/Logo.png" alt="">
         </div>
+        {% if session.get('user_id') %}
+        <button class="btn-username"><p> شعبه {{users.CenterName}}</p></button>
+        {% endif %}
+
     </div>
-</div>
+</nav>
+    

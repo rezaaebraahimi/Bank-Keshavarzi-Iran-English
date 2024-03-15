@@ -1,0 +1,46 @@
+{% extends 'admin/layout.html' %}
+
+{% block content %}
+    {% include 'admin/navbar.html' %}
+    <div class="container">
+    <form action="/admin/manageRequests" method="post"> 
+        <main class="table">
+
+            <section class="table__header">
+                <h3>درخواست‌ها</h3>
+            </section>
+            <section class="table__body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>تاریخ ارسال</th>
+                            <th>کد شعبه</th>
+                            <th>نام شعبه</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        {% for req in requests %}
+
+                                {% if user.CenterCode == req.user_code %}
+                                    <tr>
+                                        <td><a href="/admin/generatePdf">
+                                            <button type="submit" name="cen_code" id="cen_code" value="{{user.Center}}">مشاهده
+                                            </button>
+                                            </a>
+                                        </td>
+                                        <td>{{ req.date_added }}</td>
+                                        <td>{{req.user_code}}</td>
+                                        <td>{{ user.CenterName }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </form>
+</div>
+{% endblock content %}

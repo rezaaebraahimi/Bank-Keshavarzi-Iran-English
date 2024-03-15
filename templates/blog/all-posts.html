@@ -34,7 +34,6 @@
                         </thead>
                         <tbody>
                             {% for post in posts %}
-    
                             <tr>
                                     <td>
                                     <a href="/blog/post/{{post.id}}">
@@ -45,10 +44,7 @@
                                     <td>{{ post.author }} </td>
                                     <td>{{ post.subtitle }}</td>
                                     <td>{{ post.title }}</td>
-    
-    
                             </tr>
-    
                             {% endfor %}
                         </tbody>
                     </table>

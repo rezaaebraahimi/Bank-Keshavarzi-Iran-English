@@ -2,56 +2,38 @@
 {% block content %}
 <div class="container">
 {% include 'admin/navbar.html' %}
-<div class="main" style="margin-left: 52%;position:absolute;">
+<div class="main" style="margin-left: 61%;position:absolute;margin-top: 32px;">
     <div class="left">
-    <form name="addForm" id="addForm" method="POST" action="/blog/addpost" novalidate>
-        <main class="table">
-            <section class="table__header">
-                <h3>ابلاغیه جدید</h3>
-            </section>
-            <section class="table__body">
-                <table>
-                    <thead>
-                        <tr>
-                        <div>
-                            <th>
-                                <input type="text" name="title" id="title">
-
-                                <label for="title" style="color: black;">عنوان</label>
-                            </th>
-                        </div>
-                        </tr>
-                        <tr>
-                        <div>
-                            <th>
-                            <input type="text" name="subtitle" id="subtitle">
-                            <label for="subtitle" style="color: black;">موضوع</label>
-                            </th>
-                        </div>
-                        </tr>
-                        <tr>
-                        <div>
-                            <th>
-                            <input type="text" name="author" id="author">
-                            <label for="author" style="color: black;">ابلاغ توسط</label>
-                            </th>
-                        </div>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <td>
-                            <div>
-                            <label for="content" style="color: black;">شرح</label>
-                            </div>
-                            <div>
-                            <textarea name="content" id="content" cols="30" rows="10" style="width: 500px;margin:auto"></textarea>
-                            </div>
-                        </tbody>
-                </table>
-            </section>
-            <button type="submit" class="btn-success-2" id="sendMessageButton">انتشار</button>
-        </main>
-    </form>
+        <form name="addForm" id="addForm" method="POST" action="/blog/addpost" novalidate>
+            <div class="container" style="width: 500px;">
+                <section class="table__body" >
+                <section class="table__header">
+                    <h3>ابلاغ جدید</h3>
+                </section>
+                <div class="input-form">
+                    <label for="title">عنوان</label>
+                    <input type="text" name="title" id="title" required>
+                </div>
+                <div class="input-form">
+                    <label for="subtitle">موضوع</label>
+                    <input type="text" name="subtitle" id="subtitle" required>
+                </div>
+                <div class="input-form">
+                    <label for="author">ابلاغ توسط</label>
+                    <input type="text" name="author" id="author" required>
+                </div>
+                <div class="input-form">
+                    <label for="content">شرح</label>
+                    <textarea name="content" id="content" cols="30" rows="10" required></textarea>
+                </div>
+                <div class="input-form">
+                    <button type="submit" class="btn-success-2" id="sendMessageButton">انتشار</button>
+                </div>
+                <div class="input">
+                </div>
+                </section>
+            </div>
+        </form>
     </div>
 </div>
 <div class="main" style="margin-left: 7%;position:absolute;">

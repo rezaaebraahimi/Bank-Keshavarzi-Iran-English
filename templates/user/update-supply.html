@@ -1,0 +1,47 @@
+{% extends 'user/layout.html' %}
+
+{% block content %}
+<div class="container">
+    {% include 'user/navbar.html' %}
+    <div class="main" style="align-items: center;">
+        <form method="POST" action="">
+
+            <section class="table__body" style="width: 650px;">
+                <div class="container">
+                    <section class="table__header">
+                        <h3>بروزرسانی موجودی شعبه</h3>
+                    </section>
+                    </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>تعداد</th>
+                            <th>انتخاب کالا</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <div>
+                            <div>
+                            {% for type in types %}
+                            <tr>
+                                <td>
+                                    <input type="text" name="cSupply" id="cSupply" style="width: 175px;">
+                                </td>
+                                <td>
+                                    <label style="color: black;">
+                                        {{type.typeOfCards}}
+                                        <input type="checkbox" value="{{type.typeOfCards}}" name="cType" id="cType" style="width: fit-content;">
+                                    </label> 
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </div>
+                        </div>
+                    </tbody>
+                </table>  
+            </section>
+            <button class="btn-success">بروزرسانی</button>      
+        </form>
+    </div>
+</div>
+{% endblock content %}

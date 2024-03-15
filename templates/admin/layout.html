@@ -1,44 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% if title %}
-    <title>{{title}} - سامانه پشتیبانی شعب </title>
-    {% else %}
-    <title>سامانه پشتیبانی شعب </title>
-    {% endif %}
-
+    <title>{% if title %}{{ title }} - سامانه پشتیبانی شعب{% else %}سامانه پشتیبانی شعب{% endif %}</title>
     <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" href="/static/favicon.ico">
+
 </head>
 
 <body>
-    <div>
-        <div>
-            {% if session.admin_id %}
-            {% endif %}
-            {% if session.admin_name %}
-            {% endif %}
-        </div>
-    </div>
-    {% with messages=get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category,message in messages %}
 
-    <div class="alert alert-{{category}}">
-        <p> 
-            {{message}}
-        </p>
-    </div>
-
-    {% endfor %}
-    {% endif %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    <p>{{ message }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
     {% endwith %}
     <script src="/static/script/script.js"></script>
     
-    {% block content %} {% endblock content %}
+    {% block content %}{% endblock %}
 </body>
 
 </html>

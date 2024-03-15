@@ -5,33 +5,70 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اعلامیه شماره {{post.id}}</title>
+    <title>اعلامیه شماره {{ post.id }}</title>
     <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: rgb(220, 255, 220)5%;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        main {
+            margin-top: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .post-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .post-content {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .meta {
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
 </head>
 
-
 <body dir="rtl">
-
-    <main class="table" >
-      <section class="table__header">
-        <h1 style="color: black;">{{ post.title }} - {{ post.subtitle }}</h1>
-      </section>
-      <section class="table__body">
-      <article>
-          <div class="row">
-            <div class="col-lg-8 col-md-10 mx-auto">
-              <br>
-              {{ post.content|safe }}
-            </div>
+  <div class="container">
+      <main><br>
+          <h1 class="post-title">{{ post.title }} </h1>
+          <br>
+          <h3 style="color: black;">{{ post.subtitle }}</h3>
+          <br><br><br>
+          <article class="post-content">
+              {{ post.content | safe }}
+          </article>
+          <br><br><br>
+          <div class="meta">
+              <span class="meta-item"> ابلاغ توسط <strong>{{ post.author }}</strong></span><br>
+              <span class="meta-item"><time datetime="{{ post.date_posted }}">{{ post.date_posted }}</time></span>
           </div>
-
-      </article>
-      </section>
-      <div class="container">
-      <span class="meta">منتشر شده توسط
-        {{ post.author }}<br>
-        در {{ post.date_posted}}</span>
-      </div>
-    </main>
-
+          <br>
+      </main>
+  </div>
 </body>
+
+
+</html>

@@ -12,6 +12,6 @@ window.addEventListener("load", function(){
         function close(event){
             document.querySelector(".alert").style.display = "none";
         },
-        2000
+        3500
     )
 });

@@ -2,10 +2,14 @@
     font-family: samim;
     src: url(/static/font/Samim-FD.woff2) format(woff2);
 }
+
 *{
     font-family: samim;
     margin: 0 auto;
-
+    padding: 0;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
 }
 body{
     background: rgb(220, 255, 220)5%;
@@ -17,8 +21,49 @@ body{
     align-items: center;
     text-align: center;
 }
+
+
+nav{
+    position: relative;
+    background: linear-gradient(180deg, #428536 -0%, #194912 71%);
+    width: 100%;
+    height: 90px ;
+    border-radius: 0px 0px 15px 15px;
+    box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
+}
+
+nav ul {
+    float: right;
+    margin-right: 20px;
+}
+
+nav ul li {
+    display: inline-block;
+    line-height: 80px;
+    margin: 0 10px;
+}
+
+nav ul li a{
+    color: white;
+    font-size: 1.4vw;
+    padding: 1vh .3vw;
+    border-radius: 15px;
+
+}
+
+a.active,a:hover{
+    background:#59be47;
+    transition: .6s;
+}
+
+a.exit,a.exit:hover{
+    background:#eba82b;
+    transition: .6s;
+}
+
+
 .logo{
-    margin-top: 20px;
+    margin-top: 2%;
 }
 
 
@@ -29,18 +74,18 @@ body{
 }
 .card-box{
     background: linear-gradient(180deg, #21ac60 -0%, #0d4610 71%);
-    border-radius: 3.6rem;
+    border-radius: 3.6vw;
     box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
-    height: 22rem;
-    width: 22rem;
+    height: 22vh;
+    width: 22vh;
 }
 .card-en{
     cursor: pointer;
 }
 .icon {
-    height: 180px;
-    width: 180px;
-    margin-top: 20px;
+    height: 15vh;
+    width: 15vh;
+    margin-top: 2%;
     object-fit: contain;
 }
 a:hover .icon{
@@ -54,7 +99,7 @@ a:hover .title{
 }
 
 .title{
-    margin-top: 30px;
+    margin-top: 3%;
 }
 .login-f{
     margin-top: 9%;
@@ -75,64 +120,60 @@ a:hover .title{
     overflow: hidden;
 }
 
-.btn-success{
-    margin-top: 25px;
-    width: 115px;
-    height: 40px;
-    color: #1d6013;
-    background: white;
+.btn-success,
+.btn-success-2,
+.btn-success-3,
+.btn-success-user,
+.btn-username {
+    margin-top: 2%;
+    width: 7vw; 
+    height: 5vh; 
     border-radius: 5px;
     cursor: pointer;
     border: none;
-    font-size: large;
+    font-size: 1.2vw; 
 }
 
-.btn-success-2{
-    margin-top: 25px;
-    width: 115px;
-    height: 40px;
+.btn-success {
+    color: #1d6013;
+    background: white;
+}
+
+.btn-success-2 {
     color: #ffffff;
     background: #1d6013;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-    font-size: large;
 }
-.btn-success-3{
-    margin-top: 25px;
-    width: 70px;
-    height: 40px;
+
+.btn-success-3 {
+    width: 8vw; 
+    height: 5vh; 
     color: #ffffff;
     background: #409334;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-    font-size: small;
+    font-size: 1vw;
 }
-.btn-success-3:hover{
+
+.btn-success-3:hover {
     background: #fff;
     color: #1d6013;
 }
 
-.btn-success-user{
-    margin-top: 2%;
-    width: 80px;
-    height: 40px;
+.btn-success-user {
+    width: 10vw; 
+    height: 5vh; 
     color: #1d6013;
     background: white;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-    font-size: large;
 }
-.navbar{
-    position: relative;
-    background: linear-gradient(180deg, #428536 -0%, #194912 71%);
-    width: 100%;
-    height: 90px ;
-    border-radius: 0px 0px 15px 15px;
-    box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
+
+.btn-username {
+    width: 20vw; 
+    height: 5vh; 
+    background: white;
+    color: #1d6013;
+    font-size: 1.5vw; 
 }
+
+
+
 .right-nav{
     display: flex;
     width: 30%;
@@ -155,20 +196,12 @@ a:hover .title{
     left: 15px;
 }
 .center-nav{
-    position: fixed;
+    position: absolute;
     left: 45%;
     top: 23px;
 }
-.btn-username{
-    width: 150px;
-    height: 40px;
-    background: white;
-    border-radius: 5px;
-    color: #1d6013;
-    font-size: 15px;
-    border: none;
-    outline: none;
-}
+
+
 .logo-nav{
     width: 65px;
     height: 71px;
@@ -210,6 +243,8 @@ label{
     overflow: hidden;
     border-radius: 5px;
 }
+
+
 input{
     width: 300px;
     background: white;
@@ -218,6 +253,7 @@ input{
     text-align: center;
     height: 30px;
 }
+
 a {
     text-decoration: none;
     color: white;
@@ -240,10 +276,10 @@ h1{
 
 .alert{
     background-color: rgba(255, 225, 175, 0.550);
-    width: 250px;
-    padding: 20px 30px;
+    width: 20%;
+    padding: 2vw 3vw;
     position:absolute;
-    left: 80%;
+    left: 78%;
     top: 85%;
     border-radius: .8rem;
     border:solid 1px #ff9100;
@@ -254,10 +290,10 @@ h1{
 
 
 .alert p{
-    font-size: 16px;
+    font-size: 1.2vw;
     text-align: center;
     margin: auto;
-    line-height: 25px;
+    line-height: 2vw;
 }
 
 .main{
@@ -266,7 +302,8 @@ h1{
 }
 .label-2{
     background: #1a4421;
-    width: 400px;
+    width: 90%;
+    max-width: 400px;
     border-radius: 5px;
     overflow: hidden;
 }
@@ -276,7 +313,7 @@ h1{
 }
 main.table {
     margin-top: 5%;
-    width: 40vw;
+    width: 50vw;
     height: 70vh;
     background: linear-gradient(180deg, #d5ffcd -0%, #bbffb1 71%);
     backdrop-filter: blur(7px);
@@ -289,7 +326,7 @@ main.table {
 table, th, td {
     padding: 1rem;
     border-collapse: collapse;
-    font-size: small;
+    font-size: 0.9rem;
     border-bottom: solid 1px rgb(120, 120, 120);
 }
 
@@ -299,7 +336,7 @@ h3{
 
 .table__header {
     width: 100%;
-    height: 5%;
+    height: 9%;
     background-color: #67b75b;
     padding: .5rem 1rem;
 }
@@ -346,6 +383,27 @@ thead th {
 .input-form{
     margin-top: 25px;
 }
+
+.input-form label {
+    display: block;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.input-form textarea {
+    height: 100px;
+}
+
+
+.input-form input[type="text"],
+.input-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
 
 #typeOfCards{
     margin-top: 40px;
@@ -417,6 +475,7 @@ justify-content:space-between;
 float: inline-start;
 margin-top: 130px;
 }
+
 .dash button{
     border: none;
     outline: none;
@@ -494,7 +553,32 @@ align-items: flex-end;
     margin: 5px;
 }
 
-@media only screen and (max-width: 600px){
+
+
+@media (max-width: 858px){
+
+    nav ul li {
+        margin: 50px 0;
+        line-height: 30px;
+    }
+    nav ul li a{
+        font-size: 16px;
+
+    }
+    a:hover,a.active{
+        background: none;
+        color: #35ac21;
+    }
+    a:hover,a.exit{
+        background: none;
+        color: #dbae18;
+    }
+
+
+    .logo-nav{
+        display: none;
+    }
+
     .card{
         display: block;
     }

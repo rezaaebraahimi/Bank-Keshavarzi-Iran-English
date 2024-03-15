@@ -1,0 +1,24 @@
+{% extends 'admin/layout.html' %}
+
+{% block content %}
+<div class="container">
+    {% include 'admin/navbar.html' %}
+    <form action="{{ url_for('display_and_generate') }}" method="post">
+        <button type="submit">نمایش اطلاعات JSON</button>
+    </form>
+    <div id="jsonDataContainer"></div>
+
+    <script>
+        document.getElementById("displayButton").addEventListener("click", function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/display-and-generate", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("jsonDataContainer").innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
+        });
+    </script>
+</div>
+{% endblock content %}
