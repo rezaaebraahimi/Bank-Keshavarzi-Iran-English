@@ -1,0 +1,102 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+    {% include 'admin/navbar.html' %}
+    <div class="page">
+        <div class="left">
+            <main class="table">
+                <section class="table__header">
+                    <h3> لیست خزانه </h3>
+                </section>
+                <section class="table__body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>اخرین رسید</th>
+                                <th>موجودی</th>
+                                <th>نوع کالا</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for rec in _recieve %}
+                            <tr>
+                                <td>{{ rec.recieve_date }}</td>
+                                <td>{{ rec.admin_supply }}</td>
+                                <td>{{ rec.cardType }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+            </main>
+        </div>
+        <div class="main">
+            <div class="right" style="margin-top: 35px;">
+                <div class="table">
+                    <section class="table__body" style="box-shadow: 0 .4rem .8rem #0005;overflow: hidden;">
+                        <section class="table__header" style="text-align: center;">
+                            <h3 style="margin-right: 15px;">کالای جدید</h3>
+                        </section>
+                        <form action="/admin/add-card-type" method="POST">
+                            <div class="input-form">
+                                <input type="text" placeholder="نام کالای جدید" name="card_type" id="card_type"
+                                    style="border-radius: 5px; width:70% ;border: solid 1px rgb(125, 124, 124);">
+                                <button class="btn-success-2">ایجاد</button>
+                            </div>
+                        </form>
+                        <div class="input">
+                        </div>
+                    </section>
+                    <section class="table__body" style="box-shadow: 0 .4rem .8rem #0005;overflow: hidden;margin-top: 35px;">
+                        <section class="table__header" style="text-align: center;">
+                            <h3 style="margin-right: 15px;">حذف کالا</h3>
+                        </section>
+                        <form action="/admin/remove-card-type" method="POST">
+                            <div class="input-form">
+                            <select name="card_type_remove" id="card_type_remove">
+                                <option value="" disabled selected>نوع کالا را انتخاب کنید</option>
+                                {% for type in types %}
+                                <option value="{{type.typeOfCards}}">{{type.typeOfCards}}</option>
+                                {% endfor %}
+                            </select>
+                            </div>
+                            <button class="btn-success-2">حذف</button>
+                        </form>
+                        <div class="input">
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="right" style="margin-top: 35px;">
+                <div class="table">
+                    <div class="table__body" style="box-shadow: 0 .4rem .8rem #0005;overflow: hidden;">
+                        <div class="table__header" style="text-align: center;">
+                            <h3 style="margin-right: 15px;">افزودن به خزانه</h3>
+                        </div>
+                        <form action="/admin/recieve" method="POST">
+                            <div>
+                                <select name="typeOfCards" id="typeOfCards">
+                                    <option value="" disabled selected>نوع کالا را انتخاب کنید</option>
+                                    {% for type in types %}
+                                    <option value="{{ type.typeOfCards }}">{{ type.typeOfCards }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="input-form">
+                                <input type="text" placeholder="تعداد کالا" name="adminRecieve" id="adminRecieve"
+                                    style="border-radius: 5px; width:70% ;border: solid 1px rgb(125, 124, 124);">
+                                <button class="btn-success-2">افزودن</button>
+                            </div>
+                        </form>
+                        <div class="input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

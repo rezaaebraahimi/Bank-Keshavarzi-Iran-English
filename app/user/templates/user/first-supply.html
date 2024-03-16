@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fa">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سامانه اقلام مصرفی بانکداری الکنرونیک  </title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="main" style="align-items: center;">
+        <form method="POST" action="">
+
+            <section class="table__body" style="width: 650px;">
+                <div class="container">
+                    <section class="table__header">
+                        <h3>اعلام موجودی اولیه</h3>
+                    </section>
+                    </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>تعداد</th>
+                            <th>انتخاب کالا</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <div>
+                            <div>
+                            {% for type in types %}
+                            <tr>
+                                <td>
+                                    <input type="text" name="cSupply" id="cSupply" style="width: 175px;">
+                                </td>
+                                <td>
+                                    <label style="color: black;">
+                                        {{type.typeOfCards}}
+                                        <input type="checkbox" value="{{type.typeOfCards}}" name="cType" id="cType" style="width: fit-content;">
+                                    </label> 
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </div>
+                        </div>
+                    </tbody>
+                </table>  
+            </section>
+            <button class="btn-success">بروزرسانی</button>      
+        </form>
+    </div>
+
+</body>
+</html>

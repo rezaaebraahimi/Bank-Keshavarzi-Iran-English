@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    {% include 'admin/navbar.html' %}
+    <div class="container">
+        <main class="table">
+            <section class="table__header">
+                <h3>درخواست‌ها</h3>
+            </section>
+            <section class="table__body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>تاریخ درخواست</th>
+                            <th>کد شعبه</th>
+                            <th>نام شعبه</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% set displayed_centers = [] %}
+                        {% for user in users %}
+                            {% if user.CenterName in requests and user.CenterName not in displayed_centers %}
+                                {% set displayed_centers = displayed_centers + [user.CenterName] %}
+                                {% set requests_for_center = requests[user.CenterName] %}
+                                <tr>
+                                    <td>
+                                        <form action="/display-and-generate" method="post">
+                                            <button type="submit" name="cen_code" value="{{ user.CenterCode}}">مشاهده</button>
+                                        </form>
+                                    </td>
+                                    <td>{{ requests_for_center[0].تاریخ }}</td>
+                                    <td>{{ user.CenterCode }}</td>
+                                    <td>{{ user.CenterName }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+{% endblock content %}

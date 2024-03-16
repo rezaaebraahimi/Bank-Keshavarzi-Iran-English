@@ -1,0 +1,77 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="container">
+{% include 'admin/navbar.html' %}
+<div class="main" style="margin-left: 61%;position:absolute;margin-top: 32px;">
+    <div class="left">
+        <form name="addForm" id="addForm" method="POST" action="/admin/addpost" novalidate>
+            <div class="container" style="width: 500px;">
+                <section class="table__body" >
+                <section class="table__header">
+                    <h3>ابلاغ جدید</h3>
+                </section>
+                <div class="input-form">
+                    <label for="title">عنوان</label>
+                    <input type="text" name="title" id="title" required>
+                </div>
+                <div class="input-form">
+                    <label for="subtitle">موضوع</label>
+                    <input type="text" name="subtitle" id="subtitle" required>
+                </div>
+                <div class="input-form">
+                    <label for="author">ابلاغ توسط</label>
+                    <input type="text" name="author" id="author" required>
+                </div>
+                <div class="input-form">
+                    <label for="content">شرح</label>
+                    <textarea name="content" id="content" cols="30" rows="10" required></textarea>
+                </div>
+                <div class="input-form">
+                    <button type="submit" class="btn-success-2" id="sendMessageButton">انتشار</button>
+                </div>
+                <div class="input">
+                </div>
+                </section>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="main" style="margin-left: 7%;position:absolute;">
+    <div class="right">
+        <main class="table">
+            <section class="table__header">
+                <h3>تاریخچه ابلاغ</h3>
+            </section>
+            <section class="table__body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>تاریخ</th>
+                            <th>ابلاغ توسط</th>
+                            <th>موضوع</th>
+                            <th>عنوان</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for post in posts %}
+                        <tr>
+                            <td>
+                            <a href="/blog/post/{{post.id}}">
+                                <button style="color: black;">مشاهده</button>
+                            </a>
+                            </td>
+                            <td>{{ post.date_posted}}</td>
+                            <td>{{ post.author }} </td>
+                            <td>{{ post.subtitle }}</td>
+                            <td>{{ post.title }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+</div>
+</div>
+{% endblock content %}

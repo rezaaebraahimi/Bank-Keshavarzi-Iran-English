@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fa">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سامانه اقلام مصرفی بانکداری الکنرونیک</title>
+
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+    <div class="main" style="align-items: center;">
+        <div class="right">
+            <main class="table">
+                <div class="container">
+                <section class="table__header" >
+                    <h3> ابلاغ شده ها </h3>
+                </section>
+                </div>
+                <section class="table__body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>تاریخ</th>
+                                <th>ابلاغ توسط</th>
+                                <th>موضوع</th>
+                                <th>عنوان</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for post in posts %}
+                            <tr>
+                                    <td>
+                                    <a href="/blog/post/{{post.id}}">
+                                        <button style="color: black;">مشاهده</button>
+                                    </a>
+                                    </td>
+                                    <td>{{ post.date_posted}}</td>
+                                    <td>{{ post.author }} </td>
+                                    <td>{{ post.subtitle }}</td>
+                                    <td>{{ post.title }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+            </main>
+        </div>
+    </div>
+</body>>
+</html>
+
