@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    {% include 'admin/navbar.html' %}
+    <div class="container">
+        <main class="edit-requests">
+            <section class="table__header">
+            <h3 style="color: black;">ویرایش درخواست‌ها</h3>
+            <h5 style="color: rgb(255, 255, 255);"> لطفا مقادیر جدید هر درخواست را وارد کنید</h5>
+            </section>
+            <form method="POST">
+                {% for request in user_requests %}
+                    <div class="input" >
+                        <label style="color: black;" for="new_supply_quantity">{{ request.card_type }}</label>
+                        <input type="text" class="form-control" id="new_supply_quantity" name="new_supply_quantity" required>
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">ثبت تغییرات</button>
+            </form>
+        </main>
+    </div>
+{% endblock %}

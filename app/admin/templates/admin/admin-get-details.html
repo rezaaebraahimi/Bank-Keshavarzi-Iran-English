@@ -5,17 +5,17 @@
 {% include 'admin/navbar.html' %}
     <main class="table">
         <section class="table__header">
-            <h3>موجودی شعبه</h3>
+            {% for user in users %}
+            <h3>موجودی شعبه {{user.CenterName}} - {{user.CenterCode}}</h3>
+            {% endfor%}
         </section>
         <section class="table__body">
             <table>
                 <thead>
                     <tr>
                         <th>آخرین استعلام</th>
-                        <th>موجودی کالا</th>
-                        <th>نوع کالا</th>
-                        <th>کد شعبه</th>
-                        <th>نام شعبه</th>
+                        <th>موجودی</th>
+                        <th>نوع</th>
                     </tr>
                 </thead>
                 <tbody>                            
@@ -26,8 +26,6 @@
                                 <td>{{info.date_add}} </td>    
                                 <td>{{info.supply}} </td>
                                 <td>{{info.cardType}} </td>
-                                <td>{{info.user_code}} </td>
-                                <td>{{user.CenterName}} </td>
                             </tr>
                             {% endif %}
                         {%endfor%}

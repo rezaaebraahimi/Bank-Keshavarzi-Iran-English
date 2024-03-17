@@ -54,7 +54,7 @@ class Blogpost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50))
     subtitle = db.Column(db.String(50))
-    author = db.Column(db.String(20))
+    author = db.Column(db.String(45))
     date_posted = db.Column(db.Date)
     content = db.Column(db.Text)
 
@@ -63,7 +63,6 @@ class UserRequest(db.Model):
     __tablename__ = 'userrequest'
     id = db.Column(db.Integer, primary_key=True)
     user_code = db.Column(db.String(45), db.ForeignKey('user.CenterCode'))
-    card_type = db.Column(db.String(45))
-    supply_quantity = db.Column(db.Integer)
+    card_type = db.Column(db.String(45), nullable=False)
+    supply_quantity = db.Column(db.Integer, nullable=False)
     date_added = db.Column(db.Date, default=JalaliDate.today())
-    status = db.Column(db.String(45), default='Pending') 

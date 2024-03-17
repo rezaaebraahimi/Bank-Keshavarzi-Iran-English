@@ -3,6 +3,7 @@
 {% block content %}
     {% include 'admin/navbar.html' %}
     <div class="container">
+
         <main class="table">
             <section class="table__header">
                 <h3>درخواست‌ها</h3>
@@ -18,22 +19,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% set displayed_centers = [] %}
-                        {% for user in users %}
-                            {% if user.CenterName in requests and user.CenterName not in displayed_centers %}
-                                {% set displayed_centers = displayed_centers + [user.CenterName] %}
-                                {% set requests_for_center = requests[user.CenterName] %}
-                                <tr>
-                                    <td>
-                                        <form action="/display-and-generate" method="post">
-                                            <button type="submit" name="cen_code" value="{{ user.CenterCode}}">مشاهده</button>
-                                        </form>
-                                    </td>
-                                    <td>{{ requests_for_center[0].تاریخ }}</td>
-                                    <td>{{ user.CenterCode }}</td>
-                                    <td>{{ user.CenterName }}</td>
-                                </tr>
-                            {% endif %}
+                        {% for user in reqUsers %}
+                            <tr>
+                                <td>
+                                    <a href="{{ url_for('admin.manageUserRequests', user_id=user.id) }}"> 
+                                    <button>ویرایش</button>
+                                    </a>
+
+                                    <a href="{{ url_for('admin.showRequests', user_id=user.id) }}">
+                                    <button>مشاهده</button>    
+                                    </a>
+                                </td>
+                                <td>{{ dates }}</td>
+                                <td>{{ user.CenterCode }}</td>
+                                <td>{{ user.CenterName }}</td>
+                            </tr>
                         {% endfor %}
                     </tbody>
                 </table>

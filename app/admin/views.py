@@ -3,6 +3,9 @@ from persiantools.jdatetime import JalaliDate
 from app.models import Admin, User, Property, Card, UserRequest, Blogpost, Receive
 from app import db
 
+
+
+
 admin_blueprint = Blueprint(
     'admin',
     __name__,
@@ -63,7 +66,7 @@ def admin_dashboard():
                     c_user = user.CenterCode
                     for pro in all_pro:
                         if pro.user_code == c_user:
-                             infos.append(Property.query.filter_by(user_code=c_user))
+                             infos.append(pro)
                 return render_template('admin/dashboard.html', title="میزکار مدیریت", users=users, infos=infos)
             else:
                 return render_template('admin/empty-dashboard.html', title="میزکار مدیریت")
@@ -83,51 +86,6 @@ def adminGetDetails():
    
 
     
-@admin_blueprint.route('/addCardToUser', methods=["POST","GET"])
-def addCardToUser():
-    if not session.get('admin_id'):
-        return redirect('/')
-    
-    users = User.query.all()
-    types = Card.query.all()
-    
-    if request.method == 'POST':
-        CenterCode = request.form.get('CenterCode')
-        sendToUser = request.form.get('sendToUser')
-        typeOfCards = request.form.get('typeOfCards')
-
-        if not CenterCode or not sendToUser or not typeOfCards or is_number_string(CenterCode) == False or is_number_string(sendToUser) == False:
-            flash('لطفاً مقادیر را به درستی وارد کنید', 'error')
-            return redirect('/addCardToUser')
-        
-        sendToUser = int(sendToUser)
-        CenterCode = int(CenterCode)
-        
-        adminChecker = Receive.query.filter_by(cardType=typeOfCards).first()
-        
-        if not adminChecker or adminChecker.admin_supply < sendToUser:
-            flash('مقدار وارد شده در خزانه موجود نیست', 'error')
-            return redirect('/addCardToUser')
-        
-        Checker = Property.query.filter_by(user_code=CenterCode,cardType=typeOfCards).first()
-        if Checker:
-            adminChecker.admin_supply -= sendToUser
-            Checker.supply += sendToUser
-            Checker.date_add = JalaliDate.today()
-            User.query.filter_by(CenterCode=CenterCode).update({'date_added': JalaliDate.today(), 'sum_supply': User.sum_supply + sendToUser})
-        else:
-            adminChecker.admin_supply -= sendToUser
-            User.query.filter_by(CenterCode=CenterCode).update({'date_added': JalaliDate.today(), 'sum_supply': User.sum_supply + sendToUser})
-            _property = Property(user_code=CenterCode, cardType=typeOfCards, supply=sendToUser, date_add=JalaliDate.today())
-            db.session.add(_property)
-        
-        db.session.commit()
-        flash('تخصیص داده شد', 'message')
-        return redirect('/addCardToUser')
-
-    return render_template('admin/add-card-to-user.html', title='توزیع کالا',users=users,types=types)
-    
-
 
 @admin_blueprint.route('/recieve', methods=["POST","GET"])
 def recieve():
@@ -142,7 +100,7 @@ def recieve():
         
         if not adminRecieve or not typeOfCards or not is_number_string(adminRecieve):
             flash('لطفا فرم را با دقت کامل کنید','error')
-            return redirect('/recieve')
+            return redirect('/admin/recieve')
         
         adminRecieve = int(adminRecieve)
         Checker = Receive.query.filter_by(cardType=typeOfCards).first()
@@ -191,8 +149,9 @@ def removecardtype():
         if card_type_remove:
             card_to_delete  = Card.query.filter_by(typeOfCards=card_type_remove).first()
             card_delete = Receive.query.filter_by(cardType=card_type_remove).first()
-            db.session.delete(card_delete)
-            db.session.commit()
+            if card_delete:
+                db.session.delete(card_delete)
+                db.session.commit()
             db.session.delete(card_to_delete)
             db.session.commit()
             flash('کالا با موفقیت از خزانه حذف شد','message')    
@@ -217,8 +176,8 @@ def adminGetAllUser():
 
 
 
-@admin_blueprint.route('/admin_blueprintrove-user/<int:id>')
-def adminadmin_blueprintrove(id):
+@admin_blueprint.route('/approve-user/<int:id>')
+def approve(id):
     if not session.get('admin_id'):
         return redirect('/')
     else:
@@ -229,8 +188,8 @@ def adminadmin_blueprintrove(id):
 
 
 
-@admin_blueprint.route('/disadmin_blueprintrove-user/<int:id>')
-def adminDisadmin_blueprintrove(id):
+@admin_blueprint.route('/disapprove-user/<int:id>')
+def disapprove(id):
     if not session.get('admin_id'):
         return redirect('/')
     else:
@@ -295,11 +254,61 @@ def addpost():
 def manageRequests():
     if not session.get('admin_id'):
         return redirect('/')
+    
+    if request.method == 'POST':
+        search=request.form.get('search')
+        users=UserRequest.query.filter(User.CenterCode.like('%'+search+'%')).all()
+        return render_template('admin/manage-requests.html')
     else:
         users = User.query.all()
         requests = UserRequest.query.all()
+        for user in users:
+            for req in requests:
+                if user.CenterCode == req.user_code:
+                    reqUsers = User.query.filter_by(CenterCode=req.user_code).all()
+                    reqses = UserRequest.query.filter_by(user_code=user.CenterCode).first()
+                    dates = reqses.date_added
+        return render_template('admin/manage-requests.html',reqUsers=reqUsers,dates=dates)
+
+
+
+@admin_blueprint.route('/showRequests/<user_id>', methods=["GET", "POST"])
+def showRequests(user_id):
+    if not session.get('admin_id'):
+        return redirect('/')
+    else:
+        users = User.query.get(user_id) 
+        requests = UserRequest.query.filter_by(user_code=users.CenterCode).all() 
+        reqses = UserRequest.query.filter_by(user_code=users.CenterCode).first() 
+        dates = reqses.date_added
+        return render_template('admin/show-requests.html', users=users, requests=requests,dates=dates)
+
+
+
+    
+
+@admin_blueprint.route('/manageUserRequests/<user_id>', methods=["GET", "POST"])
+def manageUserRequests(user_id):
+    if not session.get('admin_id'):
+        return redirect('/')
+    user = User.query.get(user_id)
+    user_requests = UserRequest.query.filter_by(user_code=user.CenterCode).all()
+    
+    if request.method == 'POST':
+        new_supply_quantity = request.form.getlist('new_supply_quantity')
+        newSupplyquantity = [n for n in new_supply_quantity if n != '']
+        
+        for req ,sp in zip(user_requests, newSupplyquantity):
             
-        return render_template('admin/manage-requests.html',requests=requests ,users=users)
+            req.supply_quantity = sp
+
+        db.session.commit()
+
+        flash('تغییرات با موفقیت ذخیره شد', 'success')
+        return redirect('/admin/manageRequests')
+
+    return render_template('admin/edit-requests.html', user_requests = user_requests)
+
 
 
 
