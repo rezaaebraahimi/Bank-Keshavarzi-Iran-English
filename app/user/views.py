@@ -3,6 +3,7 @@ from persiantools.jdatetime import JalaliDate
 from app.models import User, Card, Property,UserRequest
 from app import db
 
+
 user_blueprint = Blueprint(
     'user',
     __name__,
@@ -41,7 +42,7 @@ def userIndex():
         if user:
             if user.status == 0:
                 flash('شما توسط مدیریت تایید نشده اید', 'error')
-                return redirect('/user-login')
+                return redirect('/user/user-login')
             else:
                 session['user_id'] = user.id
                 session['username'] = user.username
@@ -49,7 +50,7 @@ def userIndex():
                 return redirect('/user/dashboard')
         else:
             flash('نام کاربری یا رمز عبور نادرست است', 'error')
-            return redirect('/user-login')
+            return redirect('/user/user-login')
     else:
         return render_template('user/index.html', title="ورود اعضا")
 
@@ -60,6 +61,7 @@ def userIndex():
 
 @user_blueprint.route('/signup',methods=['POST','GET'])
 def userSignup():
+    
     types = Card.query.all()
     if  session.get('user_id'):
         return redirect('/user/dashboard')
@@ -74,6 +76,9 @@ def userSignup():
         if CenterName =="" or CenterCode=="" or password=="" or username=="" or personal=="" or personalCode=="" or  not is_number_string(CenterCode) or not is_number_string(personalCode):
             flash('لطفا تمامی موارد را به درستی تکمیل کنید','error')
             return redirect('/user/signup')
+        elif len(password) < 6:
+            flash('رمز عبور باید حداقل ۶ کاراکتر باشد', 'error')
+            return redirect('/user/signup')
         else:
             is_username=User().query.filter_by(CenterCode=CenterCode).first()
             is_personal=User().query.filter_by(personalCode=personalCode).first()
@@ -84,8 +89,8 @@ def userSignup():
                 flash('شماره پرسنلی در سامانه موجود است','error')
                 return redirect('/user/signup')
             else:
-                new_user=User(CenterName=CenterName,CenterCode=CenterCode,password=password,
-                              username=username,personal=personal,personalCode=personalCode)
+                new_user = User(CenterName=CenterName, CenterCode=CenterCode, password=password,
+                                username=username, personal=personal, personalCode=personalCode)
                 db.session.add(new_user)
                 db.session.commit()
                 for _type in types:
@@ -107,16 +112,15 @@ def userSignup():
 # Receive information on the number and variety of the initial inventory of the branches' goods.---
 
 @user_blueprint.route('/firstSupply/<nw_us_code>',methods=['POST','GET'])
-def firstSupply(nw_us_code):
+def firstSupply(nw_us_code):   
     types = Card.query.all()
 
     if request.method=='POST':
         cType = request.form.getlist('cType')
         cSupply = request.form.getlist('cSupply')
         newcSupply = [n for n in cSupply if n != '']
-        
 
-        if not cType or not cSupply:
+        if not cType or not newcSupply:
             flash('لطفا فرم را به درستی کامل کنید', 'error')
             return redirect('/user/userRequest')
         else:
@@ -180,11 +184,15 @@ def updateSupply():
             if not is_number_string(newcSupply[cType.index(_type)]):
                 flash('لطفا از مقادیر عددی استفاده کنید', 'error')
                 return redirect('/user/updateSupply')
+            elif len(cType) != len(newcSupply):
+                flash('تعداد نوع محصول و تعداد موجودی باید یکسان باشد', 'error')
+                return redirect('/user/updateSupply')
             else:
                 checker = Property.query.filter_by(user_code=users.CenterCode, cardType=_type).first()
                 if checker:
                     checker.date_add = JalaliDate.today()
                     checker.supply = newcSupply[cType.index(_type)]
+                    users.date_added = JalaliDate.today()
 
         db.session.commit()
         flash('موجودی شعبه بروزرسانی شد', 'message')
@@ -205,34 +213,41 @@ def userRequest():
     id = session.get('user_id')
     users = User.query.get(id)
     types = Card.query.all()
+    us_req = UserRequest.query.filter_by(user_code=users.CenterCode).first()
     
     if request.method == 'POST':
         cType = request.form.getlist('cType')
         cSupply = request.form.getlist('cSupply')
         newcSupply = [n for n in cSupply if n != '']
-        checker = UserRequest.query.filter_by(user_code= users.CenterCode).all()
-        
-        if not cType or not cSupply:
-            flash('لطفاً فرم را به درستی کامل کنید', 'error')
-            return redirect('/user/userRequest')
-        else:
-            UserRequest.query.filter_by(user_code=users.CenterCode).delete()
-            for card_type, supply_quantity in zip(cType, newcSupply):
-                if not is_number_string(supply_quantity):
-                    flash('لطفاً از مقادیر عددی استفاده کنید', 'error')
-                    return redirect('/user/userRequest')
-                else:
-                    new_request = UserRequest(
-                        user_code=users.CenterCode,
-                        card_type=card_type,
-                        supply_quantity=int(supply_quantity),
-                        date_added=JalaliDate.today()
-                    )
-                    db.session.add(new_request)
 
-            db.session.commit()
-            flash('درخواست‌ شما ارسال شد', 'success')
-            return redirect('/user/dashboard')
+        if users.date_added == str(JalaliDate.today()):
+            if not cType or not cSupply:
+                flash('لطفاً فرم را به درستی کامل کنید', 'error')
+                return redirect('/user/userRequest')
+            elif us_req.status == 0:
+                flash('درخواست سابق شما در حال بررسی است', 'error')
+                return redirect('/user/userRequest')
+            else:
+                UserRequest.query.filter_by(user_code=users.CenterCode).delete()
+                for card_type, supply_quantity in zip(cType, newcSupply):
+                    if not is_number_string(supply_quantity):
+                        flash('لطفاً از مقادیر عددی استفاده کنید', 'error')
+                        return redirect('/user/userRequest')
+                    else:
+                        new_request = UserRequest(
+                            user_code=users.CenterCode,
+                            card_type=card_type,
+                            supply_quantity=int(supply_quantity),
+                            date_added=JalaliDate.today()
+                        )
+                        db.session.add(new_request)
+
+                db.session.commit()
+                flash('درخواست‌ شما ارسال شد', 'success')
+                return redirect('/user/dashboard')
+        else:
+            flash('لطفا ابتدا موجودی خود را بروزرسانی کنید', 'error')
+            return redirect('/user/dashboard')    
 
     else:        
         return render_template('user/user-request.html', users=users, types=types)
@@ -249,7 +264,6 @@ def userUpdateProfile():
     
     elif session.get('user_id'):
         id = session.get('user_id')
-        
         users = User.query.get(id)
         if request.method == 'POST':
             CenterName = request.form.get('CenterName')

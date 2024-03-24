@@ -3,7 +3,6 @@
 {% block content %}
     {% include 'admin/navbar.html' %}
     <div class="container">
-
         <main class="table">
             <section class="table__header">
                 <h3>درخواست‌ها</h3>
@@ -13,6 +12,7 @@
                     <thead>
                         <tr>
                             <th></th>
+                            <th>وضعیت</th>
                             <th>تاریخ درخواست</th>
                             <th>کد شعبه</th>
                             <th>نام شعبه</th>
@@ -22,13 +22,16 @@
                         {% for user in reqUsers %}
                             <tr>
                                 <td>
-                                    <a href="{{ url_for('admin.manageUserRequests', user_id=user.id) }}"> 
-                                    <button>ویرایش</button>
-                                    </a>
-
                                     <a href="{{ url_for('admin.showRequests', user_id=user.id) }}">
                                     <button>مشاهده</button>    
                                     </a>
+                                </td>
+                                <td>
+                                    {% if status == 1 %}
+                                    تخصیص داده شد
+                                    {% else %}
+                                    در انتظار
+                                    {% endif %}
                                 </td>
                                 <td>{{ dates }}</td>
                                 <td>{{ user.CenterCode }}</td>

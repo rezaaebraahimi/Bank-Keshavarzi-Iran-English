@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if title %}{{ title }} - سامانه اقلام مصرفی بانکداری الکنرونیک  {% else %}سامانه اقلام مصرفی بانکداری الکنرونیک{% endif %}</title>
+    <title>{% if title %}{{ title }} - سامانه اقلام مصرفی بانکداری الکترونیک  {% else %}سامانه اقلام مصرفی بانکداری الکترونیک{% endif %}</title>
     <link rel="stylesheet" href="/static/style.css">
     <link rel="icon" href="/static/favicon.ico">
 </head>
 <body>
+    <script src="/static/script/script.js"></script>
     {% with messages=get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category,message in messages %}
@@ -20,7 +21,7 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-        <script src="/static/script/script.js"></script>
+
     {% block content %}
     {% endblock content %}
 </body>
