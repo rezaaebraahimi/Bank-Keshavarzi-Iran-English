@@ -3,19 +3,22 @@
 {% block content %}
     {% include 'admin/navbar.html' %}
     <div class="container">
-        <main class="edit-requests">
+        <main>
             <section class="table__header">
             <h3 style="color: black;">ویرایش درخواست‌ها</h3>
-            <h5 style="color: rgb(255, 255, 255);"> لطفا مقادیر جدید هر درخواست را وارد کنید</h5>
+            <h5 style="color: rgb(255, 255, 255);"> لطفا مقادیر جدید درخواست هر کالا را وارد کنید</h5>
             </section>
             <form method="POST">
+                <section class="table__body" style="background-color: rgba(0, 0, 0, 0.045);">
                 {% for request in user_requests %}
                     <div class="input" >
                         <label style="color: black;" for="new_supply_quantity">{{ request.card_type }}</label>
                         <input type="text" class="form-control" id="new_supply_quantity" name="new_supply_quantity" required>
                     </div>
                 {% endfor %}
-                <button type="submit" class="btn btn-primary">ثبت تغییرات</button>
+
+                </section>
+                <button type="submit" class="btn-success-2">ثبت تغییرات</button>
             </form>
         </main>
     </div>

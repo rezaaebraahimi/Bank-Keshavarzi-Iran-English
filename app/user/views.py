@@ -218,8 +218,12 @@ def userRequest():
     users = User.query.get(id)
     types = Card.query.all()
     us_req = UserRequest.query.filter_by(user_code=users.CenterCode).first()
-    dates = us_req.date_added
-    status = us_req.status
+    if us_req != None:
+        dates = us_req.date_added
+        status = us_req.status
+    else:
+        dates = "درخواستی ثبت نشده"
+        status = 0
     
     if request.method == 'POST':
         cType = request.form.getlist('cType')

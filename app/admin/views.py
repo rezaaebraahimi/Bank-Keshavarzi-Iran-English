@@ -360,6 +360,7 @@ def showRequests(user_id):
 def editUserRequests(user_id):
     if not session.get('admin_id'):
         return redirect('/')
+    
     user = User.query.get(user_id)
     user_requests = UserRequest.query.filter_by(user_code=user.CenterCode).all()
     
@@ -368,8 +369,11 @@ def editUserRequests(user_id):
         newSupplyquantity = [n for n in new_supply_quantity if n != '']
         
         for req ,sp in zip(user_requests, newSupplyquantity):
-            
-            req.supply_quantity = sp
+            if is_number_string(sp) == False:
+                flash('لطفا از مقادیر عددی استفاده کنید','error')
+                return redirect('/admin/editUserRequests/' + str(user_id))
+            else:
+                req.supply_quantity = sp
 
         db.session.commit()
 
