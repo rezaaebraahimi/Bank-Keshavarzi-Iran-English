@@ -2,16 +2,14 @@
 {% block content %}
 <div class="container">
     {% include 'user/navbar.html' %}
-    <div class="main" style="align-items: center;">
-        <form method="POST" action="/user/updateSupply">
+    <div class="my-2">
+         <form method="POST" action="/user/updateSupply">
             <main class="table">
-                <div class="container">
-                    <section class="table__header">
-                        <h3>اعلام موجودی فعلی</h3>
-                    </section>
-                </div>
-            <section class="table__body" style="width: 650px;">
-
+                <section class="table__header">
+                    <h3>اعلام موجودی فعلی</h3>
+                </section>
+                
+                <section class="table__body">
                 <table>
                     <thead>
                         <tr>
@@ -40,10 +38,15 @@
                     </tbody>
                 </table>  
             </section>
-            <h6 style="color: rgb(66, 66, 66);font-size:smaller">توجه: بروزرسانی فقط بر موجودی کالاهای انتخابی شما لحاظ میشود</h6>
+
+
+
+            <button class="btn-success-2">بروزرسانی</button>  
+            
         </main>
-            <button class="btn-success">بروزرسانی</button>      
+    
         </form>
+        <h6 style="color: rgb(66, 66, 66);font-size:smaller">توجه: بروزرسانی فقط بر موجودی کالاهای انتخابی شما لحاظ میشود</h6>
     </div>
 </div>
 {% endblock content %}

@@ -4,15 +4,13 @@
     {% include 'user/navbar.html' %}
     <div class="page">
         <div class="left">
-            <div class="main" style="align-items: center;">
+            <div class="my-2">
                 <form method="POST" action="/user/userRequest">
                     <main class="table">
-                        <div class="container">
-                            <section class="table__header">
-                                <h3>درخواست کالا</h3>
-                            </section>
-                            </div>
-                    <section class="table__body" style="width: 650px;">
+                        <section class="table__header">
+                            <h3>درخواست کالا</h3>
+                        </section>
+                     <section class="table__body">
                         <table>
                             <thead>
                                 <tr>
@@ -41,9 +39,9 @@
                             </tbody>
                         </table>  
                     </section>
-                   
-                </main>
                     <button class="btn-success-3">ثبت درخواست</button>      
+                </main>
+                   
                 </form>
             </div>
         </div>

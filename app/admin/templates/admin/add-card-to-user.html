@@ -2,53 +2,58 @@
 {% block content %}
 <div class="container">
     {% include 'admin/navbar.html' %}
-    <div class="main" style="align-items: center;">
-      
+    <div class="my-2">
         <form action="/admin/add_CardToUser" method="POST">
-            <main class="table">
-                <div class="container">
-                    <h3 style="color: black;">تخصیص کالا بدون درخواست</h3>
-                        <select style="width: 12vw;" name="CenterCode" id="CenterCode" class="CenterCode-1">
-                            <option value="" disabled selected>شعبه را انتخاب کنید</option>
-                            {% for user in users %}
-                            <option value="{{ user.CenterCode }}">{{ user.CenterCode }} - {{ user.CenterName }}</option>
-                            {% endfor %}
-                        </select>
-          شعبه مقصد
-                </div>
-            <section class="table__body" style="width: 650px;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>تعداد</th>
-                            <th>انتخاب کالا</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <div>
-                            <div>
-                            {% for type in types %}
-                            <tr>
-                                <td>
-                                    <input type="text" name="cSupply" id="cSupply" style="width: 175px;">
-                                </td>
-                                <td>
-                                    <label style="color: black;">
-                                        {{type.typeOfCards}}
-                                        <input type="checkbox" value="{{type.typeOfCards}}" name="cType" id="cType" style="width: fit-content;">
-                                    </label> 
-                                </td>
-                        
-                            </tr>
-                            {% endfor %}
-                            </div>
-                        </div>
-                    </tbody>
-                </table>  
+        <main class="table">
+            <section class="table__header">
+                <h3>تخصیص کالا بدون درخواست</h3>
             </section>
-        </main>
-            <button class="btn-success-2">تخصیص</button>      
-        </form>
+            <section class="table__body">
+                    <select style="width: 12vw;" name="CenterCode" id="CenterCode" class="CenterCode-1">
+                        <option value="" disabled selected>شعبه را انتخاب کنید</option>
+                        {% for user in users %}
+                        <option value="{{ user.CenterCode }}">{{ user.CenterCode }} - {{ user.CenterName }}</option>
+                        {% endfor %}
+                    </select>
+          شعبه مقصد
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>تعداد</th>
+                                    <th>انتخاب کالا</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <div>
+                                    <div>
+                                    {% for type in types %}
+                                    <tr>
+                                        <td>
+                                            <input type="text" name="cSupply" id="cSupply" style="width: 175px;">
+                                        </td>
+                                        <td>
+                                            <label style="color: black;">
+                                                {{type.typeOfCards}}
+                                                <input type="checkbox" value="{{type.typeOfCards}}" name="cType" id="cType" style="width: fit-content;">
+                                            </label> 
+                                        </td>
+                                
+                                    </tr>
+                                    {% endfor %}
+                                    </div>
+                                </div>
+                            </tbody>
+                        </table>  
+
+
+
+
+        </section>
+    <button class="btn-success-2">تخصیص</button>  
+    </main>
+
+</form>
     </div>
 </div>
 {% endblock content %}
