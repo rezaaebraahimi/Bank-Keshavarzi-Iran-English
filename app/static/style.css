@@ -47,8 +47,8 @@ nav ul li {
 nav ul li a{
     color: white;
     font-size: 1.4vw;
-    padding: 1vh .3vw;
-    border-radius: 15px;
+    padding: .5vh .4vw;
+    border-radius: 10px;
 
 }
 
@@ -66,7 +66,6 @@ a.exit,a.exit:hover{
 .logo{
     margin-top: 2%;
 }
-
 
 .card{
     align-items: center;
@@ -167,11 +166,11 @@ a:hover .title{
 }
 
 .btn-username {
-    width: 20vw; 
+    width: 12vw; 
     height: 5vh; 
     background: white;
     color: #1d6013;
-    font-size: 1.5vw; 
+    font-size: 1vw; 
 }
 
 
@@ -241,19 +240,19 @@ label{
 }
 .input {
     margin-top: 25px;
-    width: 300px;
+    width: 20vw;
     overflow: hidden;
     border-radius: 5px;
 }
 
 
 input{
-    width: 300px;
+    width: 20vw;
     background: white;
     border: none;
     outline: none;
     text-align: center;
-    height: 30px;
+    height: 2vw;
 }
 
 a {
@@ -276,18 +275,44 @@ h1{
 }
 
 
+
+.takhsis {
+    background: #0d4610d3;
+    color: white;
+    border-radius: 15px;
+}
+
+.entezar {
+    background: #e3b911;
+    color: white;
+    border-radius: 15px;
+}
+
 .alert{
-    background-color: rgba(255, 225, 175, 0.550);
-    width: 20%;
-    padding: 2vw 3vw;
-    position:absolute;
-    left: 78%;
-    top: 85%;
-    border-radius: .8rem;
-    border:solid 1px #ff9100;
-    box-shadow: 0 .4rem .8rem #0005;
-    display: none;
+    backdrop-filter: blur(5px);
+    width:fit-content;
+    padding: 1vw 2vw;
+    top:85%;
+    left: 80%;
+    position: absolute;
     text-align: center;
+    align-items: center;
+    border-radius: 15px;
+    box-shadow: 0px 5px 10px rgba(0,0,0,.2);
+    display: none;
+    z-index: 9999;
+}
+
+.alert-error {
+    border: 2px solid rgba(199, 0, 0, 0.55);
+    background: #ff6060b7;
+    color: white
+}
+
+.alert-message {
+    border: 2px solid rgba(0, 199, 0, 0.55);
+    background: #60ff7ab3;
+    color: rgb(0, 0, 0)
 }
 
 
@@ -316,12 +341,11 @@ h1{
 main.table {
     margin-top: 5%;
     width: 50vw;
-    height: 70vh;
+    height: 75vh;
     background: linear-gradient(180deg, #d5ffcd -0%, #bbffb1 71%);
     backdrop-filter: blur(7px);
     box-shadow: 0 .4rem .8rem #0005;
     border-radius: .8rem;
-    overflow: hidden;
 }
 
 
@@ -345,7 +369,7 @@ h3{
 
 .table__body {
     width: 95%;
-    height: calc(77% - .5rem);
+    height: calc(80% - .6rem);
     background-color: #ffffffbc;
     margin: .5rem auto;
     border-radius: .6rem;
@@ -354,22 +378,19 @@ h3{
 }
 
 .table__body::-webkit-scrollbar {
-    width: 0.5rem;
-    height: 0.5rem;
+    width: 0.9rem;
+    height: 0.9rem;
 }
 #search{
     border-radius: 5px;
 }
 
 .table__body::-webkit-scrollbar-thumb{
-    border-radius: .5rem;
+    border-radius: .9rem;
     background-color: #0004;
-    visibility: hidden;
-}
-
-.table__body:hover::-webkit-scrollbar-thumb{
     visibility: visible;
 }
+
 
 table {
     width: 100%;
@@ -470,29 +491,30 @@ h2{
 
 
 .dash {
-min-width: 50vh;
+min-width: 40vh;
 max-height: 12vh;
-display: flex;
+display:flex;
 justify-content:space-between;
-float: inline-start;
-margin-top: 130px;
+float:inline-start;
+margin-bottom:12vw;
 }
 
 .dash button{
     border: none;
     outline: none;
-    width: 300px;
-    background: rgb(210, 255, 210)5%;
+    width: 30vw;
+    background: rgb(225, 255, 225)5%;
 }
 
 .credit-container {
 position: relative;
-background: linear-gradient(146.73deg, #35ac21 19.37%, #15460d 80.63%);
+background: linear-gradient(146.73deg, #409730 19.37%, #0d4803 80.63%);
 background-size: cover;
 padding: 25px;
 border-radius: 28px;
-max-width: 350px;
-width: 85%;
+max-width: 40vh;
+width: 40vh;
+margin-top: 1.5vw;
 box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
 }
 
@@ -509,12 +531,12 @@ justify-content: space-between;
 }
 
 .credit-logo img {
-width: 48px;
-margin-right: 90px;
+width: 3.5vw;
+margin-right: 7vw;
 }
 .bank-name{
     text-align: center;
-    margin-right: 10px;
+    margin-right: 1.5vw;
     background-color: #fff;
     width: 100%;
     border-radius: 5px;
@@ -526,7 +548,7 @@ color: #000000;
 }
 
 header .chip {
-width: 60px;
+width: 4vw;
 }
 
 h6 {
@@ -576,8 +598,11 @@ align-items: flex-end;
         color: #dbae18;
     }
 
-
     .logo-nav{
+        display: none;
+    }
+
+    .btn-username{
         display: none;
     }
 

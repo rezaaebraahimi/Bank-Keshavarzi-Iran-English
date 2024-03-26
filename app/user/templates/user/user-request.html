@@ -1,48 +1,102 @@
 {% extends "layout.html"%}
-
 {% block content %}
 <div class="container">
     {% include 'user/navbar.html' %}
-    <div class="main" style="align-items: center;">
-        <form method="POST" action="/user/userRequest">
-            <section class="table__body" style="width: 650px;">
-                <div class="container">
-                    <section class="table__header">
-                        <h3>درخواست کالا</h3>
+    <div class="page">
+        <div class="left">
+            <div class="main" style="align-items: center;">
+                <form method="POST" action="/user/userRequest">
+                    <main class="table">
+                        <div class="container">
+                            <section class="table__header">
+                                <h3>درخواست کالا</h3>
+                            </section>
+                            </div>
+                    <section class="table__body" style="width: 650px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>تعداد</th>
+                                    <th>انتخاب کالا</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <div>
+                                    <div>
+                                    {% for type in types %}
+                                    <tr>
+                                        <td>
+                                            <input type="text" name="cSupply" id="cSupply" style="width: 175px;">
+                                        </td>
+                                        <td>
+                                            <label style="color: black;">
+                                                {{type.typeOfCards}}
+                                                <input type="checkbox" value="{{type.typeOfCards}}" name="cType" id="cType" style="width: fit-content;">
+                                            </label> 
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </div>
+                                </div>
+                            </tbody>
+                        </table>  
                     </section>
-                    </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>تعداد</th>
-                            <th>انتخاب کالا</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <div>
-                            <div>
-                            {% for type in types %}
-                            <tr>
+                   
+                </main>
+                    <button class="btn-success-3">ثبت درخواست</button>      
+                </form>
+            </div>
+        </div>
+    <div class="main">
+        <div class="right" style="margin-top: 35px;">
+            <div class="table">
+                <section class="table__body" style="box-shadow: 0 .4rem .8rem #0005;overflow: hidden;">
+                    <section class="table__header" style="text-align: center;">
+                        <h3 style="margin-right: 15px;"> آخرین درخواست</h3>
+                    </section>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>وضعیت</th>
+                                    <th>تاریخ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
                                 <td>
-                                    <input type="text" name="cSupply" id="cSupply" style="width: 175px;">
+                                    {% if status == 1 %}
+                                    <div class="takhsis">تخصیص داده شد</div>
+                                    {% else %}
+                                    <div class="entezar">در انتظار</div>
+                                    {% endif %}
                                 </td>
-                                <td>
-                                    <label style="color: black;">
-                                        {{type.typeOfCards}}
-                                        <input type="checkbox" value="{{type.typeOfCards}}" name="cType" id="cType" style="width: fit-content;">
-                                    </label> 
+                                <td style="color: black;">
+                                    {{dates}}
                                 </td>
                             </tr>
-                            {% endfor %}
-                            </div>
+                            </tbody>
+                        </table>
+                        <div>
+                            {% if users %}
+                            <a href="{{ url_for('user.show_Requests', user_id=users.id) }}">
+                                <button class="btn-success-3"> مشاهده جزئیات</button>    
+                            {% endif %}
+                            </a>
                         </div>
-                    </tbody>
-                </table>  
-            </section>
-            <button class="btn-success">ثبت درخواست</button>      
-        </form>
+
+                    <div class="input">
+                    </div>
+                </section>
+                
+            </div>
+            
+        </div>
         <br>
-        <h6 style="color: rgb(66, 66, 66);font-size:smaller"> توجه: برای ثبت درخواست جدید ابتدا لازم است تا موجودی شعبه را بروزرسانی کنید <br> همچنین لازم است تا درخواست سابق شما بررسی شده باشد</h6>
+        <div class="table">
+            <section class="table__body" style="width: max-content;overflow:hidden;padding:0.5vw">
+        <h5 style="color: rgb(66, 66, 66);font-size:smaller"> توجه: برای ثبت درخواست جدید ابتدا لازم است تا موجودی شعبه را بروزرسانی کنید <br> همچنین لازم است تا درخواست سابق شما بررسی شده باشد</h5>
+        </div>
+    </section>
     </div>
 </div>
 {% endblock content %}

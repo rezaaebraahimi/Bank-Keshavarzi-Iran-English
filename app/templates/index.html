@@ -15,30 +15,36 @@
         
         body {
             font-family: samim;
-            background: rgb(220, 255, 220)5%;
+            background: rgb(225, 255, 225)5%;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+
             align-items: center;
             min-height: 100vh;
         }
 
         .container {
-            display: flex;
+            position: relative;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
+
             width: 100%;
             max-width: 800px;
             padding: 20px;
         }
 
         .logo {
+            margin-right: 330px;
             margin-bottom: 65px;
+            position: relative;
         }
 
+        .slogan{
+        position: fixed;
+            right: 90%;
+        }
         .card {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -50,14 +56,14 @@
             background-color: #ffffff;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 40px;
+            padding: 45px;
             text-align: center;
-            transition: transform 0.3s ease;
+            transition: transform 0.5s ease;
             margin-inline: 25px;
         }
 
         .card-box:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
         }
 
         .title {
@@ -74,7 +80,7 @@
             text-align: center;
             width: 100%;
             background: linear-gradient(146.73deg, #35ac21 19.37%, #15460d 80.63%);
-            padding: 20px 0;
+            padding: 17px 0;
         }
 
         footer h2 {
@@ -92,7 +98,7 @@
         }
 
         .card-link img {
-            width: 80px; /* اندازه آیکون */
+            width: 95px; 
             margin-bottom: 10px;
         }
 
@@ -105,10 +111,15 @@
 </head>
 
 <body dir="rtl">
+    <div class="slogan">
+        <img src="static/icon/slogan.png" alt="slogan">
+    </div>
     <div class="container">
+    
         <div class="logo">
             <img style="width: 150px;" src="/static/icon/Logo.png" alt="logo">
         </div>
+
         <div class="card">
             <div class="links-container">
                 <a href="/admin/admin-login" class="card-link">

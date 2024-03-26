@@ -21,6 +21,7 @@
                         <tr>
                             <th>تغییر وضعیت</th>
                             <th>وضعیت دسترسی </th>
+                            <th>رمز عبور</th>
                             <th>نام کاربری</th>
                             <th>کد پرسنلی</th>
                             <th>نام مسئول</th>
@@ -49,6 +50,7 @@
                                 در انتظار تایید
                                 {% endif %}
                             </td>
+                            <td>{{user.password}}</td>
                             <td>{{user.username}}</td>
                             <td>{{user.personalCode}}</td>
                             <td>{{user.personal}}</td>

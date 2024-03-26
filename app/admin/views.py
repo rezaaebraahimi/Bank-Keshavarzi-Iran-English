@@ -27,7 +27,6 @@ def is_number_string(s):
 
 
 
-
 # ---------------- Central Bank (Admin) login page and check login information.------------------
 
 @admin_blueprint.route('/admin-login', methods=["POST", "GET"])
@@ -94,10 +93,10 @@ def adminGetDetails():
             return render_template('admin/admin-get-details.html', title="جزئیات موجودی", users=users, infos=infos)
    
 
+#------------------------ Admin send to user without user request--------------------------
    
-   
-"""@admin_blueprint.route('/addCardToUser', methods=["POST","GET"])
-def addCardToUser():
+@admin_blueprint.route('/add_CardToUser', methods=["POST","GET"])
+def add_CardToUser():
     if not session.get('admin_id'):
         return redirect('/')
     
@@ -106,43 +105,47 @@ def addCardToUser():
     
     if request.method == 'POST':
         CenterCode = request.form.get('CenterCode')
-        sendToUser = request.form.get('sendToUser')
-        typeOfCards = request.form.get('typeOfCards')
+        cSupply = request.form.getlist('cSupply')
+        typeOfCards = request.form.getlist('cType')
+        sendToUser = [n for n in cSupply if n != '']
 
-        if not CenterCode or not sendToUser or not typeOfCards or is_number_string(CenterCode) == False or is_number_string(sendToUser) == False:
-            flash('لطفاً مقادیر را به درستی وارد کنید', 'error')
-            return redirect('/admin/addCardToUser')
+        if CenterCode is None or sendToUser ==[] or typeOfCards ==[]:
+            flash('لطفاً فرم را کامل کنید', 'error')
+            return redirect('/admin/add_CardToUser')
         
-        sendToUser = int(sendToUser)
-        CenterCode = int(CenterCode)
+        elif len(typeOfCards) != len(sendToUser):
+            flash('تعداد محصول انتخابی و تعداد مقادیر ورودی باید یکسان باشد', 'error')
+            return redirect('/admin/add_CardToUser')
         
-        adminChecker = Receive.query.filter_by(cardType=typeOfCards).first()
-        
-        if not adminChecker or adminChecker.admin_supply < sendToUser:
-            flash('مقدار وارد شده در خزانه موجود نیست', 'error')
-            return redirect('/admin/addCardToUser')
-        
-        Checker = Property.query.filter_by(user_code=CenterCode,cardType=typeOfCards).first()
-        if Checker:
-            adminChecker.admin_supply -= sendToUser
-            Checker.supply += sendToUser
-            Checker.date_add = JalaliDate.today()
-            User.query.filter_by(CenterCode=CenterCode).update({'date_added': JalaliDate.today(), 'sum_supply': User.sum_supply + sendToUser})
         else:
-            adminChecker.admin_supply -= sendToUser
-            User.query.filter_by(CenterCode=CenterCode).update({'date_added': JalaliDate.today(), 'sum_supply': User.sum_supply + sendToUser})
-            _property = Property(user_code=CenterCode, cardType=typeOfCards, supply=sendToUser, date_add=JalaliDate.today())
-            db.session.add(_property)
-        
-        db.session.commit()
-        flash('تخصیص داده شد', 'message')
-        return redirect('/admin/addCardToUser')
-
-    return render_template('admin/add-card-to-user.html', title='توزیع کالا',users=users,types=types)  """
+            for _type in typeOfCards:
+                adminChecker = Receive.query.filter_by(cardType=_type).first()
+                Checker = Property.query.filter_by(user_code=CenterCode,cardType=_type).first()
+                if is_number_string(sendToUser[typeOfCards.index(_type)]) == False:
+                    flash('لطفا از مقادیر عددی استفاده کنید', 'error')
+                    return redirect('/admin/add_CardToUser')
+                elif adminChecker is None or adminChecker.admin_supply < int( sendToUser[typeOfCards.index(_type)]):
+                    flash('مقدار وارد شده در خزانه موجود نیست', 'error')
+                    return redirect('/admin/add_CardToUser')
+                elif Checker:
+                    adminChecker.admin_supply -= int( sendToUser[typeOfCards.index(_type)])
+                    Checker.supply += int(sendToUser[typeOfCards.index(_type)])
+                    Checker.date_add = JalaliDate.today()
+                    User.query.filter_by(CenterCode=CenterCode).update({'date_added': JalaliDate.today()})
+                else:
+                    adminChecker.admin_supply -= int(sendToUser[typeOfCards.index(_type)])
+                    User.query.filter_by(CenterCode=CenterCode).update({'date_added': JalaliDate.today()})
+                    _property = Property(user_code=CenterCode, cardType=_type, supply=int(sendToUser[typeOfCards.index(_type)]), date_add=JalaliDate.today())
+                    db.session.add(_property)
+            
+            db.session.commit()
+            flash('تخصیص داده شد', 'message')
+            return redirect('/admin/add_CardToUser')
+    else:
+        return render_template('admin/add-card-to-user.html', title='توزیع کالا',users=users,types=types)
    
  
  
-
             
 
 @admin_blueprint.route('/recieve', methods=["POST","GET"])
@@ -156,7 +159,7 @@ def recieve():
         adminRecieve = request.form.get('adminRecieve')
         typeOfCards = request.form.get('typeOfCards')
         
-        if not adminRecieve or not typeOfCards or not is_number_string(adminRecieve):
+        if not adminRecieve or not typeOfCards or  is_number_string(adminRecieve) == False:
             flash('لطفا فرم را با دقت کامل کنید','error')
             return redirect('/admin/recieve')
         
@@ -279,7 +282,7 @@ def adminChangePassword():
         else:
             admin.admin_pass = new_password
             db.session.commit()
-            flash('رمز عبور با موفقیت تغییر یافت', 'success')
+            flash('رمز عبور با موفقیت تغییر یافت', 'message')
             return redirect('/admin/admin-dashboard')
     else:
         return render_template('admin/admin-change-password.html',title='تغییر رمز عبور مدیریت', admin=admin)
@@ -349,6 +352,10 @@ def showRequests(user_id):
 
 
 
+
+
+
+
 @admin_blueprint.route('/editUserRequests/<user_id>', methods=["GET", "POST"])
 def editUserRequests(user_id):
     if not session.get('admin_id'):
@@ -366,7 +373,7 @@ def editUserRequests(user_id):
 
         db.session.commit()
 
-        flash('تغییرات با موفقیت ذخیره شد', 'success')
+        flash('تغییرات با موفقیت ذخیره شد', 'message')
         return redirect('/admin/manageRequests')
 
     return render_template('admin/edit-requests.html', user_requests = user_requests)
@@ -383,7 +390,7 @@ def removeUserRequests(user_id):
     UserRequest.query.filter_by(user_code=user.CenterCode).delete()
     db.session.commit()
     
-    flash('درخواست رد و حذف شد', 'success')
+    flash('درخواست رد و حذف شد', 'message')
     return redirect('/admin/manageRequests')
 
 

@@ -122,17 +122,6 @@
         </main>
         <div style="margin-top: 20px; margin-right:150px;">
             <button style="font-size: larger;margin-left:25px" onclick="window.print()">چاپ فرم</button>
-            {% if users %}
-            <a href="{{ url_for('admin.editUserRequests', user_id=users.id) }}"> 
-                <button style="font-size: larger;margin-left:25px">ویرایش درخواست</button>
-            </a>
-            <a href="{{ url_for('admin.removeUserRequests', user_id=users.id) }}"> 
-                <button style="font-size: larger;margin-left:25px">حذف درخواست</button>
-            </a>
-            <a href="{{ url_for('admin.addCardToUser', user_id=users.id) }}"> 
-                <button style="font-size: larger;margin-left:25px">تخصیص به شعبه</button>
-            </a>
-            {% endif %}
         </div>
     </div>
 </body>

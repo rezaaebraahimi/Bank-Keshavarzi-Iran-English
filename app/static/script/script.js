@@ -12,6 +12,7 @@ window.addEventListener("load", function(){
         function close(event){
             document.querySelector(".alert").style.display = "none";
         },
-        4000
+        3000
     )
 });
+

@@ -1,17 +1,17 @@
 {% extends "layout.html"%}
-
 {% block content %}
 <div class="container">
     {% include 'user/navbar.html' %}
     <div class="main" style="align-items: center;">
-        <form method="POST" action="">
-
-            <section class="table__body" style="width: 650px;">
+        <form method="POST" action="/user/updateSupply">
+            <main class="table">
                 <div class="container">
                     <section class="table__header">
                         <h3>اعلام موجودی فعلی</h3>
                     </section>
-                    </div>
+                </div>
+            <section class="table__body" style="width: 650px;">
+
                 <table>
                     <thead>
                         <tr>
@@ -40,6 +40,8 @@
                     </tbody>
                 </table>  
             </section>
+            <h6 style="color: rgb(66, 66, 66);font-size:smaller">توجه: بروزرسانی فقط بر موجودی کالاهای انتخابی شما لحاظ میشود</h6>
+        </main>
             <button class="btn-success">بروزرسانی</button>      
         </form>
     </div>

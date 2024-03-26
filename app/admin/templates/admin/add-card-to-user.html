@@ -1,39 +1,54 @@
 {% extends 'layout.html' %}
-
 {% block content %}
 <div class="container">
     {% include 'admin/navbar.html' %}
-    <div class="login-f">
-        {% if session.admin_id %}
-        {% endif %}
-        <div class="table" style="width: 40%;">
-            <div class="table__body" style="overflow: hidden;">
-                <form action="" method="POST">
-                    <div class="table__header">
-                        <h3>تخصیص کالا</h3>
-                    </div>
-                    <section>
+    <div class="main" style="align-items: center;">
+      
+        <form action="/admin/add_CardToUser" method="POST">
+            <main class="table">
+                <div class="container">
+                    <h3 style="color: black;">تخصیص کالا بدون درخواست</h3>
+                        <select style="width: 12vw;" name="CenterCode" id="CenterCode" class="CenterCode-1">
+                            <option value="" disabled selected>شعبه را انتخاب کنید</option>
+                            {% for user in users %}
+                            <option value="{{ user.CenterCode }}">{{ user.CenterCode }} - {{ user.CenterName }}</option>
+                            {% endfor %}
+                        </select>
+          شعبه مقصد
+                </div>
+            <section class="table__body" style="width: 650px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>تعداد</th>
+                            <th>انتخاب کالا</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         <div>
-                            <select name="CenterCode" id="CenterCode" class="CenterCode-1">
-                                <option value="" disabled selected>شعبه را انتخاب کنید</option>
-                                {% for user in users %}
-                                <option value="{{ user.CenterCode }}">{{ user.CenterCode }} - {{ user.CenterName }}</option>
-                                {% endfor %}
-                            </select>
-                            <select name="typeOfCards" id="typeOfCards">
-                                <option value="" disabled selected>نوع کالا را انتخاب کنید</option>
-                                {% for type in types %}
-                                <option value="{{ type.typeOfCards }}">{{ type.typeOfCards }}</option>
-                                {% endfor %}
-                            </select>
+                            <div>
+                            {% for type in types %}
+                            <tr>
+                                <td>
+                                    <input type="text" name="cSupply" id="cSupply" style="width: 175px;">
+                                </td>
+                                <td>
+                                    <label style="color: black;">
+                                        {{type.typeOfCards}}
+                                        <input type="checkbox" value="{{type.typeOfCards}}" name="cType" id="cType" style="width: fit-content;">
+                                    </label> 
+                                </td>
+                        
+                            </tr>
+                            {% endfor %}
+                            </div>
                         </div>
-                        <input type="text" placeholder="تعداد کالا را وارد کنید" name="sendToUser" id="sendToUser"
-                            style="margin-top: 40px; border-radius: 5px; width:70% ;border: solid 1px rgb(125, 124, 124);">
-                    </section>
-                    <button class="btn-success-2" style="margin-bottom: 40px;">تخصیص</button>
-                </form>
-            </div>
-        </div>
+                    </tbody>
+                </table>  
+            </section>
+        </main>
+            <button class="btn-success-2">تخصیص</button>      
+        </form>
     </div>
 </div>
 {% endblock content %}

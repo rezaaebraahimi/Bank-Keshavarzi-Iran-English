@@ -1,6 +1,6 @@
 from app import db
 from persiantools.jdatetime import JalaliDate
-from sqlalchemy import LargeBinary
+
 
 class Admin(db.Model):
     __tablename__= 'admin'
