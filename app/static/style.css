@@ -11,6 +11,7 @@
     list-style: none;
     box-sizing: border-box;
 }
+
 body{
     background: rgb(225, 255, 225)5%;
     height: 100%;
@@ -22,7 +23,6 @@ body{
     align-items: center;
     text-align: center;
 }
-
 
 nav{
     position: relative;
@@ -72,6 +72,7 @@ a.exit,a.exit:hover{
     display: flex;
     
 }
+
 .card-box{
     background: linear-gradient(180deg, #21ac60 -0%, #0d4610 71%);
     border-radius: 3.6vw;
@@ -79,20 +80,24 @@ a.exit,a.exit:hover{
     height: 22vh;
     width: 22vh;
 }
+
 .card-en{
     cursor: pointer;
 }
+
 .icon {
     height: 15vh;
     width: 15vh;
     margin-top: 2%;
     object-fit: contain;
 }
+
 a:hover .icon{
     height: 200px;
     width: 200px;
     transition: 0.2s;
 }
+
 a:hover .title{
     font-size: larger;
     transition: 0.2s;
@@ -101,9 +106,11 @@ a:hover .title{
 .title{
     margin-top: 3%;
 }
+
 .login-f{
     margin-top: 5%;
 }
+
 .login{
     height: fit-content;
     padding-bottom: 10px;
@@ -114,6 +121,7 @@ a:hover .title{
     flex-direction: column;
     box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
 }
+
 .label{
     background: #1a4421;
     width: 20vw;
@@ -174,8 +182,6 @@ a:hover .title{
     margin-left: 1vw;
 }
 
-
-
 .right-nav{
     display: flex;
     width: 30%;
@@ -183,6 +189,7 @@ a:hover .title{
     margin-top: 8px;
     box-sizing: border-box;
 }
+
 .right-nav-admin{
     display: flex;
     width: 40%;
@@ -190,6 +197,7 @@ a:hover .title{
     margin-top: 8px;
     box-sizing: border-box;
 }
+
 .left-nav{
     display: flex;
     position: absolute;
@@ -197,12 +205,12 @@ a:hover .title{
     top: 8px;
     left: 15px;
 }
+
 .center-nav{
     position: absolute;
     left: 45%;
     top: 23px;
 }
-
 
 .logo-nav{
     width: 65px;
@@ -213,7 +221,6 @@ a:hover .title{
     height: 36px;
     width: 36px;
 }
-
 
 .signup-titel{
     background: #1a4421;
@@ -235,17 +242,18 @@ a:hover .title{
     background-color: #15460d;
     color: white;
 }
+
 label{
     color: white;
     width: 20vw;
 }
+
 .input {
     margin-top: 25px;
     width: 20vw;
     overflow: hidden;
     border-radius: 5px;
 }
-
 
 input{
     width: 20vw;
@@ -260,22 +268,24 @@ a {
     text-decoration: none;
     color: white;
 }
+
 h1{
     color: white;
 }
+
 .card{
     margin-top: 40px;
 }
+
 .user{
     margin-top: 30px;
     height: 111px;
     width: 111px;
 }
+
 .reg{
     margin-top: 10px;
 }
-
-
 
 .takhsis {
     background: #0d4610d3;
@@ -316,7 +326,6 @@ h1{
     color: rgb(0, 0, 0)
 }
 
-
 .alert p{
     font-size: 1.2vw;
     text-align: center;
@@ -328,6 +337,7 @@ h1{
     display: flex;
     flex-direction: column;
 }
+
 .label-2{
     background: #1a4421;
     width: 20vw;
@@ -335,10 +345,12 @@ h1{
     border-radius: 5px;
     overflow: hidden;
 }
+
 .page{
     display: flex;
     flex-direction: row;
 }
+
 main.table {
     margin-top: 3%;
     width: 50vw;
@@ -348,7 +360,6 @@ main.table {
     box-shadow: 0 .4rem .8rem #0005;
     border-radius: .8rem;
 }
-
 
 table, th, td {
     padding: 0.5rem;
@@ -382,6 +393,7 @@ h3{
     width: 0.9rem;
     height: 0.9rem;
 }
+
 #search{
     border-radius: 5px;
 }
@@ -391,7 +403,6 @@ h3{
     background-color: #0004;
     visibility: visible;
 }
-
 
 table {
     width: 100%;
@@ -404,6 +415,7 @@ thead th {
     background-color: #9bda8f;
 
 }
+
 .input-form{
     margin-top: 25px;
 }
@@ -418,7 +430,6 @@ thead th {
     height: 100px;
 }
 
-
 .input-form input[type="text"],
 .input-form textarea {
     width: 100%;
@@ -428,19 +439,20 @@ thead th {
     box-sizing: border-box;
 }
 
-
 #typeOfCards{
     margin-top: 40px;
     width: 70%;
     height: 30px;
     text-align: center;
 }
+
 .CenterCode-1{
     margin-top: 5px;
     width: 70%;
     height: 30px;
     text-align: center;
 }
+
 tbody tr:nth-child(even) {
     background-color: #0000000b;
 
@@ -449,7 +461,6 @@ tbody tr:nth-child(even) {
 tbody tr:hover {
     background-color: #fff6;
 }
-
 
 .status {
     padding: .4rem .4rem;
@@ -465,8 +476,6 @@ tbody tr:hover {
 .status.disApprove {
     background-color: #ffc400;
 }
-
-
 
 strong{
     margin-top: 20px;
@@ -484,13 +493,12 @@ footer{
     width: 391px;
     border-radius: 15px 15px 0px 0px;
 }
+
 h2{
     color: white;
     text-align: center;
     padding-top: 20px;
 }
-
-
 
 .dash {
 min-width: 40vh;
@@ -499,7 +507,7 @@ display:flex;
 justify-content:space-between;
 float:inline-start;
 margin-bottom:12vw;
-margin-top: 3vw;
+margin-top: 8vw;
 margin-left: 8vw;
 }
 
@@ -519,7 +527,6 @@ border-radius: 28px;
 max-width: 40vh;
 width: 40vh;
 margin-top: 1vw;
-margin-left: 3vw;
 box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
 cursor: pointer;
 }
@@ -527,7 +534,6 @@ cursor: pointer;
 .credit-container:hover {
     background: linear-gradient(146.73deg, #d1d400 19.37%, #c98021 80.63%);
 }
-
 
 header,
 .credit-logo {
@@ -537,11 +543,11 @@ justify-content: space-between;
 margin-right: 3vw;
 }
 
-
 .credit-logo img {
 width: 3.5vw;
 margin-bottom: 1vw;
 }
+
 .bank-name{
     text-align: center;
     margin-right: 1.5vw;
@@ -549,6 +555,7 @@ margin-bottom: 1vw;
     width: 100%;
     border-radius: 5px;
 }
+
 h5 {
 font-size: 16px;
 font-weight: 400;
@@ -580,27 +587,110 @@ display: flex;
 justify-content: space-between;
 align-items: flex-end;
 }
+
 .chip{
     border-radius: 5px;
     margin: 5px;
 }
 
-
-
 @media (max-width: 858px){
+
+    .card-box {
+        height: 12vh;
+        width: 12vh;
+    }
+    
+    .icon {
+        height: 7vh;
+        width: 7vh;
+    }
+    
+    .card {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    a:hover .title {
+        font-size: 12px;
+    }
+
+    body {
+        background: #e1ffe1; 
+        color: #000; 
+    }
+    
+    nav ul {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-right: 20px;
+    }
+    
+    nav ul li {
+        margin: 0 10px;
+    }
+
+    .main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer {
+        width: 100%;
+    }
+    
+
+    .dash {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 10vw;
+        margin-top: 15vw;
+
+    }
+    
+    .credit-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-left: 3vw;
+        margin-top: 3vw;
+    }
+    
+    nav ul li a {
+        font-size: 3vw;
+    }
+    
+    .logo-nav {
+        width: 10vw;
+        height: auto;
+        margin-top: 2%;
+        margin-right: 3vw;
+    }
+    
+    .btn-username {
+        width: 12vw;
+        height: 5vh;
+        font-size: 3vw;
+        margin-left: 1vw;
+    }
 
     nav ul li {
         margin: 50px 0;
         line-height: 30px;
     }
+
     nav ul li a{
         font-size: 16px;
 
     }
+
     a:hover,a.active{
         background: none;
         color: #35ac21;
     }
+
     a:hover,a.exit{
         background: none;
         color: #dbae18;
@@ -617,34 +707,41 @@ align-items: flex-end;
     .card{
         display: block;
     }
+
     .card-box{
         height: 10rem;
         width: 10rem;
         margin-top: 10px;
     }
+
     .icon {
         height: 70px;
         width: 70px;
     }
+
     .title{
         opacity: 100;
         font-size: 8px;
         margin-top: 5px;
     }
+
     a:hover .icon{
         height: 60px;
         width: 60px;
         transition: 0.2s;
     }
+
     a:hover .title{
         opacity: 100;
         transition: 0.2s;
         font-size: 10px;
     }
+
     .footer{
         height: 40px;
         width: 250px;
     }
+    
     h2{
         padding-top: 10px;
         font-size: 15px;

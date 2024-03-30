@@ -270,6 +270,9 @@ def userRequest():
 
 
 
+
+#----------------------- Show Requests to Admin ------------------------
+
 @user_blueprint.route('/show_Requests/<user_id>', methods=["GET", "POST"])
 def show_Requests(user_id):
     if not session.get('user_id'):

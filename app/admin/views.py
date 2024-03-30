@@ -42,7 +42,7 @@ def admin_index():
             if admin:
                 session['admin_id'] = admin.id
                 session['admin_name'] = admin.admin_user
-                flash('ورود موفقیت آمیز بود', 'message')
+                flash('یه سامانه خوش آمدید', 'message')
                 return redirect('/admin/admin-dashboard')
             else:
                 flash('نام کاربری یا رمز عبور اشتباه است', 'error')
@@ -79,6 +79,8 @@ def admin_dashboard():
 
 
 
+
+
 # -------------------------- Admin get details of bank branches' good.--------------------------
 
 @admin_blueprint.route('/get-all-details/', methods=["POST","GET"])
@@ -91,6 +93,9 @@ def adminGetDetails():
         if user.CenterCode == usercode:
             infos = Property.query.filter_by(user_code=usercode).all()
             return render_template('admin/admin-get-details.html', title="جزئیات موجودی", users=users, infos=infos)
+   
+   
+   
    
 
 #------------------------ Admin send to user without user request--------------------------
@@ -146,7 +151,8 @@ def add_CardToUser():
    
  
  
-            
+ 
+#------------------- Add goods to admin recieves ------------------
 
 @admin_blueprint.route('/recieve', methods=["POST","GET"])
 def recieve():
@@ -161,7 +167,8 @@ def recieve():
         
         if not adminRecieve or not typeOfCards or  is_number_string(adminRecieve) == False:
             flash('لطفا فرم را با دقت کامل کنید','error')
-            return redirect('/admin/recieve')
+            return
+        
         
         adminRecieve = int(adminRecieve)
         Checker = Receive.query.filter_by(cardType=typeOfCards).first()
@@ -171,17 +178,21 @@ def recieve():
             Checker.admin_supply = sum
             Checker.recieve_date = JalaliDate.today()
             db.session.commit()
+            flash('توسط خزانه دریافت شد', 'message')
         else:
             new_recieve = Receive(admin_supply=adminRecieve, recieve_date=JalaliDate.today(), cardType=typeOfCards)
             db.session.add(new_recieve)
             db.session.commit()
+            flash('توسط خزانه دریافت شد', 'message')
         
-        flash('توسط خزانه دریافت شد', 'message')
         return redirect('/admin/recieve') 
     else:
         return render_template('admin/recieve.html', title=' خزانه',_recieve=_recieve,types=types)
+   
+   
+   
     
-    
+#------------------------ Add a new type of goods ----------------------
 
 @admin_blueprint.route('/add-card-type', methods=["POST","GET"])
 def addcardtype():
@@ -189,6 +200,9 @@ def addcardtype():
         return redirect('/')
     if request.method== "POST":
         card_type = request.form.get('card_type')
+        if len(card_type) > 45:
+            flash('نام کالا حداکثر شامل 45 کاراکتر میتواند باشد','error')
+            return redirect('/admin/recieve')
         if card_type:
             new_card = Card(typeOfCards=card_type)
             db.session.add(new_card)
@@ -199,7 +213,10 @@ def addcardtype():
             flash('لطفا نام کالا را وارد کنید','error')
             return redirect('/admin/recieve')
         
-        
+       
+       
+       
+#------------------ remove a Type of goods from database ----------------------- 
         
 @admin_blueprint.route('/remove-card-type', methods=["POST","GET"])
 def removecardtype():
@@ -223,6 +240,9 @@ def removecardtype():
         
 
 
+
+#---------------------- show List of users to admin------------------------
+
 @admin_blueprint.route('/get-all-user', methods=["POST","GET"])
 def adminGetAllUser():
     if not session.get('admin_id'):
@@ -237,6 +257,10 @@ def adminGetAllUser():
 
 
 
+
+
+#--------------------- approve user ------------------------
+
 @admin_blueprint.route('/approve-user/<int:id>')
 def approve(id):
     if not session.get('admin_id'):
@@ -249,6 +273,9 @@ def approve(id):
 
 
 
+
+#-------------------- disapprove user -------------------------
+
 @admin_blueprint.route('/disapprove-user/<int:id>')
 def disapprove(id):
     if not session.get('admin_id'):
@@ -260,6 +287,9 @@ def disapprove(id):
         return redirect('/admin/get-all-user')
 
 
+
+
+#------------------------ admin change password ---------------------------
 
 @admin_blueprint.route('/change-admin-password', methods=["POST", "GET"])
 def adminChangePassword():
@@ -289,6 +319,7 @@ def adminChangePassword():
 
 
 
+#----------------- new blog post page and list of posts-----------
 
 @admin_blueprint.route('/add')
 def add():
@@ -297,7 +328,7 @@ def add():
     posts = Blogpost.query.order_by(Blogpost.date_posted.desc()).all()
     return render_template('admin/add-post.html',posts=posts)
 
-
+#----------------- add new blog post (just admin can do it)--------------
 
 @admin_blueprint.route('/addpost', methods=['POST'])
 def addpost():
@@ -307,6 +338,11 @@ def addpost():
     subtitle = request.form['subtitle']
     author = request.form['author']
     content = request.form['content']
+    
+    if len(title) > 45 or len(subtitle) > 45 or len(author) > 45:
+        flash('عناوین حداکثر 45 کاراکتر میتواند باشد','error')
+        return redirect('/admin/add')
+    
     if title and subtitle and author and content:
         post = Blogpost(title=title, subtitle=subtitle, author=author, content=content, date_posted=JalaliDate.today())
         db.session.add(post)
@@ -317,6 +353,9 @@ def addpost():
         return redirect('/admin/add')
 
 
+
+
+#-------------------Show user requests to admin ---------------
 
 @admin_blueprint.route('/manageRequests', methods=["GET", "POST"])
 def manageRequests():
@@ -339,6 +378,8 @@ def manageRequests():
     
     
     
+#----------- Show specific user request details to admin and ready for print ----------------
+    
 @admin_blueprint.route('/showRequests/<user_id>', methods=["GET", "POST"])
 def showRequests(user_id):
     if not session.get('admin_id'):
@@ -353,8 +394,7 @@ def showRequests(user_id):
 
 
 
-
-
+#--------------------- Admin can edit user requests details --------------------
 
 @admin_blueprint.route('/editUserRequests/<user_id>', methods=["GET", "POST"])
 def editUserRequests(user_id):
@@ -385,6 +425,8 @@ def editUserRequests(user_id):
 
 
 
+#------------- admin can remove user request --------------
+
 @admin_blueprint.route('/removeUserRequests/<user_id>', methods=["GET", "POST"])
 def removeUserRequests(user_id):
     if not session.get('admin_id'):
@@ -399,6 +441,8 @@ def removeUserRequests(user_id):
 
 
 
+
+#----------------Admin give goods to User after user send request --------------
 
 @admin_blueprint.route('/addCardToUser/<user_id>', methods=["POST", "GET"])
 def addCardToUser(user_id):
@@ -442,7 +486,7 @@ def addCardToUser(user_id):
     return redirect('/admin/manageRequests')
 
 
-
+#------ Admin logout --------
 
 @admin_blueprint.route('/logout')
 def adminLogout():
