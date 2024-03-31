@@ -30,7 +30,8 @@
 ![5](https://github.com/rezaaebraahimi/Bank-Keshavarzi-Iran-English/assets/117990649/d12f696c-dc3a-4b24-a92b-514ca493892d)
 
 ##### - In the other part, the central branch can allocate a part of treasury products to them without any request from the sub-branches:
-![6](https://github.com/rezaaebraahimi/Bank-Keshavarzi-Iran-English/assets/117990649/2860594f-5ac2-4381-88e4-2420da846f72)
 
-##### - There are other features such as suspending branches and sending notifications to all sub-branches, etc.:
 ![7](https://github.com/rezaaebraahimi/Bank-Keshavarzi-Iran-English/assets/117990649/e7aa0cd0-7e03-49ae-9cde-f23742ebafd2)
+##### - There are other features such as suspending branches and sending notifications to all sub-branches, etc.:
+
+![6](https://github.com/rezaaebraahimi/Bank-Keshavarzi-Iran-English/assets/117990649/2860594f-5ac2-4381-88e4-2420da846f72)
