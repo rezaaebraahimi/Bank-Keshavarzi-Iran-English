@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="/static/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ dates }}__{{ users.CenterName }}</title>
     <style>
         body {
-            font-family: B Nazanin;
+            font-family: Arial, Helvetica, sans-serif;
             background-color: rgb(220, 255, 220)5%;
             margin: 0;
             padding: 0;
@@ -45,30 +46,29 @@
         }
     </style>
 </head>
-<body dir="rtl">
+<body>
     <div class="container">
         <main class="my-section">
             <section>    
                 <section>               
-                <h3 style="text-align: center;">فرم درخواست ارسال اقلام مصرفی بانکداری الکترونیک</h3>
+                <h3 style="text-align: center;">Request form for digital banking consumer products</h3>
                 <table>
                     <thead>
                         <tr>
-                            <th > شعبه :&nbsp;&nbsp;
-                            {{ users.CenterName }} - {{ users.CenterCode }}
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            &nbsp;&nbsp;
+                            <th>
+                                Branch Name:&nbsp;&nbsp;{{ users.CenterName }} - {{ users.CenterCode }}
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                        </th>
-                            <th dir="ltr">
-                                {{ dates }}  &nbsp;&nbsp;: تاریخ درخواست شعبه
                             </th>
+                            
+                            <th >
+                                Date of request: {{ dates }}
+                            </th>
+
                         </tr>
                     </thead>
                 </table>
@@ -78,18 +78,16 @@
                     <thead>   
                         <hr>
                         <tr style="font-size:smaller;"> 
-                            <th class="vl">نوع</th>
+                            <th class="vl">Type</th>
                             {% for request in requests %}
                             <th class="vl">{{ request.card_type }}  </th>                       
 
                             {% endfor %}
                         </tr>
                     </thead> 
-
-
                     <tbody>
                             <tr>   
-                                <td class="vl">تعداد</td>           
+                                <td class="vl" style="font-size:smaller;">Amount</td>           
                                 {% for request in requests %}
                                 <td class="vl">{{ request.supply_quantity }}</td>
                                 {% endfor %}
@@ -102,17 +100,16 @@
                 <thead >
                     <tr>
                         <th >
-                            تاریخ تحویل به دفتر جهت ارسال به شعبه:                           
+                            Date of delivery to the office to send to the branch:                        
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            &nbsp;&nbsp;
+
                         </th>
                       
                         <th>  
-                            دایره بانکداری الکترونیک
+                            Digital banking circle
                         </th>
                      
                     </tr>  
@@ -121,7 +118,7 @@
             <br><br><br>
         </main>
         <div style="margin-top: 20px; margin-right:150px;">
-            <button style="font-size: larger;margin-left:25px" onclick="window.print()">چاپ فرم</button>
+            <button style="font-size: larger;margin-left:25px" onclick="window.print()">Print</button>
         </div>
     </div>
 </body>

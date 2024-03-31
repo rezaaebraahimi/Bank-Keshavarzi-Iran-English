@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اعلامیه شماره {{ post.id }}</title>
+    <title>{{ post.title }} </title>
     <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" href="/static/favicon.ico">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -50,11 +51,10 @@
     </style>
 </head>
 
-<body dir="rtl">
+<body >
 
   <div class="container">
     <nav >
-        <h1 style="padding-top: 3%;">بسم الله الرحمن الرحيم</h1>
 
         <div class="left-nav">
             <div class="logo-nav">
@@ -73,7 +73,7 @@
           </article>
           <br><br><br>
           <div class="meta">
-              <span class="meta-item"> ابلاغ توسط <strong>{{ post.author }}</strong></span><br>
+              <span class="meta-item">  Announced by <strong>{{ post.author }}</strong></span><br>
               <span class="meta-item"><time datetime="{{ post.date_posted }}">{{ post.date_posted }}</time></span>
           </div>
           <br>

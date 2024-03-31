@@ -1,20 +1,18 @@
 <nav>
     <ul>
-        <li><a class="exit" href="/user/logout">خروج</a></li>
-        <li><a href="/user/update-profile">ویرایش</a></li>
-        <li><a href="/blog/allPosts">ابلاغیه</a></li>
-        <li><a href="/user/userRequest">درخواست</a></li>
-        <li><a href="/user/updateSupply"> اعلام موجودی</a></li>
-        <li><a class="active" href="/user/dashboard">نخست</a></li>
+        <li><a class="active" href="/user/dashboard">Dashboard</a></li>
+        <li><a href="/user/updateSupply">Update Inventory</a></li>
+        <li><a href="/user/userRequest">Request</a></li>
+        <li><a href="/blog/allPosts">Announcements</a></li>
+        <li><a href="/user/update-profile">Profile</a></li>
+        <li><a class="exit" href="/user/logout">Logout</a></li>
     </ul>
 
     <div class="left-nav">
         <div class="logo-nav">
             <img class="logo-nav" src="/static/icon/Logo.png" alt="">
         </div>
-        {% if session.get('user_id') %}
-        <button style="margin-top: 22px;" class="btn-username"><p> شعبه {{users.CenterName}}</p></button>
-        {% endif %}
+
 
     </div>
 </nav>

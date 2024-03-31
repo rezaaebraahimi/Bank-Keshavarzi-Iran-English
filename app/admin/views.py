@@ -10,21 +10,16 @@ admin_blueprint = Blueprint(
     template_folder='templates'
 )
 
-
-
 # Checks that the characters entered by the admin are numeric characters.
-
 def is_digit_string(s):
     for char in s:
         if not (ord('0') <= ord(char) <= ord('9')):
             return False
     return True
-
 def is_number_string(s):
     if not isinstance(s, str):
         return False
     return is_digit_string(s)
-
 
 
 # ---------------- Central Bank (Admin) login page and check login information.------------------
@@ -35,25 +30,23 @@ def admin_index():
         admin_user = request.form.get('admin_user')
         admin_pass = request.form.get('admin_pass')
         if not admin_user or not admin_pass:
-            flash('لطفا تمامی موارد را کامل کنید', 'error')
+            flash('Please complete the form correctly', 'error')
             return redirect('/admin/admin-login')
         else:
             admin = Admin.query.filter_by(admin_user=admin_user, admin_pass=admin_pass).first()
             if admin:
                 session['admin_id'] = admin.id
                 session['admin_name'] = admin.admin_user
-                flash('یه سامانه خوش آمدید', 'message')
+                flash('Welcome to Digital banking consumer products system', 'message')
                 return redirect('/admin/admin-dashboard')
             else:
-                flash('نام کاربری یا رمز عبور اشتباه است', 'error')
+                flash('The username or password is incorrect', 'error')
                 return redirect('/admin/admin-login')
     else:
-        return render_template('admin/index.html', title="ورود مدیریت")
+        return render_template('admin/index.html', title="Central Branch Login")
 
 
-
-
-# ----------------------- Admin dashboard that show inventory of the bank branches' goods.-------------------------
+# ----------------------- Admin dashboard that show inventory of the bank branches' products.-------------------------
 
 @admin_blueprint.route('/admin-dashboard', methods=["POST", "GET"])
 def admin_dashboard():
@@ -73,15 +66,12 @@ def admin_dashboard():
                     for pro in all_pro:
                         if pro.user_code == c_user:
                              infos.append(pro)
-                return render_template('admin/dashboard.html', title="میزکار مدیریت", users=users, infos=infos)
+                return render_template('admin/dashboard.html', title="Dashboard", users=users, infos=infos)
             else:
-                return render_template('admin/empty-dashboard.html', title="میزکار مدیریت")
+                return render_template('admin/empty-dashboard.html', title="Dashboard")
 
 
-
-
-
-# -------------------------- Admin get details of bank branches' good.--------------------------
+# -------------------------- Admin get details of bank branches' product.--------------------------
 
 @admin_blueprint.route('/get-all-details/', methods=["POST","GET"])
 def adminGetDetails():
@@ -92,10 +82,7 @@ def adminGetDetails():
     for user in users:
         if user.CenterCode == usercode:
             infos = Property.query.filter_by(user_code=usercode).all()
-            return render_template('admin/admin-get-details.html', title="جزئیات موجودی", users=users, infos=infos)
-   
-   
-   
+            return render_template('admin/admin-get-details.html', title="Inventory Details", users=users, infos=infos)
    
 
 #------------------------ Admin send to user without user request--------------------------
@@ -115,11 +102,11 @@ def add_CardToUser():
         sendToUser = [n for n in cSupply if n != '']
 
         if CenterCode is None or sendToUser ==[] or typeOfCards ==[]:
-            flash('لطفاً فرم را کامل کنید', 'error')
+            flash('Please complete the form correctly', 'error')
             return redirect('/admin/add_CardToUser')
         
         elif len(typeOfCards) != len(sendToUser):
-            flash('تعداد محصول انتخابی و تعداد مقادیر ورودی باید یکسان باشد', 'error')
+            flash("The number of selected products and the number of input values must be the same", 'error')
             return redirect('/admin/add_CardToUser')
         
         else:
@@ -127,10 +114,10 @@ def add_CardToUser():
                 adminChecker = Receive.query.filter_by(cardType=_type).first()
                 Checker = Property.query.filter_by(user_code=CenterCode,cardType=_type).first()
                 if is_number_string(sendToUser[typeOfCards.index(_type)]) == False:
-                    flash('لطفا از مقادیر عددی استفاده کنید', 'error')
+                    flash('Please use numeric values', 'error')
                     return redirect('/admin/add_CardToUser')
                 elif adminChecker is None or adminChecker.admin_supply < int( sendToUser[typeOfCards.index(_type)]):
-                    flash('مقدار وارد شده در خزانه موجود نیست', 'error')
+                    flash('The amount entered is not available in the treasury', 'error')
                     return redirect('/admin/add_CardToUser')
                 elif Checker:
                     adminChecker.admin_supply -= int( sendToUser[typeOfCards.index(_type)])
@@ -144,15 +131,13 @@ def add_CardToUser():
                     db.session.add(_property)
             
             db.session.commit()
-            flash('تخصیص داده شد', 'message')
+            flash('Products Allocated Successfully!', 'message')
             return redirect('/admin/add_CardToUser')
     else:
-        return render_template('admin/add-card-to-user.html', title='توزیع کالا',users=users,types=types)
+        return render_template('admin/add-card-to-user.html', title='Distribution of Products',users=users,types=types)
    
  
- 
- 
-#------------------- Add goods to admin recieves ------------------
+#------------------- Add products to admin recieves ------------------
 
 @admin_blueprint.route('/recieve', methods=["POST","GET"])
 def recieve():
@@ -166,9 +151,8 @@ def recieve():
         typeOfCards = request.form.get('typeOfCards')
         
         if not adminRecieve or not typeOfCards or  is_number_string(adminRecieve) == False:
-            flash('لطفا فرم را با دقت کامل کنید','error')
+            flash('Please complete the form correctly', 'error')
             return
-        
         
         adminRecieve = int(adminRecieve)
         Checker = Receive.query.filter_by(cardType=typeOfCards).first()
@@ -178,21 +162,19 @@ def recieve():
             Checker.admin_supply = sum
             Checker.recieve_date = JalaliDate.today()
             db.session.commit()
-            flash('توسط خزانه دریافت شد', 'message')
+            flash('Received by Treasury', 'message')
         else:
             new_recieve = Receive(admin_supply=adminRecieve, recieve_date=JalaliDate.today(), cardType=typeOfCards)
             db.session.add(new_recieve)
             db.session.commit()
-            flash('توسط خزانه دریافت شد', 'message')
+            flash('Received by Treasury', 'message')
         
         return redirect('/admin/recieve') 
     else:
-        return render_template('admin/recieve.html', title=' خزانه',_recieve=_recieve,types=types)
+        return render_template('admin/recieve.html', title='Treasury',_recieve=_recieve,types=types)
    
-   
-   
-    
-#------------------------ Add a new type of goods ----------------------
+      
+#------------------------ Define a new type of products ----------------------
 
 @admin_blueprint.route('/add-card-type', methods=["POST","GET"])
 def addcardtype():
@@ -201,22 +183,20 @@ def addcardtype():
     if request.method== "POST":
         card_type = request.form.get('card_type')
         if len(card_type) > 45:
-            flash('نام کالا حداکثر شامل 45 کاراکتر میتواند باشد','error')
+            flash('The product name can contain a maximum of 45 characters.','error')
             return redirect('/admin/recieve')
         if card_type:
             new_card = Card(typeOfCards=card_type)
             db.session.add(new_card)
             db.session.commit()
-            flash('کالای جدید با موفقیت به خزانه اضافه شد','message')    
+            flash('The new product type has been successfully defined in the Treasury','message')    
             return redirect('/admin/recieve')
         else:
-            flash('لطفا نام کالا را وارد کنید','error')
+            flash('Please enter the product name','error')
             return redirect('/admin/recieve')
         
        
-       
-       
-#------------------ remove a Type of goods from database ----------------------- 
+#------------------ remove a Type of products from database ----------------------- 
         
 @admin_blueprint.route('/remove-card-type', methods=["POST","GET"])
 def removecardtype():
@@ -232,16 +212,14 @@ def removecardtype():
                 db.session.commit()
             db.session.delete(card_to_delete)
             db.session.commit()
-            flash('کالا با موفقیت از خزانه حذف شد','message')    
+            flash('The product was successfully removed from the vault','message')    
             return redirect('/admin/recieve')
         else:
-            flash('لطفا نام کالا را وارد کنید','error')
+            flash('Please enter the product name','error')
             return redirect('/admin/recieve')
         
 
-
-
-#---------------------- show List of users to admin------------------------
+#--------------------- show List of users to admin------------------------
 
 @admin_blueprint.route('/get-all-user', methods=["POST","GET"])
 def adminGetAllUser():
@@ -250,13 +228,10 @@ def adminGetAllUser():
     if request.method== "POST":
         search=request.form.get('search')
         users=User.query.filter(User.CenterCode.like('%'+search+'%')).all()
-        return render_template('admin/all-user.html',title='لیست کاربران',users=users)
+        return render_template('admin/all-user.html',title='List of Branchs',users=users)
     else:
         users=User.query.all()
-        return render_template('admin/all-user.html',title=' لیست کابران',users=users)
-
-
-
+        return render_template('admin/all-user.html',title='List of Branchs',users=users)
 
 
 #--------------------- approve user ------------------------
@@ -268,10 +243,8 @@ def approve(id):
     else:
         User().query.filter_by(id=id).update(dict(status=1))
         db.session.commit()
-        flash('تایید موفقیت آمیز بود','message')
+        flash('Verification was successful','message')
         return redirect('/admin/get-all-user')
-
-
 
 
 #-------------------- disapprove user -------------------------
@@ -283,10 +256,8 @@ def disapprove(id):
     else:
         User().query.filter_by(id=id).update(dict(status=0))
         db.session.commit()
-        flash('کاربر مورد نظر تعلیق شد','message')
+        flash('The target user has been suspended','message')
         return redirect('/admin/get-all-user')
-
-
 
 
 #------------------------ admin change password ---------------------------
@@ -301,22 +272,20 @@ def adminChangePassword():
         new_password = request.form.get('new_password')
         confirm_password = request.form.get('confirm_password')
 
- 
         if current_password != admin.admin_pass:
-            flash('رمز عبور فعلی نادرست است', 'error')
+            flash('The current password is incorrect', 'error')
             return redirect('/admin/change-admin-password')
 
         elif new_password != confirm_password:
-            flash('رمز عبور جدید با تکرار آن مطابقت ندارد', 'error')
+            flash('The new password does not match the duplicate', 'error')
             return redirect('/admin/change-admin-password')
         else:
             admin.admin_pass = new_password
             db.session.commit()
-            flash('رمز عبور با موفقیت تغییر یافت', 'message')
+            flash('Password changed successfully', 'message')
             return redirect('/admin/admin-dashboard')
     else:
         return render_template('admin/admin-change-password.html',title='تغییر رمز عبور مدیریت', admin=admin)
-
 
 
 #----------------- new blog post page and list of posts-----------
@@ -340,7 +309,7 @@ def addpost():
     content = request.form['content']
     
     if len(title) > 45 or len(subtitle) > 45 or len(author) > 45:
-        flash('عناوین حداکثر 45 کاراکتر میتواند باشد','error')
+        flash('Titles can be a maximum of 45 characters.','error')
         return redirect('/admin/add')
     
     if title and subtitle and author and content:
@@ -349,10 +318,8 @@ def addpost():
         db.session.commit()
         return redirect('/admin/add')
     else:
-        flash('لطفا تمامی موارد را کامل کنید','error')
+        flash('Please complete the form correctly', 'error')
         return redirect('/admin/add')
-
-
 
 
 #-------------------Show user requests to admin ---------------
@@ -377,7 +344,6 @@ def manageRequests():
     
     
     
-    
 #----------- Show specific user request details to admin and ready for print ----------------
     
 @admin_blueprint.route('/showRequests/<user_id>', methods=["GET", "POST"])
@@ -390,8 +356,6 @@ def showRequests(user_id):
         reqses = UserRequest.query.filter_by(user_code=users.CenterCode).first() 
         dates = reqses.date_added
         return render_template('admin/show-requests.html', users=users, requests=requests,dates=dates)
-
-
 
 
 #--------------------- Admin can edit user requests details --------------------
@@ -410,19 +374,17 @@ def editUserRequests(user_id):
         
         for req ,sp in zip(user_requests, newSupplyquantity):
             if is_number_string(sp) == False:
-                flash('لطفا از مقادیر عددی استفاده کنید','error')
+                flash('Please use numeric values','error')
                 return redirect('/admin/editUserRequests/' + str(user_id))
             else:
                 req.supply_quantity = sp
 
         db.session.commit()
 
-        flash('تغییرات با موفقیت ذخیره شد', 'message')
+        flash('Changes saved successfully', 'message')
         return redirect('/admin/manageRequests')
 
     return render_template('admin/edit-requests.html', user_requests = user_requests)
-
-
 
 
 #------------- admin can remove user request --------------
@@ -436,13 +398,11 @@ def removeUserRequests(user_id):
     UserRequest.query.filter_by(user_code=user.CenterCode).delete()
     db.session.commit()
     
-    flash('درخواست رد و حذف شد', 'message')
+    flash('The request was rejected and deleted', 'message')
     return redirect('/admin/manageRequests')
 
 
-
-
-#----------------Admin give goods to User after user send request --------------
+#----------------Admin give products to User after user send request --------------
 
 @admin_blueprint.route('/addCardToUser/<user_id>', methods=["POST", "GET"])
 def addCardToUser(user_id):
@@ -460,10 +420,10 @@ def addCardToUser(user_id):
         adminChecker = Receive.query.filter_by(cardType=typeOfCards).first()
         
         if not adminChecker:
-            flash('مقدار کالای درخواستی در لیست خزانه مشخص نشده است','error')
+            flash("The amount of the requested product is not specified in the treasury list",'error')
             return redirect('/admin/manageRequests')
         elif adminChecker.admin_supply < sendToUser:
-            flash('مقادیر خواسته شده در خزانه موجود نیست', 'error')
+            flash('Requested amounts are not available in the treasury', 'error')
             return redirect('/admin/manageRequests')
         
         property_record = Property.query.filter_by(user_code=user.CenterCode, cardType=typeOfCards).first()
@@ -482,7 +442,7 @@ def addCardToUser(user_id):
             db.session.add(property_record)
 
     db.session.commit()
-    flash('تخصیص داده شد', 'message')
+    flash('Products Allocated Successfully!', 'message')
     return redirect('/admin/manageRequests')
 
 

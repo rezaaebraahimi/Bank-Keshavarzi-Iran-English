@@ -8,26 +8,26 @@
             <div class="container" style="width: 500px;">
                 <section class="table__body" >
                 <section class="table__header">
-                    <h3>ابلاغ جدید</h3>
+                    <h3>New Announcement</h3>
                 </section>
                 <div class="input-form">
-                    <label for="title">عنوان</label>
+                    <label for="title">Title</label>
                     <input type="text" name="title" id="title" required>
                 </div>
                 <div class="input-form">
-                    <label for="subtitle">موضوع</label>
+                    <label for="subtitle">Subtitle</label>
                     <input type="text" name="subtitle" id="subtitle" required>
                 </div>
                 <div class="input-form">
-                    <label for="author">ابلاغ توسط</label>
+                    <label for="author">Announced by</label>
                     <input type="text" name="author" id="author" required>
                 </div>
                 <div class="input-form">
-                    <label for="content">شرح</label>
+                    <label for="content">Description</label>
                     <textarea name="content" id="content" cols="30" rows="10" required></textarea>
                 </div>
                 <div class="input-form">
-                    <button type="submit" class="btn-success-2" id="sendMessageButton">انتشار</button>
+                    <button type="submit" class="btn-success-2" id="sendMessageButton">Share</button>
                 </div>
                 <div class="input">
                 </div>
@@ -40,31 +40,31 @@
     <div class="right">
         <main class="table">
             <section class="table__header">
-                <h3>تاریخچه ابلاغ</h3>
+                <h3>History of Announcements</h3>
             </section>
             <section class="table__body">
                 <table>
                     <thead>
                         <tr>
+                            <th>Title</th>
+                            <th>Subtitle</th>
+                            <th>Announced by</th>
+                            <th>Date</th>
                             <th></th>
-                            <th>تاریخ</th>
-                            <th>ابلاغ توسط</th>
-                            <th>موضوع</th>
-                            <th>عنوان</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for post in posts %}
                         <tr>
-                            <td>
-                            <a href="/blog/post/{{post.id}}">
-                                <button style="color: black;">مشاهده</button>
-                            </a>
-                            </td>
-                            <td>{{ post.date_posted}}</td>
-                            <td>{{ post.author }} </td>
-                            <td>{{ post.subtitle }}</td>
                             <td>{{ post.title }}</td>
+                            <td>{{ post.subtitle }}</td>
+                            <td>{{ post.author }} </td>
+                            <td>{{ post.date_posted}}</td>
+                            <td>
+                                <a href="/blog/post/{{post.id}}">
+                                    <button style="color: black;">View</button>
+                                </a>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>

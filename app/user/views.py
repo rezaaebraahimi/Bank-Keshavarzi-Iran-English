@@ -10,10 +10,7 @@ user_blueprint = Blueprint(
     template_folder='templates'
 )
 
-
-
 # Checks that the characters entered by the user are numeric characters.
-
 def is_digit_string(s):
     for char in s:
         if not (ord('0') <= ord(char) <= ord('9')):
@@ -23,8 +20,6 @@ def is_number_string(s):
     if not isinstance(s, str):
         return False
     return is_digit_string(s)
-
-
 
 
 # ---------------- Bank branches login page and check login information.------------------
@@ -41,20 +36,18 @@ def userIndex():
 
         if user:
             if user.status == 0:
-                flash('شما توسط مدیریت تایید نشده اید', 'error')
+                flash('You have not been approved by an admin', 'error')
                 return redirect('/user/user-login')
             else:
                 session['user_id'] = user.id
                 session['username'] = user.username
-                flash('ورود موفقیت آمیز بود', 'message')
+                flash('Welcome to Digital banking consumer products system', 'message')
                 return redirect('/user/dashboard')
         else:
-            flash('نام کاربری یا رمز عبور نادرست است', 'error')
+            flash('The username or password is incorrect', 'error')
             return redirect('/user/user-login')
     else:
-        return render_template('user/index.html', title="ورود اعضا")
-
-
+        return render_template('user/index.html', title="Branch Login")
 
 
 # ---------------- Bank branches signup page and check signup information.------------------
@@ -74,19 +67,19 @@ def userSignup():
         password=request.form.get('password')
 
         if CenterName =="" or CenterCode=="" or password=="" or username=="" or personal=="" or personalCode=="" or is_number_string(CenterCode) == False:
-            flash('لطفا تمامی موارد را به درستی تکمیل کنید','error')
+            flash('Please complete the form correctly','error')
             return redirect('/user/signup')
         elif len(password) < 6:
-            flash('رمز عبور باید حداقل ۶ کاراکتر باشد', 'error')
+            flash('Password must be at least 6 characters long.', 'error')
             return redirect('/user/signup')
         else:
             is_username=User().query.filter_by(CenterCode=CenterCode).first()
             is_personal=User().query.filter_by(personalCode=personalCode).first()
             if is_username:
-                flash('این کد شعبه قبلا ثبت شده است','error')
+                flash("This branch code has already been registered",'error')
                 return redirect('/user/signup')
             elif is_personal:
-                flash('شماره پرسنلی در سامانه موجود است','error')
+                flash("Employee code is available in the system",'error')
                 return redirect('/user/signup')
             else:
                 new_user = User(CenterName=CenterName, CenterCode=CenterCode, password=password,
@@ -101,12 +94,10 @@ def userSignup():
                     
                 nw_us = User.query.filter_by(CenterCode=CenterCode).first()
                 nw_us_code = nw_us.CenterCode
-                flash('لطفا موجودی اولیه خود را اعلام کنید','message')
+                flash('Please state your initial balance','message')
                 return redirect(url_for('user.firstSupply',nw_us_code=nw_us_code))
     else:
-        return render_template('user/signup.html',title="ثبتنام اعضا")
-
-
+        return render_template('user/signup.html',title="Branch SignUp")
 
 
 # Receive information on the number and variety of the initial inventory of the branches' goods.---
@@ -121,12 +112,12 @@ def firstSupply(nw_us_code):
         newcSupply = [n for n in cSupply if n != '']
 
         if cType is None or newcSupply is None:
-            flash('لطفا فرم را به درستی کامل کنید', 'error')
+            flash('Please complete the form correctly', 'error')
             return redirect('/user/firstSupply/' + nw_us_code)
         else:
             for _type in cType:
                 if is_number_string(newcSupply[cType.index(_type)]) == False:
-                    flash('لطفا از مقادیر عددی استفاده کنید','error')
+                    flash('Please use numeric values','error')
                     return redirect('/user/firstSupply/' + nw_us_code)
                 
                 else:
@@ -136,14 +127,12 @@ def firstSupply(nw_us_code):
                         Checker.supply = int( newcSupply[cType.index(_type)])
 
             db.session.commit()
-            flash('ثبت اطلاعات انجام شد، بعد از تایید مدیریت به سامانه دسترسی خواهید داشت','message')
+            flash("Information has been registered, you will have access to the system after the admin approval",'message')
             return redirect('/')
             
     else:
         return render_template('user/first-supply.html',types=types)
-   
-   
-   
+    
 
 # ----------------------- User dashboard that show inventory of the branch goods.-------------------------
    
@@ -156,12 +145,10 @@ def userDashboard():
         users = User().query.filter_by(id=id).first()
         if users:
             infos = Property.query.filter_by(user_code=users.CenterCode).all()
-            return render_template('user/dashboard.html', title="میزکار کاربر", users=users, infos=infos)
+            return render_template('user/dashboard.html', title="Dashboard", users=users, infos=infos)
         else:
-            return render_template('user/empty-dashboard.html', title="میزکار کاربر")
+            return render_template('user/empty-dashboard.html', title="Dashboard")
 
-    
-    
     
 # ---------------------- Update the inventory of the branch's goods by the user.-----------------------
 
@@ -181,17 +168,17 @@ def updateSupply():
         newcSupply = [n for n in cSupply if n != '']
 
         if not cType or not newcSupply:
-            flash('لطفا فرم را به درستی کامل کنید','error')
+            flash('Please complete the form correctly','error')
             return redirect('/user/updateSupply')
         elif len(cType) != len(newcSupply):
-            flash('تعداد نوع محصول و تعداد موجودی باید یکسان باشد', 'error')
+            flash("The number of selected products and the number of input values must be the same", 'error')
             return redirect('/user/updateSupply')
         else:
             
             for _type in cType:
                 checker = Property.query.filter_by(user_code=users.CenterCode, cardType=_type).first()
                 if is_number_string(newcSupply[cType.index(_type)]) == False:
-                    flash('لطفا از مقادیر عددی استفاده کنید', 'error')
+                    flash('Please use numeric values', 'error')
                     return redirect('/user/updateSupply')
                 elif checker:
                     checker.date_add = JalaliDate.today()
@@ -199,12 +186,10 @@ def updateSupply():
                     users.date_added = JalaliDate.today()
 
             db.session.commit()
-            flash('موجودی شعبه بروزرسانی شد', 'message')
+            flash('Branch inventory updated', 'message')
             return redirect('/user/dashboard')
     else:        
         return render_template('user/update-supply.html',users=users,types=types)     
-
-
 
 
 # --------------------- Request new goods by the user.-----------------------
@@ -222,7 +207,7 @@ def userRequest():
         dates = us_req.date_added
         status = us_req.status
     else:
-        dates = "درخواستی ثبت نشده"
+        dates = "No request has been registered"
         status = 0
     
     if request.method == 'POST':
@@ -232,17 +217,17 @@ def userRequest():
 
         if users.date_added == str(JalaliDate.today()):
             if not cType or not newcSupply:
-                flash('لطفاً فرم را به درستی کامل کنید', 'error')
+                flash('Please complete the form correctly', 'error')
                 return redirect('/user/userRequest')
             elif len(cType) != len(newcSupply):
-                flash('تعداد محصول انتخابی و تعداد مقادیر ورودی باید یکسان باشد', 'error')
+                flash("The number of selected products and the number of input values must be the same", 'error')
                 return redirect('/user/updateSupply')
             
             elif us_req is None or us_req.status == 1 :
                 UserRequest.query.filter_by(user_code=users.CenterCode).delete()
                 for card_type, supply_quantity in zip(cType, newcSupply):
                     if is_number_string(supply_quantity) == False:
-                        flash('لطفاً از مقادیر عددی استفاده کنید', 'error')
+                        flash('Please use numeric values', 'error')
                         return redirect('/user/userRequest')
                     else:
                         new_request = UserRequest(
@@ -254,21 +239,18 @@ def userRequest():
                         db.session.add(new_request)
 
                 db.session.commit()
-                flash('درخواست‌ شما ارسال شد', 'message')
+                flash('Your request has been sent', 'message')
                 return redirect('/user/dashboard')
             
             elif us_req and us_req.status == 0:
-                flash('درخواست سابق شما در حال بررسی است', 'error')
+                flash('Your previous request is under review', 'error')
                 return redirect('/user/userRequest')
         else:
-            flash('لطفا ابتدا موجودی خود را بروزرسانی کنید', 'error')
+            flash('Please update your inventory balance first', 'error')
             return redirect('/user/dashboard')    
 
     else:        
         return render_template('user/user-request.html', users=users, types=types, dates=dates,status=status)
-
-
-
 
 
 #----------------------- Show Requests to Admin ------------------------
@@ -284,8 +266,6 @@ def show_Requests(user_id):
     dates = reqses.date_added
     status = reqses.status
     return render_template('user/user-show-requests.html', users=users,dates=dates,status=status,requests=requests)
-
-
 
 
 # --------------------- Update Profile for User.-----------------------
@@ -306,7 +286,7 @@ def userUpdateProfile():
             username = request.form.get('username')
             password = request.form.get('password')
             if all([CenterName, CenterCode, username, password, personal, personalCode]) is None or is_number_string(CenterCode) == False:
-                flash('لطفا تمامی موارد را به درستی تکمیل کنید', 'error')
+                flash('Please complete the form correctly', 'error')
                 return redirect('/user/update-profile')
             else:
                 session['username'] = None
@@ -318,11 +298,10 @@ def userUpdateProfile():
                 users.password = password
                 db.session.commit()
                 session['username'] = username
-                flash('پروفایل بروزرسانی شد', 'message')
+                flash('Profile updated', 'message')
                 return redirect('/user/update-profile')
         else:
-            return render_template('user/update-profile.html', title="بروز رسانی پروفایل", users=users)
-
+            return render_template('user/update-profile.html', title=" Update profile ", users=users)
 
 
 # -------- User Logout ---------

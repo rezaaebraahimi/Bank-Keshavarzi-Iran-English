@@ -8,14 +8,15 @@
                 <form method="POST" action="/user/userRequest">
                     <main class="table">
                         <section class="table__header">
-                            <h3>درخواست کالا</h3>
+                            <h3>Product Request</h3>
                         </section>
                      <section class="table__body">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>تعداد</th>
-                                    <th>انتخاب کالا</th>
+
+                                    <th>Type of Product</th>
+                                    <th>Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -23,14 +24,15 @@
                                     <div>
                                     {% for type in types %}
                                     <tr>
+
                                         <td>
-                                            <input type="text" name="cSupply" id="cSupply" style="width: 175px;">
+                                            <label style="color: black;">                       
+                                                <input type="checkbox" value="{{type.typeOfCards}}" name="cType" id="cType" style="width: fit-content;">
+                                                {{type.typeOfCards}}
+                                            </label> 
                                         </td>
                                         <td>
-                                            <label style="color: black;">
-                                                {{type.typeOfCards}}
-                                                <input type="checkbox" value="{{type.typeOfCards}}" name="cType" id="cType" style="width: fit-content;">
-                                            </label> 
+                                            <input type="text" name="cSupply" id="cSupply" style="width: 175px;">
                                         </td>
                                     </tr>
                                     {% endfor %}
@@ -39,45 +41,47 @@
                             </tbody>
                         </table>  
                     </section>
-                    <button class="btn-success-3">ثبت درخواست</button>      
+                    <button class="btn-success-3">Submit Request</button>      
                 </main>
                    
                 </form>
             </div>
         </div>
     <div class="main">
-        <div class="right" style="margin-top: 35px;">
+        <div class="right" style="margin-top: 9vw;">
             <div class="table">
-                <section class="table__body" style="box-shadow: 0 .4rem .8rem #0005;overflow: hidden;">
+                <section class="table__body" style="box-shadow: 0 .4rem .8rem #0005;overflow: hidden;width:fit-content;">
                     <section class="table__header" style="text-align: center;">
-                        <h3 style="margin-right: 15px;"> آخرین درخواست</h3>
+                        <h3 style="margin-right: 1vw;"> Last Request</h3>
                     </section>
                         <table>
                             <thead>
                                 <tr>
-                                    <th>وضعیت</th>
-                                    <th>تاریخ</th>
+
+                                    <th>Date</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
+                                    <td style="color: black;">
+                                        {{dates}}
+                                    </td>
                                 <td>
                                     {% if status == 1 %}
-                                    <div class="takhsis">تخصیص داده شد</div>
+                                    <div class="takhsis"> Allocated</div>
                                     {% else %}
-                                    <div class="entezar">در انتظار</div>
+                                    <div class="entezar">Waiting..</div>
                                     {% endif %}
                                 </td>
-                                <td style="color: black;">
-                                    {{dates}}
-                                </td>
+
                             </tr>
                             </tbody>
                         </table>
                         <div>
                             {% if users %}
                             <a href="{{ url_for('user.show_Requests', user_id=users.id) }}">
-                                <button class="btn-success-3"> مشاهده جزئیات</button>    
+                                <button class="btn-success-3"> View details</button>    
                             {% endif %}
                             </a>
                         </div>
@@ -91,10 +95,10 @@
         </div>
         <br>
         <div class="table">
-            <section class="table__body" style="width: max-content;overflow:hidden;padding:0.5vw">
-        <h5 style="color: rgb(66, 66, 66);font-size:smaller"> توجه: برای ثبت درخواست جدید ابتدا لازم است تا موجودی شعبه را بروزرسانی کنید <br> همچنین لازم است تا درخواست سابق شما بررسی شده باشد</h5>
+        <section class="table__body" style="width: max-content;overflow:hidden;padding:1vw;">
+        <h5 style="color: rgb(66, 66, 66);font-size:smaller"> Note: To register a new request, you must first update the balance of the branch<br>It is also necessary that your previous request has been reviewed</h5>
+        </section>
         </div>
-    </section>
     </div>
 </div>
 {% endblock content %}

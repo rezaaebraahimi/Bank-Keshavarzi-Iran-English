@@ -6,52 +6,49 @@
         <form action="/admin/add_CardToUser" method="POST">
         <main class="table">
             <section class="table__header">
-                <h3>تخصیص کالا بدون درخواست</h3>
+                <h3>Allocation </h3>
+                <p style="font-size:smaller">Send Products without branch request</p>
             </section>
             <section class="table__body">
-                    <select style="width: 12vw;" name="CenterCode" id="CenterCode" class="CenterCode-1">
-                        <option value="" disabled selected>شعبه را انتخاب کنید</option>
+                Branch Name:&nbsp; 
+                    <select style="width: 12vw; margin-bottom:0.5vw;" name="CenterCode" id="CenterCode" class="CenterCode-1">
+                        <option value="" disabled selected>Select Branch</option>
                         {% for user in users %}
                         <option value="{{ user.CenterCode }}">{{ user.CenterCode }} - {{ user.CenterName }}</option>
                         {% endfor %}
                     </select>
-          شعبه مقصد
 
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>تعداد</th>
-                                    <th>انتخاب کالا</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Amount</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <div>
                                 <div>
-                                    <div>
-                                    {% for type in types %}
-                                    <tr>
-                                        <td>
-                                            <input type="text" name="cSupply" id="cSupply" style="width: 175px;">
-                                        </td>
-                                        <td>
-                                            <label style="color: black;">
-                                                {{type.typeOfCards}}
-                                                <input type="checkbox" value="{{type.typeOfCards}}" name="cType" id="cType" style="width: fit-content;">
-                                            </label> 
-                                        </td>
-                                
-                                    </tr>
-                                    {% endfor %}
-                                    </div>
+                                {% for type in types %}
+                                <tr>
+                                    <td>
+                                        <label style="color: black;">
+                                            <input type="checkbox" value="{{type.typeOfCards}}" name="cType" id="cType" style="width: fit-content;">
+                                            {{type.typeOfCards}}
+                                        </label> 
+                                    </td>
+                                    <td>
+                                        <input type="text" name="cSupply" id="cSupply" style="width: 175px;">
+                                    </td>
+                                </tr>
+                                {% endfor %}
                                 </div>
-                            </tbody>
-                        </table>  
-
-
-
-
-        </section>
-    <button class="btn-success-2">تخصیص</button>  
-    </main>
+                            </div>
+                        </tbody>
+                    </table>  
+            </section>
+        <button class="btn-success-2">Send</button>  
+        </main>
 
 </form>
     </div>

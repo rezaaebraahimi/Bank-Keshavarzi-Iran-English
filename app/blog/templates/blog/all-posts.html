@@ -2,12 +2,13 @@
 {% block content %}
 <nav>
     <ul>
-        <li><a class="exit" href="/user/logout">خروج</a></li>
-        <li><a href="/user/update-profile">ویرایش</a></li>
-        <li><a href="/blog/allPosts">ابلاغیه</a></li>
-        <li><a href="/user/userRequest">درخواست</a></li>
-        <li><a href="/user/updateSupply">اعلام</a></li>
-        <li><a class="active" href="/user/dashboard">نخست</a></li>
+
+        <li><a class="active" href="/user/dashboard">Dashboard</a></li>
+        <li><a href="/user/updateSupply">Update Inventory</a></li>
+        <li><a href="/user/userRequest">Request</a></li>
+        <li><a href="/blog/allPosts">Announcements</a></li>
+        <li><a href="/user/update-profile">Profile</a></li>
+        <li><a class="exit" href="/user/logout">Logout</a></li>
     </ul>
 
     <div class="left-nav">
@@ -22,32 +23,32 @@
         <main class="table">
             <div class="container">
             <section class="table__header" >
-                <h3> ابلاغ شده ها </h3>
+                <h3>History of Announcements</h3>
             </section>
             </div>
             <section class="table__body">
                 <table>
                     <thead>
                         <tr>
+                            <th>Title</th>
+                            <th>Subtitle</th>
+                            <th>Announced by</th>
+                            <th>Date</th>
                             <th></th>
-                            <th>تاریخ</th>
-                            <th>ابلاغ توسط</th>
-                            <th>موضوع</th>
-                            <th>عنوان</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for post in posts %}
                         <tr>
-                            <td>
-                            <a href="/blog/post/{{post.id}}">
-                                <button style="color: black;">مشاهده</button>
-                            </a>
-                            </td>
-                            <td>{{ post.date_posted}}</td>
-                            <td>{{ post.author }} </td>
-                            <td>{{ post.subtitle }}</td>
                             <td>{{ post.title }}</td>
+                            <td>{{ post.subtitle }}</td>
+                            <td>{{ post.author }} </td>
+                            <td>{{ post.date_posted}}</td>
+                            <td>
+                                <a href="/blog/post/{{post.id}}">
+                                    <button style="color: black;">مشاهده</button>
+                                </a>
+                                </td>
                         </tr>
                         {% endfor %}
                     </tbody>

@@ -1,26 +1,21 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سامانه اقلام مصرفی بانکداری الکترونیک</title>
+    <title> Digital banking consumer products system</title>
     <link rel="icon" href="/static/favicon.ico">
     <style>
-        @font-face {
-            font-family: samim;
-            src: url(/static/font/Samim-FD.woff2) format(woff2);
-        }
         
         body {
-            font-family: samim;
-            background: rgb(225, 255, 225)5%;
+            font-family: Arial;
+            background: rgb(205, 235, 255)5%;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
-
             align-items: center;
             min-height: 100vh;
         }
@@ -29,41 +24,38 @@
             position: relative;
             flex-direction: column;
             justify-content: center;
-
-            width: 100%;
-            max-width: 800px;
-            padding: 20px;
         }
 
         .logo {
-            margin-right: 330px;
-            margin-bottom: 65px;
             position: relative;
+            margin-bottom: 5vw;
+            margin-top: 5vw;
+            margin-left: 45%;
         }
 
-        .slogan{
-        position: fixed;
-            right: 90%;
-        }
+
         .card {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 65px;
+            gap: 2vw;
+            margin-bottom: 6vw;
         }
 
         .card-box {
             background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 45px;
+            border-radius: 25px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 2.5vw;
             text-align: center;
             transition: transform 0.5s ease;
-            margin-inline: 25px;
+            margin-inline: 2vw;
+            width: 20vw;
+
         }
 
         .card-box:hover {
             transform: translateY(-8px);
+            background-color: #d6fffa80;
         }
 
         .title {
@@ -79,13 +71,12 @@
         footer {
             text-align: center;
             width: 100%;
-            background: linear-gradient(146.73deg, #35ac21 19.37%, #15460d 80.63%);
-            padding: 17px 0;
+            background: linear-gradient(146.73deg, #218cac 19.37%, #0d2646 80.63%);
+            padding: 1vw 0;
         }
 
         footer h2 {
-            margin: 0;
-            font-size: 20px;
+            font-size: 18px;
             color: #ffffff;
         }
 
@@ -95,25 +86,23 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+
         }
 
         .card-link img {
-            width: 95px; 
-            margin-bottom: 10px;
+            width: 9vw; 
+            margin-bottom: 1vw;
         }
 
         .links-container {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 2vw;
         }
     </style>
 </head>
 
-<body dir="rtl">
-    <div class="slogan">
-        <img src="static/icon/slogan.png" alt="slogan">
-    </div>
+<body>
     <div class="container">
     
         <div class="logo">
@@ -122,31 +111,34 @@
 
         <div class="card">
             <div class="links-container">
-                <a href="/admin/admin-login" class="card-link">
-                    <div class="card-box">
-                        <img src="/static/icon/admin.png" alt="admin-icon">
-                        <div class="title"><h1>ورود مدیریت</h1></div>
-                    </div>
-                </a>
+
                 
                 <a href="/user/user-login" class="card-link">
                     <div class="card-box">
                         <img src="/static/icon/user.png" alt="user-icon"> 
-                        <div class="title"><h1>ورود کاربر</h1></div>
+                        <div class="title"><h1>Sub-Branch Login</h1></div>
                     </div>
                 </a>
 
                 <a href="/user/signup" class="card-link">
                     <div class="card-box">
                         <img src="/static/icon/client.png" alt="signup-icon"> 
-                        <div class="title"><h1>ثبت نام</h1></div>
+                        <div class="title"><h1>SignUp</h1></div>
                     </div>
                 </a>
+
+                <a href="/admin/admin-login" class="card-link">
+                    <div class="card-box">
+                        <img src="/static/icon/admin.png" alt="admin-icon">
+                        <div class="title"><h1>Central Branch Login</h1></div>
+                    </div>
+                </a>
+
             </div>
         </div>
     </div>
     <footer>
-        <h2>سامانه اقلام مصرفی بانکداری الکترونیک</h2>
+        <h2> Digital Banking Consumer Products System</h2>
     </footer>
 </body>
 

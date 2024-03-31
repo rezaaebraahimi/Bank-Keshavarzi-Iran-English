@@ -2,22 +2,25 @@
 {% block content %}
 {% include 'admin/navbar.html' %}
 {% for user in users %}
-<body>
+
     <div class="card-en">
         <form class="dash" action="{{ url_for('admin.admin_dashboard') }}" method="post"> 
             <label for="usercode">
                     <button type="submit" value="{{user.CenterCode}}" id="usercode" name="usercode"><div class="credit-container">
                         <header>
-                            <span class="credit-logo">
+                            <span class="credit-logo" style="margin-left: 6.5vw;">
                                 <img src="/static/icon/Logo.png" alt="" />
                             </span>
                         </header>
                         <div class="bank-name">
-                            <h5>{{user.CenterName}} - {{user.CenterCode}}</h5>
+                            <h5>{{user.CenterName}}</h5>
+                        </div>
+                        <div class="bank-name">
+                            <h5>{{user.CenterCode}}</h5>
                         </div>
                         <div class="credit-details">
                             <div class="valid-date">
-                                <h6>آخرین استعلام</h6>
+                                <h6>Last Changes</h6>
                                 <h6>{{user.date_added}}</h6>
                             </div>
                         </div>
@@ -26,6 +29,6 @@
             </label>
         </form>
     </div>
-    </body>
+
 {% endfor %}
 {% endblock content %}

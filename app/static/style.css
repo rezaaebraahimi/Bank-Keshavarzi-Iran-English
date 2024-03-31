@@ -1,10 +1,5 @@
-@font-face {
-    font-family: samim;
-    src: url(/static/font/Samim-FD.woff2) format(woff2);
-}
-
 *{
-    font-family: samim;
+    font-family: Arial, Helvetica, sans-serif;
     margin: 0 auto;
     padding: 0;
     text-decoration: none;
@@ -13,7 +8,7 @@
 }
 
 body{
-    background: rgb(225, 255, 225)5%;
+    background: rgb(205, 235, 255)5%;
     height: 100%;
     background-attachment: fixed;
     
@@ -26,7 +21,7 @@ body{
 
 nav{
     position: relative;
-    background: linear-gradient(180deg, #428536 -0%, #194912 71%);
+    background: linear-gradient(180deg, #3b5f88 -0%, #122e49 71%);
     width: 100%;
     height: 90px ;
     border-radius: 0px 0px 15px 15px;
@@ -34,8 +29,8 @@ nav{
 }
 
 nav ul {
-    float: right;
-    margin-right: 20px;
+    float: left;
+    margin-left: 20px;
 }
 
 nav ul li {
@@ -52,14 +47,16 @@ nav ul li a{
 
 }
 
-a.active,a:hover{
-    background:#59be47;
+a.active,li a:hover{
+    background:#4792be;
     transition: .6s;
+    padding: 0.5vw;
 }
 
 a.exit,a.exit:hover{
-    background:#eba82b;
+    background:#2beb9b;
     transition: .6s;
+    padding: 0.5vw;
 }
 
 
@@ -74,11 +71,11 @@ a.exit,a.exit:hover{
 }
 
 .card-box{
-    background: linear-gradient(180deg, #21ac60 -0%, #0d4610 71%);
+    background: linear-gradient(180deg, #2174ac -0%, #0d2f46 71%);
     border-radius: 3.6vw;
     box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
     height: 22vh;
-    width: 22vh;
+    width: fit-content;
 }
 
 .card-en{
@@ -115,7 +112,7 @@ a:hover .title{
     height: fit-content;
     padding-bottom: 10px;
     width: 400px;
-    background: linear-gradient(180deg, #65ca53 -0%, #26701b 71%);
+    background: linear-gradient(180deg, #539eca -0%, #1b4a70 71%);
     border-radius: 15px;
     display: flex;
     flex-direction: column;
@@ -123,7 +120,7 @@ a:hover .title{
 }
 
 .label{
-    background: #1a4421;
+    background: #1a3744;
     width: 20vw;
     border-radius: 5px;
     overflow: hidden;
@@ -144,32 +141,32 @@ a:hover .title{
 }
 
 .btn-success {
-    color: #1d6013;
+    color: #134460;
     background: white;
 }
 
 .btn-success-2 {
     color: #ffffff;
-    background: #1d6013;
+    background: #134460;
 }
 
 .btn-success-3 {
     width: 8vw; 
     height: 5vh; 
     color: #ffffff;
-    background: #409334;
+    background: #346d93;
     font-size: 1vw;
 }
 
 .btn-success-3:hover {
     background: #fff;
-    color: #1d6013;
+    color: #134160;
 }
 
 .btn-success-user {
     width: 10vw; 
     height: 5vh; 
-    color: #1d6013;
+    color: #133b60;
     background: white;
 }
 
@@ -185,7 +182,7 @@ a:hover .title{
 .right-nav{
     display: flex;
     width: 30%;
-    float: right;
+    float: left;
     margin-top: 8px;
     box-sizing: border-box;
 }
@@ -193,7 +190,7 @@ a:hover .title{
 .right-nav-admin{
     display: flex;
     width: 40%;
-    float: right;
+    float: left;
     margin-top: 8px;
     box-sizing: border-box;
 }
@@ -201,9 +198,9 @@ a:hover .title{
 .left-nav{
     display: flex;
     position: absolute;
-    float: left;
+    float: right;
     top: 8px;
-    left: 15px;
+    right: 15px;
 }
 
 .center-nav{
@@ -215,31 +212,28 @@ a:hover .title{
 .logo-nav{
     width: 65px;
     height: 71px;
-}
-
-.icon-nav{
-    height: 36px;
-    width: 36px;
+    margin-top: 0%;
+    margin-right: 1.5vw;
 }
 
 .signup-titel{
-    background: #1a4421;
+    background: #1a3344;
     width: 400px;
     border-radius: 5px 5px 0px 0px ;
     overflow: hidden;
 }
 .btn-success:hover{
-    background-color: #15460d;
+    background-color: #0d3446;
     color: white;
 }
 
 .btn-success-2:hover{
     background-color: #ffffff;
-    color: #15460d;
+    color: #0d2c46;
 } 
 
 .btn-success-user:hover{
-    background-color: #15460d;
+    background-color: #0d3646;
     color: white;
 }
 
@@ -257,11 +251,16 @@ label{
 
 input{
     width: 20vw;
-    background: white;
-    border: none;
+    background: rgba(255, 255, 255, 0.863);
+    border: solid rgba(0, 0, 0, 0.548) 1px;
     outline: none;
     text-align: center;
     height: 2vw;
+}
+
+input#cType {
+
+    height: 1vw;
 }
 
 a {
@@ -288,15 +287,17 @@ h1{
 }
 
 .takhsis {
-    background: #0d4610d3;
+    background: #0d3146d3;
     color: white;
     border-radius: 15px;
+    padding: 0.5vw;
 }
 
 .entezar {
     background: #e3b911;
     color: white;
     border-radius: 15px;
+    padding: 0.5vw;
 }
 
 .alert{
@@ -304,7 +305,7 @@ h1{
     width:fit-content;
     padding: 1vw 2vw;
     top:85%;
-    left: 80%;
+    left: 85%;
     position: absolute;
     text-align: center;
     align-items: center;
@@ -339,7 +340,7 @@ h1{
 }
 
 .label-2{
-    background: #1a4421;
+    background: #1a3044;
     width: 20vw;
     max-width: 20vw;
     border-radius: 5px;
@@ -355,7 +356,7 @@ main.table {
     margin-top: 3%;
     width: 50vw;
     height: 75vh;
-    background: linear-gradient(180deg, #d5ffcd -0%, #bbffb1 71%);
+    background: linear-gradient(180deg, #cde9ff -0%, #b1dcff 71%);
     backdrop-filter: blur(7px);
     box-shadow: 0 .4rem .8rem #0005;
     border-radius: .8rem;
@@ -375,7 +376,7 @@ h3{
 .table__header {
     width: 100%;
     height: 9%;
-    background-color: #67b75b;
+    background-color: #5b8eb7;
     padding: .5rem 1rem;
 }
 
@@ -412,7 +413,7 @@ thead th {
     position: sticky;
     top: 0;
     left: 0;
-    background-color: #9bda8f;
+    background-color: #8fb8da;
 
 }
 
@@ -434,7 +435,7 @@ thead th {
 .input-form textarea {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #cccccc;
     border-radius: 5px;
     box-sizing: border-box;
 }
@@ -501,13 +502,12 @@ h2{
 }
 
 .dash {
-min-width: 40vh;
 max-height: 12vh;
 display:flex;
 justify-content:space-between;
 float:inline-start;
 margin-bottom:12vw;
-margin-top: 8vw;
+margin-top: 2.5vw;
 margin-left: 8vw;
 }
 
@@ -515,24 +515,23 @@ margin-left: 8vw;
     border: none;
     outline: none;
     width: 30vw;
-    background: rgb(225, 255, 225)5%;
+    background: rgba(225, 255, 225, 0)5%;
 }
 
 .credit-container {
-position: absolute;
-background: linear-gradient(146.73deg, #409730 19.37%, #0d4803 80.63%);
+position: relative;
+background: linear-gradient(146.73deg, #307f97 19.37%, #032748 80.63%);
 background-size: cover;
-padding: 15px;
-border-radius: 28px;
-max-width: 40vh;
-width: 40vh;
-margin-top: 1vw;
+padding: 1.5vw;
+border-radius: 30px;
+width: 45vh;
 box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
 cursor: pointer;
+max-width: 40vh;
 }
 
 .credit-container:hover {
-    background: linear-gradient(146.73deg, #d1d400 19.37%, #c98021 80.63%);
+    background: linear-gradient(146.73deg, #00d483 19.37%, #21b0c9 80.63%);
 }
 
 header,
@@ -540,18 +539,20 @@ header,
 display: flex;
 align-items: center;
 justify-content: space-between;
-margin-right: 3vw;
 }
 
 .credit-logo img {
 width: 3.5vw;
 margin-bottom: 1vw;
+margin-right: 7vw;
 }
 
 .bank-name{
     text-align: center;
-    margin-right: 1.5vw;
-    background-color: #fff;
+
+    margin-bottom: 0.5vw;
+    padding: 0.5vw;
+    background-color: #ffffff;
     width: 100%;
     border-radius: 5px;
 }
@@ -567,7 +568,7 @@ width: 4vw;
 }
 
 h6 {
-color: #fff;
+color: #ffffff;
 font-size: 15px;
 font-weight: 400;
 }
@@ -590,8 +591,11 @@ align-items: flex-end;
 
 .chip{
     border-radius: 5px;
-    margin: 5px;
+    margin: 1vw;
 }
+
+
+
 
 @media (max-width: 858px){
 
@@ -615,21 +619,13 @@ align-items: flex-end;
         font-size: 12px;
     }
 
-    body {
-        background: #e1ffe1; 
-        color: #000; 
-    }
-    
     nav ul {
         display: flex;
         justify-content: flex-end;
         align-items: center;
         margin-right: 20px;
     }
-    
-    nav ul li {
-        margin: 0 10px;
-    }
+
 
     .main {
         display: flex;
@@ -641,59 +637,32 @@ align-items: flex-end;
         width: 100%;
     }
     
-
-    .dash {
-        display: flex;
-        justify-content: space-around;
-        margin-bottom: 10vw;
-        margin-top: 15vw;
-
-    }
     
     .credit-container {
         display: flex;
         flex-direction: column;
         align-items: center;
         margin-left: 3vw;
-        margin-top: 3vw;
-    }
-    
-    nav ul li a {
-        font-size: 3vw;
-    }
-    
-    .logo-nav {
-        width: 10vw;
-        height: auto;
-        margin-top: 2%;
-        margin-right: 3vw;
-    }
-    
-    .btn-username {
-        width: 12vw;
-        height: 5vh;
-        font-size: 3vw;
-        margin-left: 1vw;
     }
 
+
     nav ul li {
-        margin: 50px 0;
         line-height: 30px;
     }
 
     nav ul li a{
-        font-size: 16px;
+        font-size: 12px;
 
     }
 
     a:hover,a.active{
         background: none;
-        color: #35ac21;
+        color: #9effef;
     }
 
     a:hover,a.exit{
         background: none;
-        color: #dbae18;
+        color: #187cb6;
     }
 
     .logo-nav{

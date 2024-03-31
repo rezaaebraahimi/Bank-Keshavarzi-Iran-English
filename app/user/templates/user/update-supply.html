@@ -6,15 +6,16 @@
          <form method="POST" action="/user/updateSupply">
             <main class="table">
                 <section class="table__header">
-                    <h3>اعلام موجودی فعلی</h3>
+                    <h3>Update Inventory</h3>
                 </section>
                 
                 <section class="table__body">
                 <table>
                     <thead>
                         <tr>
-                            <th>تعداد</th>
-                            <th>انتخاب کالا</th>
+
+                            <th>Type of Product</th>
+                            <th>Amount</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -22,14 +23,15 @@
                             <div>
                             {% for type in types %}
                             <tr>
-                                <td>
-                                    <input type="text" name="cSupply" id="cSupply" style="width: 175px;">
-                                </td>
+
                                 <td>
                                     <label style="color: black;">
-                                        {{type.typeOfCards}}
                                         <input type="checkbox" value="{{type.typeOfCards}}" name="cType" id="cType" style="width: fit-content;">
+                                        {{type.typeOfCards}}
                                     </label> 
+                                </td>
+                                <td>
+                                    <input type="text" name="cSupply" id="cSupply" style="width: 175px;">
                                 </td>
                             </tr>
                             {% endfor %}
@@ -41,12 +43,12 @@
 
 
 
-            <button class="btn-success-2">بروزرسانی</button>  
+            <button class="btn-success-2">Update</button>  
             
         </main>
     
         </form>
-        <h6 style="color: rgb(66, 66, 66);font-size:smaller">توجه: بروزرسانی فقط بر موجودی کالاهای انتخابی شما لحاظ میشود</h6>
+        <h6 style="color: rgb(66, 66, 66);font-size:smaller;margin-top:1vw;">Note: The update is only applied to the inventory of your selected products</h6>
     </div>
 </div>
 {% endblock content %}

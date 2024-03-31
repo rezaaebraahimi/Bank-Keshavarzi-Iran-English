@@ -6,37 +6,38 @@
 
         <main class="table">
             <section class="table__header">
-                <h3>درخواست‌ها</h3>
+                <h3>Users Requests List</h3>
             </section>
             <section class="table__body">
                 <table>
                     <thead>
                         <tr>
+
+                            <th>Branch Name</th>
+                            <th>Branch Code</th>
+                            <th>Date of Request</th>
+                            <th>Status</th>
                             <th></th>
-                            <th>وضعیت</th>
-                            <th>تاریخ درخواست</th>
-                            <th>کد شعبه</th>
-                            <th>نام شعبه</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for user in reqUsers %}
                             <tr>
-                                <td>
-                                    <a href="{{ url_for('admin.showRequests', user_id=user.id) }}">
-                                    <button>مشاهده</button>    
-                                    </a>
-                                </td>
+                                <td>{{ user.CenterName }}</td>
+                                <td>{{ user.CenterCode }}</td>
+                                <td>{{ dates }}</td>
                                 <td>
                                     {% if status == 1 %}
-                                    <div class="takhsis">تخصیص داده شد</div>
+                                    <div class="takhsis"> Allocated</div>
                                     {% else %}
-                                    <div class="entezar">در انتظار</div>
+                                    <div class="entezar"> Waiting...</div>
                                     {% endif %}
                                 </td>
-                                <td>{{ dates }}</td>
-                                <td>{{ user.CenterCode }}</td>
-                                <td>{{ user.CenterName }}</td>
+                                <td>
+                                    <a href="{{ url_for('admin.showRequests', user_id=user.id) }}">
+                                    <button>View</button>    
+                                    </a>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>

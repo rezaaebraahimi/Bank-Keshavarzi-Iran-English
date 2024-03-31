@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سامانه اقلام مصرفی بانکداری الکترونیک  </title>
+    <title>  Digital banking consumer products system </title>
 
     <link rel="stylesheet" href="/static/style.css">
 </head>
@@ -16,14 +16,15 @@
             <main class="table">
 
                     <section class="table__header">
-                        <h3>اعلام موجودی اولیه</h3>
+                        <h3>Declaration of initial inventory</h3>
                     </section>
                 <section class="table__body" style="width: 650px;">
                 <table>
                     <thead>
                         <tr>
-                            <th>تعداد</th>
-                            <th>انتخاب کالا</th>
+
+                            <th>Type of Product</th>
+                            <th>Amount</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -31,14 +32,16 @@
                             <div>
                             {% for type in types %}
                             <tr>
-                                <td>
-                                    <input type="text" name="cSupply" id="cSupply" style="width: 175px;">
-                                </td>
+
                                 <td>
                                     <label style="color: black;">
-                                        {{type.typeOfCards}}
                                         <input type="checkbox" value="{{type.typeOfCards}}" name="cType" id="cType" style="width: fit-content;">
+                                        {{type.typeOfCards}}
+
                                     </label> 
+                                </td>
+                                <td>
+                                    <input type="text" name="cSupply" id="cSupply" style="width: 175px;">
                                 </td>
                             </tr>
                             {% endfor %}
@@ -47,7 +50,7 @@
                     </tbody>
                 </table>  
             </section>
-            <button class="btn-success-2">تکمیل ثبت نام</button>      
+            <button class="btn-success-2">SignUp</button>      
             </main>
         </form>
     </div>
