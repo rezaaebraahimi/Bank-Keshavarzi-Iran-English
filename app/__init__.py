@@ -1,6 +1,7 @@
 from flask import Flask,render_template,request
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
+from flask_minify import Minify
 import os
 from dotenv import load_dotenv
 
@@ -28,7 +29,7 @@ app.register_blueprint(admin_blueprint, url_prefix='/admin')
 app.register_blueprint(user_blueprint, url_prefix='/user')
 app.register_blueprint(blog_blueprint, url_prefix='/blog')
 
-
+Minify(app=app, html=True, js=True, cssless=True)
 
 @app.route('/')
 def index():
