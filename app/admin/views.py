@@ -152,7 +152,7 @@ def recieve():
         
         if not adminRecieve or not typeOfCards or  is_number_string(adminRecieve) == False:
             flash('Please complete the form correctly', 'error')
-            return
+            return redirect('/admin/recieve') 
         
         adminRecieve = int(adminRecieve)
         Checker = Receive.query.filter_by(cardType=typeOfCards).first()
@@ -202,13 +202,19 @@ def addcardtype():
 def removecardtype():
     if not session.get('admin_id'):
         return redirect('/')
+    
     if request.method== "POST":
         card_type_remove = request.form.get('card_type_remove')
         if card_type_remove:
             card_to_delete  = Card.query.filter_by(typeOfCards=card_type_remove).first()
             card_delete = Receive.query.filter_by(cardType=card_type_remove).first()
+            property_delete = Property.query.filter_by(cardType=card_type_remove).all()
             if card_delete:
                 db.session.delete(card_delete)
+                db.session.commit()
+            if property_delete:
+                for pro in property_delete:
+                    db.session.delete(pro)
                 db.session.commit()
             db.session.delete(card_to_delete)
             db.session.commit()
