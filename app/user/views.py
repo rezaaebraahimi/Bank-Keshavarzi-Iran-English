@@ -11,15 +11,8 @@ user_blueprint = Blueprint(
 )
 
 # Checks that the characters entered by the user are numeric characters.
-def is_digit_string(s):
-    for char in s:
-        if not (ord('0') <= ord(char) <= ord('9')):
-            return False
-    return True
 def is_number_string(s):
-    if not isinstance(s, str):
-        return False
-    return is_digit_string(s)
+    return all(char.isdigit() for char in s)
 
 
 # ---------------- Bank branches login page and check login information.------------------
